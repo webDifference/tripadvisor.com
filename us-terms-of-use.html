@@ -1,0 +1,1491 @@
+<!doctype html>
+<html lang="en">
+<head>
+<!-- begin spin_special_output(head_start) -->
+<script type="text/javascript" src="js/jquery-webdriver.js" wd_script_id="jquery-webdriver.js"></script>
+<script type="text/javascript" src="js/webdriver.js" wd_script_id="webdriver.js"></script>
+<script type="text/javascript">webDriver.push_jQuery();</script>
+<script type="text/javascript" src="js/jquery-ui.js" wd_script_id="jquery-ui.js"></script>
+<script type="text/javascript" src="js/wd_resize.js" wd_script_id="wd_resize.js"></script>
+<link href="css/wd_modal.css" type="text/css" rel="stylesheet" wd_script_id="wd_modal.css">
+<link href="css/wd_wcag.css" type="text/css" rel="stylesheet" wd_script_id="wd_wcag.css">
+<script type="text/javascript" wd_script_id="wd_modal_script">
+(function($) {
+	webDriver.resizeModal = function() {
+		$(this).find(".wd_modal").wd_modal("resize");
+//		return false;
+	}
+	
+	var modals = [];
+		
+	function _value(value, base) {
+		if (typeof value == "string" && value.indexOf("%") > 0) {
+			return  base * parseInt(value, 10) / 100;
+		} else {
+			return parseInt(value, 10);
+		}
+	}
+	
+	var wd_modal = function(element, options) {
+		this.init(element, options);
+	};
+	
+	wd_modal.prototype = {
+		init: function(element, options) {
+			var self = this;
+			
+			this.isOpen = false;
+			this.opener = null;
+			
+			this.$element = $(element);
+			this._options = {
+				autoOpen: false,
+				closeExisting: false,
+				closeOnEscape: true,
+				closeOnOverlayClick: true,
+				fadeDuration: null,
+				margin: "10%",
+				padding: 10
+			};
+			
+			this.options(options);
+			
+			this.$overlay = $("<div>").addClass("wd_modal-overlay").attr("wd_resize","resizeModal").appendTo($("body")).hide();
+			this.$outer = $("<div>").addClass("wd_modal-outer").appendTo(this.$overlay);
+			this.$inner = $("<div>").addClass("wd_modal-inner").appendTo(this.$outer).append(this.$element);
+			// Hack because I can't figure out where the extra few pixels at the bottom of the content are coming from
+			this.$inner.css("overflow-y", "hidden");
+			this.$close = $("<a class=\"wd_modal-close fa fa-times-circle\" href=\"#close\" title=\"Close\"><span class=\"wd_sr-only\">Close Dialog<\/span><\/a>")
+					.on("click", function(event) {self.close(); event.preventDefault();})
+					.appendTo(this.$outer);
+			this.$element.addClass("wd_modal");
+			
+			if (this._options.autoOpen)
+				this.open(this._options.closeExisting);
+		},
+		
+		options: function(options) {
+			if (options) {
+				$.extend(this._options, options);
+
+				this._options.fadeDuration = parseInt(this._options.fadeDuration, 10);
+				if (isNaN(this._options.fadeDuration))
+					this._options.fadeDuration = false;
+				
+				if (!$.isArray(this._options.margin))
+					this._options.margin = [this._options.margin];
+				if (this._options.margin.length < 2)
+					this._options.margin[1] = this._options.margin[0];
+				if (this._options.margin.length < 3)
+					this._options.margin[2] = this._options.margin[0];
+				if (this._options.margin.length < 4)
+					this._options.margin[3] = this._options.margin[1];
+				
+				if (!$.isArray(this._options.padding))
+					this._options.padding = [this._options.padding];
+				if (this._options.padding.length < 2)
+					this._options.padding[1] = this._options.padding[0];
+				if (this._options.padding.length < 3)
+					this._options.padding[2] = this._options.padding[0];
+				if (this._options.padding.length < 4)
+					this._options.padding[3] = this._options.padding[1];
+			} else {
+				return this._options;
+			}
+		},
+		
+		reload: function(options) {
+			if (options) {
+				this.options(options);
+			}
+			
+			this.resize();
+		},
+		
+		open: function(closeExisting, now) {
+			if (this.isOpen)
+				return;
+			
+			var self = this;
+			var myCloseExisting = closeExisting;
+			
+			if (!this.opener)
+				this.opener = document.activeElement;
+
+			if (closeExisting && modals.length > 0) {
+				for (var i = modals.length - 1; i >= 0; --i)
+					modals[i].close(true, true);
+			}
+
+			this.$overlay.addClass("wd_modal-current");
+			$("body").append(this.$overlay);
+
+			if (!now && this._options.fadeDuration) {
+				this.$overlay.fadeIn(this._options.fadeDuration, function() {self.open(myCloseExisting, true);});
+			} else {
+				if (modals.length == 0) {
+					$("body").css("overflow","hidden");
+					$(document).on("keydown.wd_modal", function (event) {
+						var current = modals[modals.length - 1];
+						if ((event.which == 27 || event.keyCode == 27) && current._options.closeOnEscape) {
+							current.close();
+							event.stopImmediatePropagation();
+							event.preventDefault();
+						}
+					});
+				}
+
+				if (this._options.closeOnOverlayClick) {
+					this.$overlay.on("click.wd_modal", function (event) {
+						if (event.target == this) {
+							self.close();
+							event.preventDefault();
+						}
+					});
+				}
+
+				modals.push(this);
+				
+				this.$overlay.show();
+				
+				var $focus = this.$element.find(":focusable");
+				if ($focus.length > 0)
+					$focus[0].focus();
+				
+				this.isOpen = true;
+
+				this.$element.trigger("open");
+			}
+		},
+		
+		close: function(skipCurrent, now) {
+			if (!this.isOpen)
+				return;
+			
+			this.$element.trigger("beforeClose");
+			
+			// TODO: allow closing of lower modals
+			modals.pop();
+			
+			if (modals.length == 0) {
+				$("body").css("overflow","");
+				$(document).off("keydown.wd_modal");
+			}
+			
+			this.$overlay.off("click.wd_modal");
+			
+			if (this.opener) {
+				this.opener.focus();
+				this.opener = null;
+			}
+			
+			this.isOpen = false;
+			this.$overlay.removeClass("wd_modal-current").hide();
+			
+			if (!skipCurrent && modals.length > 0)
+				modals[modals.length-1].$overlay.addClass("wd_modal-current");
+			
+			this.$element.trigger("close");
+		},
+		
+		destroy: function() {
+			this.close(false, true);
+			$("body").append(this.$element);
+			this.$overlay.remove();
+		},
+		
+		resize: function() {
+			if (!this.isOpen)
+				return;
+			
+			var self = this;
+			var winWidth = $(window).width();
+			var winHeight = $(window).height();
+			
+			var margin = this._options.margin;
+			var padding = this._options.padding;
+			
+			var width = winWidth - _value(margin[1], winWidth) - _value(margin[3], winWidth) - _value(padding[1], winWidth) - _value(padding[1], winWidth);
+			var height = winHeight - _value(margin[0], winHeight) - _value(margin[2], winHeight) - _value(padding[0], winHeight) - _value(padding[2], winHeight);
+			
+			this.$inner.css("max-width", width);
+			this.$inner.css("max-height", height);
+			
+			$.each(["Top", "Right", "Bottom", "Left"], function(i, v) {
+				self.$outer.css("padding" + v, _value(padding[i])+"px");
+			});
+			
+			var fixed = this.$element.find("[wd_need_fixed_container]").is(":visible");
+			
+			this.$inner.css("width", width);
+			this.$inner.css("height", height);
+
+			webDriver.doResize(this.$inner);
+			
+			if (!fixed) {
+				this.$inner.css("width", "auto");
+				this.$inner.css("height", "auto");
+				if (this.$element.outerHeight() > height)
+					this.$inner.css("height", height);
+				if (this.$element.outerWidth() > width)
+					this.$inner.css("width", width);
+			}
+		}
+	};
+
+	$.fn.wd_modal = function(options) {
+		if (options == "exists") {
+			return !!$(this).data("wd_modal");
+		} else if (typeof options == "string") {
+            var instance = $(this).data("wd_modal");
+			if (!instance)
+				return null;
+			var args = Array.prototype.slice.call(arguments, 1);
+            return instance[options].apply(instance, args);
+        } else {
+            return this.each(function() {
+                var instance = $(this).data("wd_modal");
+                if (instance) {
+                    instance.reload(options);
+                } else {
+                    $(this).data("wd_modal", new wd_modal(this, options));
+                }
+            });
+        }
+    };
+})(webDriver.jQuery);
+</script>
+<script type="text/javascript" src="js/wd_hashchange.js" wd_script_id="wd_hashchange.js"></script>
+<script type="text/javascript" wd_script_id="asset_modal_support_script">
+			(function($) {
+				var prev_group_id = "";
+				var prev_type_id = "";
+				var prev_item_id = "";
+				var prev_hash = false;
+				var on_close = "back";
+				function hash_update() {
+					var hash = window.location.hash || "#";
+					if (hash == prev_hash) return;
+
+					var type_id = "";
+					var item_id = ""
+					var group_id = "main";
+
+					var apos = hash.indexOf("assets_");
+					if (apos >= 0) {
+						type_id = hash.substr(apos+7);
+
+						var dpos = type_id.indexOf("-");
+						if (dpos >= 0) {
+							group_id = type_id.substr(0, dpos);
+							type_id = type_id.substr(dpos+1);
+						}
+
+						var cpos = type_id.indexOf(":");
+						if (cpos >= 0) {
+							item_id = type_id.substr(cpos+1);
+							type_id = type_id.substr(0, cpos);
+						}
+					}
+
+					if (type_id == "")
+						type_id = "all";
+
+					if ((type_id != prev_type_id || group_id != prev_group_id) && item_id == "") {
+						var $carousel = $(".wd_asset_carousel_"+group_id+"_list")
+						if ($carousel.length > 0)
+							$carousel.wd_carousel("filter", (type_id == "all") ? false : ".wd_asset_type_"+type_id);
+
+						var $slideshow = $(".wd_asset_slideshow_"+group_id+"_list")
+						if ($slideshow.length > 0)
+							$slideshow.wd_slideshow("filter", (type_id == "all") ? false : ".wd_asset_type_"+type_id);
+
+						$(".wd_asset_carousel_type_link").removeClass("wd_active");
+						$(".wd_asset_carousel_type_link.wd_asset_type_"+type_id).addClass("wd_active");
+
+						prev_type_id = type_id;
+						on_close = "back";
+					}
+
+					if (type_id != prev_type_id || item_id != prev_item_id || group_id != prev_group_id) {
+						if (item_id == "") {
+							var save_close = on_close;
+							on_close = false;
+							hide_asset_modal();
+							on_close = save_close;
+						} else {
+							load_asset_modal(group_id, type_id, item_id);
+						}
+
+						prev_item_id = item_id;
+
+						if (prev_hash === false)
+							on_close = "reset";
+					}
+
+					prev_group_id = group_id;
+					prev_hash = hash;
+				}
+
+				hide_asset_modal = function() {
+					$(".wd_asset_modal").wd_modal("close");
+				}
+
+				load_asset_modal = function(group_id, type_id, item_id) {
+					var $modal = $(".wd_asset_modal_"+group_id);;
+					if ($modal.length == 0)
+						return;
+
+					if (!$modal.wd_modal("exists")) {
+						$modal.wd_modal({
+							autoOpen: false,
+						});
+
+						$modal.show();
+
+						$modal.on("close", function() {
+							if (on_close == "back") {
+								history.back();
+							} else if (on_close == "reset") {
+								var href = window.location.href;
+								href = href.replace(/#.*$/, "#assets_all");
+								window.location.replace(href);
+							}
+						});
+					}
+
+					$modal.wd_modal("open", true);
+					
+					var $slideshow = $(".wd_asset_slideshow_"+group_id+"_list");
+					if ($slideshow) {
+						var $slideshow_item = $slideshow.find(".wd_asset_"+type_id+"-"+item_id).not(".wd_clone");
+						if ($slideshow_item)
+							$slideshow.wd_slideshow("scrollToItem", $slideshow_item);
+					}
+
+					var $carousel = $(".wd_asset_carousel_"+group_id+"_list");
+					if ($carousel) {
+						var $carousel_item = $carousel.find(".wd_asset_"+type_id+"-"+item_id).not(".wd_clone");
+						if ($carousel_item)
+							$carousel.wd_carousel("scrollToItem", $carousel_item);
+					}
+				}
+				
+				$(function() {
+					setTimeout(hash_update, 10);
+					$(window).hashchange(hash_update);
+				});
+			})(webDriver.jQuery);
+		</script>
+<style type="text/css" wd_script_id="asset_modal_support_style">)
+			.wd_asset_modal .wd_captioned_image {
+				max-width: 100%;
+				max-height: 100%;
+			}
+			.wd_asset_modal img {
+				max-width: 100%;
+				max-height: 100%;
+			}
+		</style>
+<style type="text/css" wd_script_id="asset_carousel_style">
+			.wd_asset_carousel_aspect {
+				position: relative;
+				height: 100%;
+				clear: both;
+			}
+			.wd_asset_carousel {
+				background-color: #666666;
+			}
+			.wd_asset_carousel_list .wd_asset_carousel a,
+			.wd_asset_carousel_list .wd_asset_carousel a:link,
+			.wd_asset_carousel_list .wd_asset_carousel a:visited {
+				color: inherit;
+			}
+			.wd_asset_carousel_list .wd_asset_carousel a:hover {
+				text-decoration: none;
+				background-color: inherit;
+			}
+			.wd_carousel.wd_asset_carousel_wrapper a.wd_carousel-arrow:link,
+			.wd_carousel.wd_asset_carousel_wrapper a.wd_carousel-arrow:visited {
+				color: #aaaaaa;
+				font-size: 2em;
+				position: relative;
+				left: 0;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				transform: none;
+				margin: 10px 0;
+			}
+			.wd_carousel.wd_asset_carousel_wrapper a.wd_carousel-arrow:hover {
+				color: #666666;
+			}
+			.wd_carousel.wd_asset_carousel_wrapper .wd_carousel-prev {
+				float: left;
+			}
+			.wd_carousel.wd_asset_carousel_wrapper .wd_carousel-next {
+				float: right;
+			}
+		</style>
+<script type="text/javascript" src="js/wd_imagesloaded.js" wd_script_id="wd_imagesloaded.js"></script>
+<link href="css/wd_carousel.css" type="text/css" rel="stylesheet" wd_script_id="wd_carousel.css">
+<script type="text/javascript" wd_script_id="wd_carousel_script">
+(function($, undefined) {
+	webDriver.loadCarousel = function() {
+		var options = {};
+		var options_string = $(this).attr("wd_carousel_options");
+		if (options_string)
+			options = JSON.parse(options_string);
+		$(this).wd_carousel(options);
+	}
+	
+	webDriver.resizeCarousel = function() {
+		$(this).find(".wd_carousel-list").wd_carousel("resize");
+		return false;
+	}
+	
+	var wd_carousel = function(element, options) {
+		this.init(element, options);
+	};
+	
+	wd_carousel.prototype = {
+		init: function(element, options) {
+			var self = this;
+			
+			this.$element = $(element);
+			this._options = {
+				selector: "li",
+				center: true,
+				slideSpeed: 500,
+				slideEasing: "linear",
+				infinite: true,
+				widthMode: "content", // content, columns, width
+				heightMode: "fixed", // content, fixed
+				columns: 3,
+				minWidth: 250,
+				scrollUnit: "item", // item, page
+				scrollSize: 1,
+				dragThreshold: 10,
+				"class": "",
+				autoScroll: 0
+			};
+			
+			this.options(options);
+			
+			this.$container = $("<div>").addClass("wd_carousel").attr("wd_resize","resizeCarousel").insertBefore(this.$element);
+			if (this._options["class"])
+				this.$container.addClass(this._options["class"]);
+			this.$cropper = $("<div>").addClass("wd_carousel-cropper").appendTo(this.$container);
+			this.$element
+					.addClass("wd_carousel-list")
+					.appendTo(this.$cropper)
+					.css({position:"absolute",top:0,left:0})
+					.on("dragstart", "*", function(event) {event.preventDefault();});
+			this.$prev = $("<a class=\"wd_carousel-arrow wd_carousel-prev fa fa-chevron-left\" href=\"#prev\"><\/a>")
+					.on("click", function(event) {
+						self.stop();
+						self.prev();
+						event.preventDefault();
+					})
+					.appendTo(this.$container);
+			this.$next = $("<a class=\"wd_carousel-arrow wd_carousel-next fa fa-chevron-right\" href=\"#next\"><\/a>")
+					.on("click", function(event) {
+						self.stop();
+						self.next();
+						event.preventDefault();
+					})
+					.appendTo(this.$container);
+			
+//			this.$dragger = $("<div>")
+//					.addClass("wd_carousel-dragger")
+//					.appendTo(this.$cropper)
+			this.$cropper
+					.on("click", function(event) {
+						self.onClick(event);
+					})
+					.on("mousedown touchstart", function(event) {
+						self.dragStart(event);
+					})
+					.on("mousemove touchmove", function(event) {
+						self.dragMove(event);
+					})
+					.on("mouseup touchend mouseleave touchcancel", function(event) {
+						self.dragEnd(event);
+					});
+			this.dragging = false;
+			this.dragged = false;
+			
+			this.$items = this.$element.children(this._options.selector);
+			this.$items.addClass("wd_carousel-item");
+			
+			// Remove any non-items (e.g. unintended text nodes)
+			this.$element.empty();
+			this.$element.append(this.$items);
+
+			this.navEnabled = true;
+			this.currentIndex = 0;
+			this.$currentItem = this.$items.eq(0);
+			
+			this.$clones = $([]);
+			
+			this.size_known = false;
+			this.$element.wd_imagesloaded(
+				function() {
+					self.size_known = true;					
+					self.resize();
+				},
+				"size"
+			);
+			
+			this.reset();
+			
+			this.start(this._options.autoScroll);
+		},
+		
+		options: function(options) {
+			if (options) {
+				$.extend(this._options, options);
+			} else {
+				return this._options;
+			}
+		},
+		
+		reload: function(options) {
+			if (options) {
+				this.options(options);
+			}
+			
+			this.resize();
+		},
+
+		reset: function() {
+			this.$items.data("wd_carousel-index", null);
+			this.$clones.data("wd_carousel-index", null);
+			this.$element.children(".wd_clone").detach();
+			
+			var $children = this.$element.children();
+			this.itemCount = $children.length;
+			$children.each(function(index) {
+				$(this).data("wd_carousel-index", index);
+			});
+			
+			if (this.itemCount > 0) {
+				var $last_child = $children.eq(-1);
+				this.listWidth = $last_child.position().left + $last_child.outerWidth();
+			} else {
+				this.listWidth = 0;
+			}
+			
+			var cropperWidth = this.$cropper.innerWidth();
+			
+			if (this.itemCount < 2 || this.listWidth <= cropperWidth) {
+				var position = this._options.center ? ((cropperWidth-this.listWidth)/2) : 0;
+				this.$element.css("left", position);
+				$children.addClass("wd_carousel-current");
+				if (this.itemCount > 0 && this.size_known) {
+					this.$currentItem = this.itemAt(this.listWidth/2);
+					this.currentIndex = this.$currentItem.data("wd_carousel-index");
+				}
+				this.hideNav(true);
+			} else {
+				var left = cropperWidth;
+				for (var i = -1; i > -$children.length; --i) {
+					var $item = $children.eq(i);
+					var $clone = $item.data("wd_carousel-clone-left");
+					if (!$clone)
+						$clone = this.clone($item, "left");
+					this.$element.prepend($clone);
+					$clone.data("wd_carousel-index", i);
+					left -= $item.outerWidth();
+					if (left <= 0)
+						break;
+				}
+				
+				var right = 0;
+				for (var i = 0; i < $children.length; ++i) {
+					var $item = $children.eq(i);
+					var $clone = $item.data("wd_carousel-clone-right");
+					if (!$clone)
+						$clone = this.clone($item, "right");
+					this.$element.append($clone);
+					$clone.data("wd_carousel-index", $children.length+i);
+					right += $item.outerWidth();
+					if (right >= cropperWidth)
+						break;
+				}
+
+				this.hideNav(false);
+
+				var index = this.$currentItem.data("wd_carousel-index");
+				if (!index)
+					index = 0;
+				this.scrollToIndex(index, true);
+			}
+		},
+				
+		clone: function($item, dir) {
+			var $clone = $item.clone(true)
+				.attr("id","")
+				.addClass("wd_clone")
+				.data("wd_carousel-cloned-from", $item);
+		
+			$clone.find("[id]").each(function() {
+				$(this).attr("id", "");
+			});
+
+			$item.data("wd_carousel-clone-"+dir, $clone);
+			
+			this.$clones = this.$clones.add($clone);
+			
+			return $clone;
+		},
+				
+		hideNav: function(hide) {
+			this.$prev.toggle(!hide);
+			this.$next.toggle(!hide);
+			this.navEnabled = !hide;
+		},
+				
+		next: function() {
+			return this.scrollBy(this._options.scrollSize, this._options.scrollUnit);
+		},
+
+		prev: function() {
+			return this.scrollBy(-this._options.scrollSize, this._options.scrollUnit);
+		},
+		
+		scrollBy: function(count, unit) {
+			if (!this.navEnabled)
+				return false;
+			
+			var index;
+			if (unit == "item") {
+				index = this.currentIndex + count;
+			} else { // unit == "page"
+				var pageWidth = this.$cropper.innerWidth();
+				var offset = count;
+				if (this._options.center) {
+					pageWidth /= 2;
+					++offset;
+				}
+				var position = offset * pageWidth - this.$element.position().left;
+				var $item = this.itemAt(position);
+				index = $item.data("wd_carousel-index");
+				if (index == this.currentIndex)
+					index += (count < 0) ? -1 : 1;
+			}
+			
+			return this.scrollToIndex(index);
+		},
+				
+		_doAutoScroll: function() {
+			if (this.navEnabled && this.autoScrollInterval > 0) {
+				var self = this;
+				this.autoScrollTimer = setTimeout(function() {
+						self.next();
+					},
+					this.autoScrollInterval
+				);
+			}
+		},
+		
+		start: function(interval) {
+			this.pause();
+			if (interval !== undefined)
+				this.autoScrollInterval = interval;
+			this._doAutoScroll();
+		},
+		
+		pause: function() {
+			if (this.autoScrollTimer) {
+				clearTimeout(this.autoScrollTimer);
+				this.autoScrollTimer = null;
+			}
+		},
+				
+		stop: function() {
+			this.pause();
+			this.autoScrollInterval = 0;
+		},
+		
+		scrollToIndex: function(index, now) {
+			if (this.itemCount == 0 || !this.navEnabled)
+				return false;
+			
+			this.pause();
+			
+			var $children = this.$element.children().not(".wd_clone");
+			
+			index = (index + $children.length) % $children.length;
+			var $child = $children.eq(index);
+			
+			this.$element.find(".wd_carousel-current").removeClass("wd_carousel-current");
+			$child.addClass("wd_carousel-current");
+			
+			var position = -$child.position().left;
+			if (this._options.center) {
+				position += this.$cropper.innerWidth()/2 - $child.outerWidth()/2;
+			}
+			
+			if (this._options.slideEasing && !now) {
+				this.$element.stop();
+				
+				var cur_offset = this._options.center ? (this.$cropper.innerWidth() / 2) : 0;
+				var cur_pos = this.$element.position().left;
+				var $cur_item = this.itemAt(cur_offset - cur_pos);
+				var cur_dist = Math.abs(position - cur_pos);
+				
+				var $clone, clone_pos, clone_dist;
+				$clone = $cur_item.data("wd_carousel-clone-left");
+				if ($clone) {
+					var clone_pos = -$clone.position().left;
+					if (this._options.center) {
+						clone_pos += this.$cropper.innerWidth()/2 - $clone.outerWidth()/2;
+					}
+					clone_dist = Math.abs(position - clone_pos);
+					if (clone_dist < cur_dist) {
+						cur_pos = clone_pos;
+						cur_dist = clone_dist;
+					}
+				}
+
+				$clone = $cur_item.data("wd_carousel-clone-right");
+				if ($clone) {
+					var clone_pos = -$clone.position().left;
+					if (this._options.center) {
+						clone_pos += this.$cropper.innerWidth()/2 - $clone.outerWidth()/2;
+					}
+					clone_dist = Math.abs(position - clone_pos);
+					if (clone_dist < cur_dist) {
+						cur_pos = clone_pos;
+						cur_dist = clone_dist;
+					}
+				}
+
+				var self = this;
+				this.$element.css("left", cur_pos);
+				this.$element.animate({left: position}, this._options.slideSpeed, this._options.slideEasing, function() {self.start();});
+			} else {
+				this.$element.css("left", position);
+				this.start();
+			}
+
+			this.currentIndex = index;
+			this.$currentItem = $child;
+		},
+				
+		scrollToItem: function(item) {
+			var index = $(item).data("wd_carousel-index");
+			if (index !== null)
+				this.scrollToIndex(index);
+		},
+				
+		makeItemCurrent: function(item) {
+			var $item = $(item);
+			if (!$item.hasClass("wd_carousel-current")) {
+				this.$element.find(".wd_carousel-current").removeClass("wd_carousel-current");
+				
+				var $clonedFrom = $item.data("wd_carousel-cloned-from");
+				if ($clonedFrom) {
+					var clone_pos = $item.position().left;
+					var item_pos = $clonedFrom.position().left;
+					var offset = clone_pos - item_pos;
+					this.$element.css("left", this.$element.css("left") + offset);
+					this.dragListX += offset;
+					$item = $clonedFrom;
+				}
+				
+				$item.addClass("wd_carousel-current");
+				this.currentIndex = $item.data("wd_carousel-index");
+				this.$currentItem = $item;
+			}
+		},
+				
+		itemAt: function(position) {
+			var $children = this.$element.children();
+			if ($children.length == 0)
+				return null;
+			
+			var $item = $children.eq(Math.floor($children.length/2));
+			var dir = 0;
+			while (true) {
+				if (position < $item.position().left) {
+					$item = $item.prev();
+					if (dir == 1)
+						break;
+					dir = -1;
+				} else if (position > $item.position().left + $item.outerWidth()) {
+					$item = $item.next();
+					if (dir == -1)
+						break;
+					dir = 1;
+				} else {
+					break;
+				}
+				if ($item.length == 0)
+					break;
+			}
+			
+			return $item;
+		},
+				
+		onClick: function(event) {
+			if (this.dragged) {
+				event.stopImmediatePropagation();
+				event.stopPropagation();
+				event.preventDefault();
+			}
+		},
+				
+		dragStart: function(event) {
+			this.dragged = false;
+
+			if (!this.navEnabled)
+				return;
+
+			this.pause();
+			this.dragIndex = this.currentIndex;
+			
+			this.dragStartX = this.eventPosition(event);
+			if (this.dragStartX === undefined)
+				return;
+			
+			this.dragListX = this.$element.position().left;
+
+//			this.$cropper.addClass("dragging");
+			this.dragging = true;
+		},
+				
+		dragMove: function(event) {
+			if (!this.dragging)
+				return;
+			
+			event.preventDefault();
+			
+			var pos = this.eventPosition(event);
+			var delta = pos - this.dragStartX;
+			
+			if (!this.dragged && Math.abs(delta) >= this._options.dragThreshold) {
+				this.$cropper.addClass("dragging");
+				this.dragged = true;
+			}
+			
+			if (this.dragged) {
+				var list_position = this.dragListX+delta;
+				this.$element.css("left", list_position);
+				
+				var offset = this._options.center ? (this.$cropper.innerWidth() / 2) : 0;
+				var position = offset - this.$element.position().left;
+				var $item = this.itemAt(position);
+				this.makeItemCurrent($item);
+			}
+		},
+				
+		dragEnd: function(event) {
+			if (!this.dragging)
+				return;
+			
+			if (this.dragged) {
+				var offset = this._options.center ? (this.$cropper.innerWidth() / 2) : 0;
+				var position = offset - this.$element.position().left;
+				var $item = this.itemAt(position);
+				var index = $item.data("wd_carousel-index");
+				if (index !== null && index != this.dragIndex)
+					this.stop();
+				this.scrollToIndex(index);
+			}
+
+			this.$cropper.removeClass("dragging");
+			this.dragging = false;
+			this.start();
+		},
+				
+		eventPosition: function(event) {
+			if (event.originalEvent && event.originalEvent.touches) {
+				var touches = event.originalEvent.touches;
+				if (touches.length != 1)
+					return undefined;
+				return touches[0].pageX;
+			} else {
+				return event.pageX;
+			}
+		},
+				
+		filter: function(selector) {
+			this.$element.children().detach();
+			var $items = this.$items;
+			if (selector)
+				$items = $items.filter(selector);
+			if ($items.length > 0)
+				this.$element.append($items);
+			this.reset();
+		},
+		
+		destroy: function() {
+			this.stop();
+			this.filter(false);
+			this.$clones = $([]);
+			this.$items
+				.removeClass("wd_carousel-item")
+				.data("wd_carousel-index", null)
+				.data("wd_carousel-clone-right", null)
+				.data("wd_carousel-clone-left", null);
+			this.$element
+				.removeClass("wd_carousel-list")
+				.insertBefore(this.$container);
+			this.$container.remove();
+		},
+		
+		resize: function() {
+			if (this._options.widthMode != "content") {
+				var totalWidth = this.$cropper.innerWidth();
+				var columns = this._options.columns;
+				if (this.widthMode == "width")
+					columns = Math.max(Math.floor(totalWidth / this._options.minWidth), 1);
+				var width = totalWidth / columns;
+				this.$items.outerWidth(width);
+				this.$clones.outerWidth(width);
+			}
+			
+			webDriver.doResize(this.$element);
+			
+			if (this._options.heightMode == "content") {
+				var height = this.$element.outerHeight();
+				this.$cropper.height(height);
+			}
+			
+			this.reset();
+		}
+	};
+
+	$.fn.wd_carousel = function(options) {
+		var args = Array.prototype.slice.call(arguments, 1);
+		var result = this;
+		
+		this.each(function() {
+			var instance = $(this).data("wd_carousel");
+			if (typeof options == "string") {
+				var res = instance[options].apply(instance, args);
+				if (typeof res != "undefined") {
+					result = res;
+					return false;
+				}
+			} else {
+                if (instance) {
+                    instance.reload(options);
+                } else {
+                    $(this).data("wd_carousel", new wd_carousel(this, options));
+                }
+			}
+        });
+		
+		return result;
+    };
+})(webDriver.jQuery);
+</script>
+<style type="text/css" wd_script_id="featureboxes_style">
+		.wd_featurebox_icon {
+			display: inline;
+		}
+		.wd_featurebox_icon img {
+			vertical-align: middle;
+		}
+		div.wd_featurebox_group div.wd_tabs_wrapper {
+			border: none;
+			border-bottom: 1px solid #E1E1E1;
+			padding: 0 0 5px 0;
+		}
+		div.wd_featurebox_group div.wd_featurebox {
+			border: none;
+			padding: 8px 0 0 0;
+		}
+		div.wd_featurebox_group li.wd_tab {
+			float: none;
+			color: #666666;
+		}
+		div.wd_featurebox_group li.wd_tab-active {
+			border: none;
+			background-color: transparent;
+			color: #000000;
+			font-weight: bold;
+		}
+		div.wd_featurebox_group li.wd_tab-inactive {
+			cursor: auto;
+		}
+	</style>
+<style type="text/css" wd_script_id="search_form_style">
+		.wd_search_form .wd_input_datepicker {
+			margin-right: 2px;
+		}
+		.wd_search_type_checkbox {
+			margin-left: 20px;
+		}
+		</style>
+<script type="text/javascript" wd_script_id="search_form_script">
+			function wd_toggle_search_form(link, advanced) {
+				var $ = webDriver.jQuery;
+				var $container = $(link).closest(".wd_search_form_container");
+				var basic_form = $container.find(".wd_search_form_basic");
+				var basic_query = basic_form.find('input[name="query"]');
+				var advanced_form = $container.find(".wd_search_form_advanced");
+				var advanced_query = advanced_form.find('input[name="query"]');
+
+				if (advanced) {
+					advanced_query.val(basic_query.val());
+					advanced_form.show();
+					basic_form.hide();
+				} else {
+					basic_query.val(advanced_query.val());
+					basic_form.show();
+					advanced_form.hide();
+				}
+			}
+
+			function wd_toggle_search_type_checkboxes(radio) {
+				var $ = webDriver.jQuery;
+				var $radio = $(radio);
+				var all = $radio.val() == "All" ? $radio.is(":checked") : !$radio.is(":checked");
+				var $checkboxes = $radio.closest(".wd_form_field").find(".wd_search_type_checkbox");
+				$checkboxes.find('input[type="checkbox"]').prop("disabled", all);
+				$checkboxes.toggle(!all);
+			}
+
+			webDriver.jQuery(function ($) {
+				$('.wd_search_type_radio input[type="radio"]').each(function() {wd_toggle_search_type_checkboxes(this);});
+			});
+		</script>
+<link href="thirdparty/font-awesome/css/font-awesome.min.css" type="text/css" rel="stylesheet" wd_script_id="font-awesome.min.css">
+<script type="text/javascript">webDriver.pop_jQuery();</script>
+
+<!-- end spin_special_output(head_start) -->
+
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=1090">
+	<title>US Press Center | Resources</title>
+	
+ <meta name="keywords" content="MediaRoom" />
+ <meta name="description" content="MediaRoom" />
+ <meta name="twitter:card" content="summary" />
+ <meta name="twitter:title" content="Media Center" />
+ <meta property="og:site_name" content="MediaRoom" />
+ <meta property="og:url" content="https://tripadvisor.mediaroom.com/us-terms-of-use" />
+ <meta property="og:title" content="Media Center" />
+	
+	<link type="text/css" rel="stylesheet" href="css/style.css">
+	<link type="text/css" rel="stylesheet" href="css/jquery.dropdown.min.css">
+	<link type="text/css" rel="stylesheet" href="css/font-awesome.min.css">
+	<script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+	<script type="text/javascript" src="js/jquery.dropdown.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/wdcontent.css">
+	<link rel="alternate" href="https://tripadvisor.mediaroom.com/press-releases?pagetemplate=rss" type="application/rss+xml" title="Media Center | Press Releases">	<style>.flag{background-position: 0px -18px;}</style>
+</head>
+
+<body class="wd_pageid_20292 wd_item_page wd_item_32064">
+
+<div class="topbar">
+	<div class=" widthLimit">
+		<a href="https://www.tripadvisor.com/"><img src="images/ta_logo.png" alt="Reviews of Hotels, Flights and Vacation Rentals" class="mastheadLogoImage"></a>
+		<div class="headerRight">
+		<a href="https://www.tripadvisor.com/" class="homelink">Go back to TripAdvisor</a>
+		<a href="#" class="searchMenu fa fa-search" data-jq-dropdown="#searchMenu" data-horizontal-offset="8" data-vertical-offset="14"> </a>
+		</div>
+	</div>
+</div>
+
+<div class="header"></div>
+
+<div class="heroimage widthLimit">
+	<div class="herotext">Media Center</div>
+</div>
+
+<div class="mainnav widthLimit">
+	<ul>
+		<li class="mannav-about"><a href="index.php?s=20290">About TripAdvisor</a></li>
+		<li class="mannav-investor"><a href="http://ir.tripadvisor.com/" target="_blank">Investor Relations</a></li>
+		<li class="mannav-resources"><a href="index.php?s=20292">Resources</a></li>
+		<li class="mannav-contact"><a href="index.php?s=20289">Contact Us</a></li>
+	</ul>
+</div>
+<div class="widthLimit"><img src="images/shadow-mainnav.png" width="1090" height="21"></div>
+
+<div class="contentArea widthLimit">
+
+		<div class="leftNav pad-20">
+	<div class="nav pad-20">
+<p><a href="US-press-releases" target="_self">Press Releases</a></p>
+<p><a href="https://tripadvisor.mediaroom.com/US-in-the-news" target="_self">In the News</a></p>
+<p><a href="our-brand" target="_self">Our Brand</a></p>
+<p><a href="https://www.tripadvisor.com/blog/" target="_self">Our Blog</a></p>
+<p><a href="https://tripadvisor.mediaroom.com/US-testimonials" target="_self">Testimonials</a></p>
+</div><!--/nav-->
+<div class="wd_featureboxes_left wd_featureboxes-vertical">
+<div id="wd_featurebox-standard_3572" class="wd_featurebox_container wd_featurebox-standard"><div class="wd_featurebox_title"></div><div class="wd_featurebox">
+			
+		
+			
+		<table width="231" class="wd_imagetable" border="0" cellpadding="0" cellspacing="0" align="left" style="margin: 0px 0px 0px 0px;" role="presentation"><tr><td><img src="/image/Q32017.jpg" border="0" alt="" title=""  /></td></tr></table>
+</div></div></div>
+	</div><!--/leftNav-->
+	
+	<div class="content" ><div id="wd_printable_content">
+<div class="wd_standard-detail">
+<h1 class="detail_header">Terms of Use</h1>
+<p>Welcome to the TripAdvisor website or mobile properties, including related applications (collectively, this &ldquo;Website&rdquo;). This Website is provided solely to assist customers in gathering travel information, posting opinions of travel related issues, engaging in interactive travel forums, and searching for and booking travel reservations, and for no other purposes. The terms &ldquo;we&rdquo;, &ldquo;us&rdquo;, &ldquo;our&rdquo; and &ldquo;TripAdvisor&rdquo; refer to TripAdvisor LLC, a Delaware corporation and/or our subsidiaries. The term &ldquo;you&rdquo; refers to the customer visiting the Website and/or contributing content on this Website.</p>
+
+<p>This Website is offered to you conditioned upon your acceptance without modification of any/all the terms, conditions, and notices set forth below (collectively, the &ldquo;Agreement&rdquo;). By accessing or using this Website in any manner, you agree to be bound by the Agreement and represent that you have read and understood its terms. Please read the Agreement carefully, as it contains information concerning your legal rights and limitations on these rights, as well as a section regarding applicable law and jurisdiction of disputes. If you do not accept all of these terms and conditions, please do not use this Website.</p>
+
+<p>We may change or otherwise modify the Agreement in the future, and you understand and agree that your continued access or use of this Website after such change signifies your acceptance of the updated or modified Agreement. We will note the date that revisions were last made to the Agreement at the bottom of this page, and any revisions will take effect upon posting. We will notify our members of material changes to these terms and conditions by either sending a notice to the email address provided to us at registration or by placing a notice on our Website. Be sure to return to this page periodically to review the most current version of the Agreement.</p>
+
+<h2>USE OF THE WEBSITE</h2>
+
+<p>As a condition of your use of this Website, you warrant that (i) all information supplied by you on this Website is true, accurate, current and complete, (ii) if you have a TripAdvisor account, you will safeguard your account information and will supervise and be completely responsible for any use of your account by anyone other than you and (iii) you are 13 years of age or older in order to register for an account and contribute to our Website. TripAdvisor does not knowingly collect the information of anyone under the age of 13. We retain the right at our sole discretion to deny access to anyone to this Website and the services we offer, at any time and for any reason, including, but not limited to, for violation of this Agreement.</p>
+
+<h2>PROHIBITED ACTIVITIES</h2>
+
+<p>The content and information on this Website (including, but not limited to, messages, data, information, text, music, sound, photos, graphics, video, maps, icons, software, code or other material), as well as the infrastructure used to provide such content and information, is proprietary to us. You agree not to otherwise modify, copy, distribute, transmit, display, perform, reproduce, publish, license, create derivative works from, transfer, or sell or re-sell any information, software, products, or services obtained from or through this Website. Additionally, you agree not to:</p>
+
+<ul>
+	<li>(i) use this Website or its contents for any commercial purpose</li>
+	<li>(ii) access, monitor or copy any content or information of this Website using any robot, spider, scraper or other automated means or any manual process for any purpose without our express written permission;</li>
+	<li>(iii) violate the restrictions in any robot exclusion headers on this Website or bypass or circumvent other measures employed to prevent or limit access to this Website;</li>
+	<li>(iv) take any action that imposes, or may impose, in our discretion, an unreasonable or disproportionately large load on our infrastructure;</li>
+	<li>(v) deep-link to any portion of this Website for any purpose without our express written permission; or</li>
+	<li>(vi) &quot;frame&quot;, &quot;mirror&quot; or otherwise incorporate any part of this Website into any other website without our prior written authorization.</li>
+	<li>(vii) attempt to modify, translate, adapt, edit, decompile, disassemble, or reverse engineer any software programs used by TripAdvisor in connection with the Website or the services.</li>
+</ul>
+
+<h2>PRIVACY POLICY AND DISCLOSURES</h2>
+
+<p>TripAdvisor believes in protecting your privacy. Please click&nbsp;<a href="https://www.tripadvisor.com/pages/privacy.html">here</a>&nbsp;to review our current&nbsp;<a href="https://www.tripadvisor.com/pages/privacy.html">Privacy Policy</a>, which also governs your use of TripAdvisor, to understand our practices.</p>
+
+<p>In certain circumstances we may disclose information about you to third parties if we determine, in our sole discretion, such disclosure is necessary (a) to protect TripAdvisor&#39;s systems, assets, employees, members and customers; (b) to ensure the integrity and operation of TripAdvisor&#39;s business and systems; or (c) to comply with legitimate and enforceable governmental requests, subpoenas or court orders. We may choose to comply with or disregard such requests or orders in our sole discretion. TripAdvisor&rsquo;s right to disclose information, including but not limited to user profile information (i.e. name, email address, etc.), IP addressing and traffic information, usage history, and posted Content, shall take precedence over any terms of TripAdvisor&rsquo;s&nbsp;<a href="https://www.tripadvisor.com/pages/privacy.html">Privacy Policy</a>.</p>
+
+<h2>REVIEWS, COMMENTS AND USE OF OTHER INTERACTIVE AREAS</h2>
+
+<p>We appreciate hearing from you. Please be aware that by submitting content to this Website by email, postings on this Website or otherwise, including any hotel reviews, questions, photographs or videos, comments, suggestions, ideas or the like contained in any submissions (collectively, &quot;Submissions&quot;), you grant TripAdvisor and its affiliates a nonexclusive, royalty-free, perpetual, transferable, irrevocable and fully sublicensable right to (a) use, reproduce, modify, adapt, translate, distribute, publish, create derivative works from and publicly display and perform such Submissions throughout the world in any media, now known or hereafter devised, for any purpose; and (b) use the name that you submit in connection with such Submission. You acknowledge that TripAdvisor may choose to provide attribution of your comments or reviews at our discretion. You further grant TripAdvisor the right to pursue at law any person or entity that violates your or TripAdvisor&#39;s rights in the Submissions by a breach of this Agreement. You acknowledge and agree that Submissions are non-confidential and non-proprietary.</p>
+
+<p>This Website may contain discussion forums, bulletin boards, review services or other forums in which you or third parties may post reviews of travel experiences or other content, messages, materials or other items on this Website (&quot;Interactive Areas&quot;). If TripAdvisor provides such Interactive Areas, you are solely responsible for your use of such Interactive Areas and use them at your own risk. By using any Interactive Areas, you expressly agree not to post, upload to, transmit, distribute, store, create or otherwise publish through this Website any of the following:</p>
+
+<ol>
+	<li>Any message, data, information, text, music, sound, photos, graphics, code or any other material (&quot;Content&quot;) that is unlawful, libelous, defamatory, obscene, pornographic, indecent, lewd, suggestive, harassing, threatening, invasive of privacy or publicity rights, abusive, inflammatory, fraudulent or otherwise objectionable;</li>
+	<li>Content that would constitute, encourage or provide instructions for a criminal offense, violate the rights of any party, or that would otherwise create liability or violate any local, state, national or international law, including, without limitation, the regulations of the U.S. Securities and Exchange Commission (SEC) or any rules of a securities exchange such as the New York Stock Exchange (NYSE), the American Stock Exchange or the NASDAQ;</li>
+	<li>Content that may infringe any patent, trademark, trade secret, copyright or other intellectual or proprietary right of any party;</li>
+	<li>Content that impersonates any person or entity or otherwise misrepresents your affiliation with a person or entity, including TripAdvisor;</li>
+	<li>Unsolicited promotions, political campaigning, advertising, contests, raffles, or solicitations;</li>
+	<li>Private information of any third party, including, without limitation, surname (family name) addresses, phone numbers, email addresses, Social Security numbers and credit card numbers;</li>
+	<li>Viruses, corrupted data or other harmful, disruptive or destructive files;</li>
+	<li>Content that is unrelated to the topic of the Interactive Area(s) in which such Content is posted; or</li>
+	<li>Content or links to content that, in the sole judgment of TripAdvisor, (a) violates the previous subsections herein, (b) is objectionable, (c) which restricts or inhibits any other person from using or enjoying the Interactive Areas or this Website, or (d) which may expose TripAdvisor or its affiliates or its users to any harm or liability of any type.</li>
+</ol>
+
+<p>TripAdvisor takes no responsibility and assumes no liability for any Content posted, stored or uploaded by you or any third party, or for any loss or damage thereto, nor is TripAdvisor liable for any mistakes, defamation, slander, libel, omissions, falsehoods, obscenity, pornography or profanity you may encounter. As a provider of interactive services, TripAdvisor is not liable for any statements, representations or Content provided by its users in any public forum, personal home page or other Interactive Area. Although TripAdvisor has no obligation to screen, edit or monitor any of the Content posted to or distributed through any Interactive Area, TripAdvisor reserves the right, and has absolute discretion, to remove, screen, translate or edit without notice any Content posted or stored on this Website at any time and for any reason, or to have such actions performed by third parties on its behalf, and you are solely responsible for creating backup copies of and replacing any Content you post or store on this Website at your sole cost and expense.</p>
+
+<p>If it is determined that you retain moral rights (including rights of attribution or integrity) in the Content, you hereby declare that (a) you do not require that any personally identifying information be used in connection with the Content, or any derivative works of or upgrades or updates thereto; (b) you have no objection to the publication, use, modification, deletion and exploitation of the Content by TripAdvisor or its licensees, successors and assigns; (c) you forever waive and agree not to claim or assert any entitlement to any and all moral rights of an author in any of the Content; and (d) you forever release TripAdvisor, and its licensees, successors and assigns, from any claims that you could otherwise assert against TripAdvisor by virtue of any such moral rights.</p>
+
+<p>Any use of the Interactive Areas or other portions of this Website in violation of the foregoing violates the terms of this Agreement and may result in, among other things, termination or suspension of your rights to use the Interactive Areas and/or this Website.</p>
+
+<h2>BOOKING WITH THIRD-PARTY SUPPLIERS THROUGH TRIPADVISOR</h2>
+
+<p><strong>Use of Instant Booking.</strong>&nbsp;TripAdvisor offers you the ability to search for, select, and book travel reservations with third-party suppliers without leaving the TripAdvisor site experience. By booking travel reservations facilitated by Instant Booking, you will become a TripAdvisor member if you are not one already. As a TripAdvisor member, you will be able to post travel reviews, participate in discussion forums, email TripAdvisor content to yourself and to others, access and receive members-only newsletters and travel planning content, and enter surveys, contests, or sweepstakes.</p>
+
+<p>By using Instant Booking, you acknowledge that you accept the practices described in our&nbsp;<a href="https://www.tripadvisor.com/pages/privacy.html">Privacy Policy</a>&nbsp;and all of these terms and conditions. In addition, you warrant that you are 18 years of age or older, that you possess the legal authority to enter into this Agreement and use Instant Booking and this site in accordance with these terms and conditions, and that all information you supply is true and accurate. You further agree that you will use Instant Booking only to make legitimate reservations for you or others for whom you are legally authorized to act. Any false or fraudulent reservation is prohibited, and any user who attempts such a reservation may have his or her TripAdvisor membership terminated. If you have a TripAdvisor account, you will safeguard your account information and will supervise and be completely responsible for any use of your account by anyone other than you.</p>
+
+<p>AS A USER OF THIS WEBSITE, INCLUDING INSTANT BOOKING, YOU UNDERSTAND AND AGREE THAT: (1) NEITHER TRIPADVISOR NOR ITS AFFILIATES WILL HAVE ANY LIABILITY TO YOU OR OTHERS FOR ANY UNAUTHORIZED TRANSACTIONS MADE USING YOUR PASSWORD OR ACCOUNT; AND (2) THE UNAUTHORIZED USE OF YOUR PASSWORD OR ACCOUNT COULD CAUSE YOU TO INCUR LIABILITY TO BOTH TRIPADVISOR AND OTHER USERS.</p>
+
+<p>&nbsp;</p>
+
+<p>When you book a reservation facilitated by Instant Booking, we will collect your payment information and transmit it to the supplier to complete the transaction, as described in our&nbsp;<a href="https://www.tripadvisor.com/pages/privacy.html">Privacy Policy</a>. Please note that the supplier, not TripAdvisor, processes your payment and fulfills your reservation.</p>
+
+<p>TripAdvisor and its affiliates will not interfere with reservations arbitrarily, but we reserve the right to cancel or not process a reservation because of certain extenuating circumstances, such as when a reservation is no longer available or when we have reasonable cause to suspect that a reservation request may be fraudulent. TripAdvisor also reserves the right to take steps to verify your identity to process your reservation.</p>
+
+<p>In the unlikely event that a reservation is available when you place an order but becomes unavailable prior to check-in, your sole remedy will be to contact the supplier to make alternative arrangements or to cancel your reservation.</p>
+
+<p><strong>Third-Party Suppliers.</strong>&nbsp;TripAdvisor is not a travel agency and does not provide or own transportation services or accommodations. Although TripAdvisor displays information about properties owned by third-party suppliers and facilitates reservations with certain suppliers on Instant Booking and affiliate sites, such actions do not in any way imply, suggest, or constitute TripAdvisor&rsquo;s sponsorship or approval of third-party suppliers, or any affiliation between TripAdvisor and third-party suppliers. Although TripAdvisor members may rate and review particular properties based on their own experiences, TripAdvisor does not endorse or recommend the products or services of any third-party suppliers. You agree that TripAdvisor is not responsible for the accuracy or completeness of information it obtains from third-party suppliers and displays on its sites or apps.</p>
+
+<p>If you book a reservation with a third-party supplier, you agree to review and be bound by the supplier&rsquo;s terms and conditions of purchase and site use (the &ldquo;Terms of Use&rdquo;), Privacy Policy, and any other rules or policies related to the supplier&rsquo;s site or property. Your interactions with third-party suppliers are at your own risk. TripAdvisor will have no liability with respect to the acts, omissions, errors, representations, warranties, breaches or negligence of any third-party suppliers or for any personal injuries, death, property damage, or other damages or expenses resulting from your interactions with third-party suppliers.</p>
+
+<p>This Website may link you to supplier sites or other websites that TripAdvisor does not operate or control. For further information, please refer to the &ldquo;Links to Third-Party Sites&rdquo; section below.</p>
+
+<p><strong>Booking Vacation Rentals with Third-Party Suppliers Listed on Affiliate Sites.</strong>&nbsp;TripAdvisor and some of its affiliates act as marketplaces to allow travelers to enter into vacation rental agreements or rental transactions with property owners and managers (each, an &ldquo;Advertiser&rdquo;). As a user, you must be responsible for your use of this Website, our affiliate sites, and any transaction involving vacation rentals facilitated by Instant Booking and/or listed on affiliate sites. We do not own, manage, or contract for any vacation rental property listed on this Website or our affiliate sites.</p>
+
+<p>Because neither TripAdvisor nor its affiliates are parties to rental transactions between travelers and Advertisers, any dispute or conflict involving an actual or potential transaction between you and an Advertiser, including the quality, condition, safety or legality of a listed property, the accuracy of the listing content, the Advertiser&rsquo;s ability to rent a vacation rental property, or your ability to pay for a vacation rental property, is solely the responsibility of each user. You understand and agree that you may be required to enter into a separate rental agreement with an Advertiser before making a reservation or purchasing a product or service, and such an agreement may place additional restrictions on your reservation, product or service.</p>
+
+<p><em>Vacation Rental Payment Terms</em></p>
+
+<p>You agree to pay an Advertiser or a TripAdvisor affiliate acting on behalf of an Advertiser the service fee for any vacation rental reservation in accordance with the Terms of Use on the affiliate site. A TripAdvisor affiliate may act as an Advertiser&rsquo;s limited agent solely for the purpose of transmitting your payment to the Advertiser.</p>
+
+<p>For further information on vacation rental fees, security deposits, payment processing, and cancellations and refunds, please consult the Terms of Use of our affiliate sites. By making a vacation rental reservation facilitated by one of our affiliate sites, you acknowledge and agree to that site&rsquo;s Terms of Use and Privacy Policy.</p>
+
+<h2>TRAVEL DESTINATIONS</h2>
+
+<p><strong>International Travel.</strong>&nbsp;When you book international travel reservations with third-party suppliers or plan international trips using this Website, you are responsible for ensuring that you meet all foreign entry requirements and that your travel documents, including passports and visas, are in order.</p>
+
+<p>For passport and visa requirements, please consult the relevant embassy or consulate for information. Because requirements may change at any time, be sure to check for up-to-date information before booking and departure. TripAdvisor accepts no liability for travelers who are refused entry onto a flight or into any country because of the traveler&rsquo;s failure to carry the travel documents required by any airline, authority, or country, including countries the traveler may just be passing through en route to his or her destination.</p>
+
+<p>It is also your responsibility to consult your physician for current recommendations on inoculations before you travel internationally, and to ensure that you meet all health entry requirements and follow all medical guidance related to your trip.</p>
+
+<p>Although most travel, including travel to international destinations, is completed without incident, travel to certain destinations may involve greater risk than others. TripAdvisor urges passengers to investigate and review travel prohibitions, warnings, announcements and advisories issued by the United States Government and destination country governments prior to booking travel to international destinations. Information on conditions in various countries and the level of risk associated with travel to particular international destinations can be found at&nbsp;<a href="http://www.state.gov/" rel="nofollow" target="_blank">www.state.gov</a>,&nbsp;<a href="http://www.tsa.gov/" rel="nofollow" target="_blank">www.tsa.gov</a>,&nbsp;<a href="http://www.dot.gov/" rel="nofollow" target="_blank">www.dot.gov</a>,&nbsp;<a href="http://www.faa.gov/" rel="nofollow" target="_blank">www.faa.gov</a>,&nbsp;<a href="http://www.cdc.gov/" rel="nofollow" target="_blank">www.cdc.gov</a>,&nbsp;<a href="http://www.treas.gov/ofac" rel="nofollow" target="_blank">www.treas.gov/ofac</a>&nbsp;and&nbsp;<a href="http://www.customs.gov/" rel="nofollow" target="_blank">www.customs.gov</a>.</p>
+
+<p>BY LISTING INFORMATION RELEVANT TO TRAVEL TO PARTICULAR INTERNATIONAL DESTINATIONS, TRIPADVISOR DOES NOT REPRESENT OR WARRANT THAT TRAVEL TO SUCH POINTS IS ADVISABLE OR WITHOUT RISK, AND IS NOT LIABLE FOR DAMAGES OR LOSSES THAT MAY RESULT FROM TRAVEL TO SUCH DESTINATIONS.</p>
+
+<h2>LIABILITY DISCLAIMER</h2>
+
+<p>PLEASE READ THIS SECTION CAREFULLY. THIS SECTION LIMITS TRIPADVISOR&rsquo;S LIABILITY TO YOU FOR ISSUES THAT MAY ARISE IN CONNECTION WITH YOUR USE OF THIS WEBSITE. IF YOU DO NOT UNDERSTAND THE TERMS IN THIS SECTION OR ELSEWHERE IN THE AGREEMENT, PLEASE CONSULT A LAWYER FOR CLARIFICATION BEFORE ACCESSING OR USING THIS WEBSITE.</p>
+
+<p>THE INFORMATION, SOFTWARE, PRODUCTS, AND SERVICES PUBLISHED ON THIS WEBSITE MAY INCLUDE INACCURACIES OR ERRORS, INCLUDING RESERVATION AVAILABILITY AND PRICING ERRORS. TRIPADVISOR, ITS SUBSIDIARIES AND CORPORATE AFFILIATES (COLLECTIVELY, THE &quot;TRIPADVISOR MEDIA GROUP COMPANIES&quot;) DO NOT GUARANTEE THE ACCURACY OF, AND DISCLAIM ALL LIABILITY FOR, ANY ERRORS OR OTHER INACCURACIES RELATING TO THE INFORMATION AND DESCRIPTION OF THE HOTEL, VACATION RENTAL PROPERTIES, AIR, CRUISE, CAR AND ANY OTHER TRAVEL PRODUCTS DISPLAYED ON THIS WEBSITE (INCLUDING, WITHOUT LIMITATION, THE PRICING, AVAILABILITY, PHOTOGRAPHS, LIST OF HOTEL OR VACATION RENTAL PROPERTY AMENITIES, GENERAL PRODUCT DESCRIPTIONS, REVIEWS AND RATINGS, ETC.). IN ADDITION, TRIPADVISOR EXPRESSLY RESERVES THE RIGHT TO CORRECT ANY AVAILABILITY AND PRICING ERRORS ON OUR WEBSITE AND/OR ON PENDING RESERVATIONS MADE UNDER AN INCORRECT PRICE.</p>
+
+<p>THE TRIPADVISOR MEDIA GROUP COMPANIES MAKE NO REPRESENTATIONS ABOUT THE SUITABILITY OF THE INFORMATION, SOFTWARE, PRODUCTS, AND SERVICES CONTAINED ON THIS WEBSITE FOR ANY PURPOSE, AND THE INCLUSION OR OFFERING OF ANY PRODUCTS OR SERVICES ON THIS WEBSITE DOES NOT CONSTITUTE ANY ENDORSEMENT OR RECOMMENDATION OF SUCH PRODUCTS OR SERVICES BY THE TRIPADVISOR MEDIA GROUP COMPANIES. ALL SUCH INFORMATION, SOFTWARE, PRODUCTS, AND SERVICES ARE PROVIDED &quot;AS IS&quot; WITHOUT WARRANTY OF ANY KIND. THE TRIPADVISOR MEDIA GROUP COMPANIES DISCLAIM ALL WARRANTIES AND CONDITIONS THAT THIS WEBSITE, ITS SERVERS OR ANY EMAIL SENT FROM THE TRIPADVISOR MEDIA GROUP COMPANIES, ARE FREE OF VIRUSES OR OTHER HARMFUL COMPONENTS. TRIPADVISOR HEREBY DISCLAIMS ALL WARRANTIES AND CONDITIONS WITH REGARD TO THIS INFORMATION, SOFTWARE, PRODUCTS, AND SERVICES, INCLUDING ALL IMPLIED WARRANTIES AND CONDITIONS OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE, AND NONINFRINGEMENT.</p>
+
+<p>THE THIRD-PARTY SUPPLIERS PROVIDING HOTEL OR VACATION RENTAL PROPERTY INFORMATION, TRAVEL OR OTHER SERVICES ON THIS WEBSITE ARE INDEPENDENT CONTRACTORS AND NOT AGENTS OR EMPLOYEES OF THE TRIPADVISOR MEDIA GROUP COMPANIES. THE TRIPADVISOR MEDIA GROUP COMPANIES ARE NOT LIABLE FOR THE ACTS, ERRORS, OMISSIONS, REPRESENTATIONS, WARRANTIES, BREACHES OR NEGLIGENCE OF ANY SUCH SUPPLIERS OR FOR ANY PERSONAL INJURIES, DEATH, PROPERTY DAMAGE, OR OTHER DAMAGES OR EXPENSES RESULTING THEREFROM. THE TRIPADVISOR MEDIA GROUP COMPANIES HAVE NO LIABILITY AND WILL MAKE NO REFUND IN THE EVENT OF ANY DELAY, CANCELLATION, OVERBOOKING, STRIKE, FORCE MAJEURE OR OTHER CAUSES BEYOND THEIR DIRECT CONTROL, AND THEY HAVE NO RESPONSIBILITY FOR ANY ADDITIONAL EXPENSE, OMISSIONS, DELAYS, RE-ROUTING OR ACTS OF ANY GOVERNMENT OR AUTHORITY.</p>
+
+<p>IN NO EVENT SHALL THE TRIPADVISOR MEDIA GROUP COMPANIES (OR THEIR OFFICERS, DIRECTORS AND AFFILIATES) BE LIABLE FOR ANY DIRECT, INDIRECT, PUNITIVE, INCIDENTAL, SPECIAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF, OR IN ANY WAY CONNECTED WITH, YOUR ACCESS TO, DISPLAY OF OR USE OF THIS WEBSITE OR WITH THE DELAY OR INABILITY TO ACCESS, DISPLAY OR USE THIS WEBSITE (INCLUDING, BUT NOT LIMITED TO, YOUR RELIANCE UPON REVIEWS AND OPINIONS APPEARING ON THIS WEBSITE; ANY COMPUTER VIRUSES, INFORMATION, SOFTWARE, LINKED SITES, PRODUCTS, AND SERVICES OBTAINED THROUGH THIS WEBSITE; OR OTHERWISE ARISING OUT OF THE ACCESS TO, DISPLAY OF OR USE OF THIS WEBSITE) WHETHER BASED ON A THEORY OF NEGLIGENCE, CONTRACT, TORT, STRICT LIABILITY, OR OTHERWISE, AND EVEN IF TRIPADVISOR HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.</p>
+
+<p>If the TripAdvisor Media Group Companies are found liable for any loss or damage that arises out of or is in any way connected with your use of our sites or services, then the TripAdvisor Media Group Companies&rsquo; liabilities will in no event exceed, in the aggregate, the greater of (a) the transaction fees paid to TripAdvisor for the transaction(s) on this Website giving rise to the claim, or (b) One-Hundred Dollars (US $100.00).</p>
+
+<p>The limitation of liability reflects the allocation of risk between the parties. The limitations specified in this section will survive and apply even if any limited remedy specified in these terms is found to have failed of its essential purpose. The limitations of liability provided in these terms inure to the benefit of the TripAdvisor Media Group Companies.</p>
+
+<h2>INDEMNIFICATION</h2>
+
+<p>You agree to defend and indemnify TripAdvisor and its affiliates and any of their officers, directors, employees and agents from and against any claims, causes of action, demands, recoveries, losses, damages, fines, penalties or other costs or expenses of any kind or nature including but not limited to reasonable legal and accounting fees, brought by third parties as a result of:</p>
+
+<ul>
+	<li>(i) your breach of this Agreement or the documents referenced herein;</li>
+	<li>(ii) your violation of any law or the rights of a third party; or</li>
+	<li>(iii) your use of this Website.</li>
+</ul>
+
+<h2>LINKS TO THIRD-PARTY SITES</h2>
+
+<p>This Website may contain hyperlinks to websites operated by parties other than TripAdvisor. Such hyperlinks are provided for your reference only. We do not control such websites and are not responsible for their contents or the privacy or other practices of such websites. Further, it is up to you to take precautions to ensure that whatever links you select or software you download (whether from this Website or other websites) is free of such items as viruses, worms, trojan horses, defects and other items of a destructive nature. Our inclusion of hyperlinks to such websites does not imply any endorsement of the material on such websites or any association with their operators. In some cases you may be asked by a third party site to link your profile on TripAdvisor to a profile on another third party site. Choosing to do so is purely optional, and the decision to allow this information to be linked can be disabled (with the third party site) at any time.</p>
+
+<h2>SOFTWARE AVAILABLE ON THIS WEBSITE</h2>
+
+<p>Unless otherwise specified, the materials on the websites are presented solely to provide information regarding and to promote TripAdvisor&rsquo;s services, websites, partners and other products available in the United States, its territories, possessions and protectorates. The TripAdvisor websites are controlled and operated by TripAdvisor from its offices in the Commonwealth of Massachusetts in the United States. TripAdvisor makes no representation that materials on the TripAdvisor websites are appropriate or available for use outside of the United States. Those who choose to access the TripAdvisor website from outside of the United States do so on their own initiative and are responsible for compliance with local laws, if and to the extent that local laws are applicable. Software from the TripAdvisor websites is further subject to United States export controls. No software from the TripAdvisor websites may be downloaded or otherwise exported or re-exported (a) into (or to a national or resident of) Cuba, Iraq, Sudan, North Korea, Iran, Syria, or any other country to which the U.S. has embargoed goods, or (b) to anyone on the U.S. Treasury Department list of Specially Designated Nationals or the U.S. Commerce Department&#39;s Table of Deny Orders. By using the TripAdvisor websites, you represent and warrant that you are not located in, under the control of, or a national or resident of any such country or on any such list.</p>
+
+<p>Any software that is made available to download from the TripAdvisor websites (&quot;Software&quot;) is the copyrighted work of TripAdvisor, or TripAdvisor affiliates, or other third party software as identified. Your use of such Software is governed by the terms of the end user license agreement, if any, which accompanies, or is included with, the Software (&quot;License Agreement&quot;). You may not install or use any Software that is accompanied by or includes a License Agreement unless you first agree to the License Agreement terms. For any Software made available for download on this Website not accompanied by a License Agreement, we hereby grant to you, the user, a limited, personal, nontransferable license to use the Software for viewing and otherwise using this Website in accordance with these terms and conditions and for no other purpose.</p>
+
+<p>Please note that all Software, including, without limitation, all HTML, XML, Java code and Active X controls contained on this Website, is owned by TripAdvisor and/or its affiliates, and is protected by copyright laws and international treaty provisions. Any reproduction or redistribution of the Software is expressly prohibited, and may result in severe civil and criminal penalties. Violators will be prosecuted to the maximum extent possible.</p>
+
+<p>WITHOUT LIMITING THE FOREGOING, COPYING OR REPRODUCTION OF THE SOFTWARE TO ANY OTHER SERVER OR LOCATION FOR FURTHER REPRODUCTION OR REDISTRIBUTION IS EXPRESSLY PROHIBITED. THE SOFTWARE IS WARRANTED, IF AT ALL, ONLY ACCORDING TO THE TERMS OF THE LICENSE AGREEMENT.</p>
+
+<h2>COPYRIGHT AND TRADEMARK NOTICES</h2>
+
+<p>All contents of this Website are: &copy;2017 TripAdvisor LLC. All rights reserved. TripAdvisor is not responsible for content on websites operated by parties other than TripAdvisor. TRIPADVISOR, the owl logo, the ratings bubbles and all other product or service names or slogans displayed on this Website are registered and/or common law trademarks of TripAdvisor LLC and/or its suppliers or licensors, and may not be copied, imitated or used, in whole or in part, without the prior written permission of TripAdvisor or the applicable trademark holder. In addition, the look and feel of this Website, including all page headers, custom graphics, button icons and scripts, is the service mark, trademark and/or trade dress of TripAdvisor and may not be copied, imitated or used, in whole or in part, without the prior written permission of TripAdvisor. All other trademarks, registered trademarks, product names and company names or logos mentioned in this Website are the property of their respective owners. Reference to any products, services, processes or other information, by trade name, trademark, manufacturer, supplier or otherwise does not constitute or imply endorsement, sponsorship or recommendation thereof by TripAdvisor.</p>
+
+<p>If you are aware of an infringement of either your brand or our brand, please let us know by following the&nbsp;<a href="https://www.tripadvisor.com/pages/copyright_complaint.html">Copyright Complaint Policy</a>&nbsp;and by e-mailing us at&nbsp;<a href="mailto:ta-copyright@tripadvisor.com">ta-copyright@tripadvisor.com</a>. We only address messages concerning brand infringement at this email address.</p>
+
+<h2>JURISDICTION AND GOVERNING LAW</h2>
+
+<p>This Website is operated by a U.S. entity and this Agreement is governed by the laws of the Commonwealth of Massachusetts, USA. You hereby consent to the exclusive jurisdiction and venue of courts in Massachusetts, USA and stipulate to the fairness and convenience of proceedings in such courts for all disputes arising out of or relating to the use of this Website. You agree that all claims you may have against TripAdvisor LLC arising from or relating to this Website must be heard and resolved in a court of competent subject matter jurisdiction located in the Commonwealth of Massachusetts. Use of this Website is unauthorized in any jurisdiction that does not give effect to all provisions of these terms and conditions, including, without limitation, this paragraph.</p>
+
+<h2>CURRENCY CONVERTER</h2>
+
+<p>Currency rates are based on various publicly available sources and should be used as guidelines only. Rates are not verified as accurate, and actual rates may vary. Currency quotes may not be updated on a daily basis. The information supplied by this application is believed to be accurate, but TripAdvisor, and/or its affiliates do not warrant or guarantee such accuracy. When using this information for any financial purpose, we advise you to consult a qualified professional to verify the accuracy of the currency rates. We do not authorize the use of this information for any purpose other than your personal use and you are expressly prohibited from the resale, redistribution, and use of this information for commercial purposes.</p>
+
+<h2>ADDITIONAL MOBILE LICENSES</h2>
+
+<p>Portions of TripAdvisor mobile software may use copyrighted material, the use of which TripAdvisor acknowledges. In addition, there are specific terms that apply to use of certain TripAdvisor mobile applications. Please visit the&nbsp;<a href="https://www.tripadvisor.com/pages/mobile.html">Mobile Licenses</a>&nbsp;page&nbsp;for notices specific to TripAdvisor mobile applications.</p>
+
+<h2>GENERAL PROVISIONS</h2>
+
+<p>You agree that no joint venture, agency, partnership, or employment relationship exists between you and the TripAdvisor Media Group Companies and/or affiliates as a result of this Agreement or use of this Website.</p>
+
+<p>Our performance of this Agreement is subject to existing laws and legal process, and nothing contained in this Agreement limits our right to comply with law enforcement or other governmental or legal requests or requirements relating to your use of this Website or information provided to or gathered by us with respect to such use. To the extent allowed by applicable law, you agree that you will bring any claim or cause of action arising from or relating to your access or use of this Website within two (2) years from the date on which such claim or action arose or accrued or such claim or cause of action will be irrevocably waived.</p>
+
+<p>If any part of this Agreement is determined to be invalid or unenforceable pursuant to applicable law including, but not limited to, the warranty disclaimers and liability limitations set forth above, then the invalid or unenforceable provision will be deemed superseded by a valid, enforceable provision that most closely matches the intent of the original provision and the remaining provisions in the Agreement shall continue in effect.</p>
+
+<p>This Agreement (and any other terms and conditions referenced herein) constitutes the entire agreement between you and TripAdvisor with respect to this Website and it supersedes all prior or contemporaneous communications and proposals, whether electronic, oral, or written, between the customer and TripAdvisor with respect to this Website. A printed version of this Agreement and of any notice given in electronic form shall be admissible in judicial or administrative proceedings based upon or relating to this Agreement to the same extent and subject to the same conditions as other business documents and records originally generated and maintained in printed form.</p>
+
+<p>Fictitious names of companies, products, people, characters, and/or data mentioned on this Website are not intended to represent any real individual, company, product, or event.</p>
+
+<p>Any rights not expressly granted herein are reserved.</p>
+
+<h2>SERVICE HELP</h2>
+
+<p>For answers to your questions or ways to contact us, visit our&nbsp;<a href="https://www.tripadvisor.com/help">Help Center</a>. Or, you can write to us at:</p>
+
+<p style="margin-left:28px;">TripAdvisor LLC<br />
+400 1st Avenue<br />
+Needham, MA 02494, USA<br />
+&nbsp;</p>
+
+<p>&copy;2017 TripAdvisor LLC. All rights reserved.</p>
+
+</div>
+</div>	</div><!--/content-->
+
+</div><!--/contentArea-->
+
+<div style="clear:both;">&nbsp;</div>
+
+<div class="footer">
+	<div class="widthLimit">
+	<div class="footerLogo-wrapper"><img src="images/logo_small_new.png" alt="" title="" border="0"></div>
+	<div class="flagMenu-wrapper">
+		<div class="flagMenu-input">
+			<a href="#" class="flagMenu" data-jq-dropdown="#flagMenu" data-horizontal-offset="10" data-vertical-offset="-500"> 
+			<div class="flag"></div> United States 
+			<i class="fa fa-chevron-down"></i></a>
+		</div>
+	</div>
+	<div class="wd_featureboxes_footer wd_featureboxes-vertical">
+<div id="wd_featurebox-standard_3515" class="wd_featurebox_container wd_featurebox-standard"><div class="wd_featurebox_title"></div><div class="wd_featurebox">
+			
+		
+			
+		<p><a href="https://tripadvisor.mediaroom.com/us-about-us" target="_blank">About Us</a>&nbsp;|&nbsp;<a href="https://www.tripadvisor.com/UserReview" target="_blank">Write a review</a>&nbsp;|&nbsp;<a href="https://www.tripadvisor.com/careers/" target="_blank">Careers</a>&nbsp;|&nbsp;<a href="https://www.tripadvisor.com/MemberProfile" target="_blank">Membership</a>&nbsp;|&nbsp;<a href="https://www.tripadvisor.com/blog/" target="_blank">Blog</a>&nbsp;|&nbsp;<a href="https://www.tripadvisor.com/SiteIndex" target="_blank">Site Map</a>&nbsp;|&nbsp;<a href="https://www.tripadvisor.com/Affiliates" target="_blank">Become an Affiliate</a>&nbsp;|&nbsp;<a href="https://the-tripadvisor-store.myshopify.com/" rel="nofollow" target="_blank">The TripAdvisor Store</a>&nbsp;|&nbsp;<a href="https://www.tripadvisor.com/TravelersChoice" target="_blank">Travelers&#39; Choice</a>&nbsp;|&nbsp;<a href="https://www.tripadvisor.com/Owners" target="_blank">Owners</a>&nbsp;|&nbsp;<a href="https://www.tripadvisor.com/BusinessAdvantage" target="_blank">Business Advantage</a>&nbsp;|&nbsp;<a href="https://www.tripadvisor.com/Owners" target="_blank">DMO/CVB</a>&nbsp;|&nbsp;<a href="http://ir.tripadvisor.com/" target="_blank">Investor Relations</a>&nbsp;|&nbsp;<a href="https://www.tripadvisorsupport.com/hc/en-us" target="_blank">Help&nbsp;Center&nbsp;<img height="10" src="images/bell.png" width="14" /></a></p>
+
+<div>&copy; 2017 TripAdvisor LLC All rights reserved. TripAdvisor&nbsp;<a href="us-terms-of-use" target="_blank">Terms of Use</a>&nbsp;and&nbsp;<a href="us-privacy-policy" target="_blank">Privacy Policy</a>.</div>
+
+<div>
+<p>TripAdvisor LLC is not a booking agent or tour operator, and does not charge any service fees to users of our site. Our partners (airlines, travel providers, and booking agents) who list airfare, tours, and travel packages on TripAdvisor are required to include all fees and surcharges in their listed prices. Examples include the Federal September 11th Security Fee, international departure and arrival taxes and fees, federal excise tax, and other service, handling and miscellaneous fees and surcharges. When you book with one of our partners, please be sure to check their site for a full disclosure of all applicable fees as required by the U.S. Department of Transportation. Airfares are generally quoted per person in USD unless otherwise noted.</p>
+
+<p>For your convenience, TripAdvisor LLC calculates an average price for each hotel, which is based on the rates of available rooms obtained from our booking partners. For tours and attractions, the price displayed is usually the lowest available per person adult price. For any travel packages or deals listed, TripAdvisor LLC does not guarantee any specific rates or prices. In addition, average hotel prices are updated nightly and displayed in your preferred currency using prevailing conversion rates. Since these converted prices are estimates, please check with the booking site for the exact amount and currency.</p>
+
+<p>Furthermore, TripAdvisor LLC makes no guarantees for availability of prices advertised on our site. Listed prices may require a stay of a particular length or have blackout dates, qualifications or restrictions.</p>
+</div>
+
+<div>TripAdvisor LLC is not responsible for content on external web sites. Taxes, fees not included for deals content.</div>
+</div></div></div>
+	</div>
+</div><!--/footer-->
+
+
+<div id="searchMenu" class="jq-dropdown jq-dropdown-tip jq-dropdown-anchor-right">
+	<div class="jq-dropdown-panel">
+	<div class="wd_search_form_container"><form name="basic_search" method="get" action="https://tripadvisor.mediaroom.com/index.php?s=20322" class="wd_search_form wd_search_form_basic"><input type="hidden" name="s" value="search_results" /><input type="text" name="query" value="" size="32" placeholder="Keywords..." title="Keywords..." /> <input type="submit" name="submit" value="Search"></form>
+</div>	</div>
+</div><!--/searchMenu-->
+
+
+<div id="flagMenu" class="jq-dropdown jq-dropdown-anchor-right">
+	<div class="jq-dropdown-panel">
+		<div class="pad-20">
+		<ul id="FLAGS_FLY">
+		<li class="america col region">
+		<div class="flag_heading">The Americas</div>
+		<ul>
+			<li class="flag_item active"><a id="flag_us_fly" class="flag_link flag_us" hreflang="en" title="United States" href="index.php?s=34281">United States</a></li>
+			<li class="flag_item "><a id="flag_ca_fly" class="flag_link flag_ca" hreflang="en-CA" title="Canada (English)" href="index.php?s=34297">Canada (English)</a></li>
+			<li class="flag_item "><a id="flag_ca_fly" class="flag_link flag_ca" hreflang="fr-CA" title="Canada (French)" href="index.php?s=34301">Canada (Français)</a></li>
+			<li class="flag_item "><a id="flag_br_fly" class="flag_link flag_br" hreflang="pt" title="Brazil" href="index.php?s=34289">Brasil</a></li>
+			<li class="flag_item "><a id="flag_mx_fly" class="flag_link flag_mx" hreflang="es-MX" title="Mexico" href="index.php?s=34305">México</a></li>
+			<li class="flag_item "><a id="flag_ar_fly" class="flag_link flag_ar" hreflang="es-AR" title="Argentina" href="index.php?s=34309">Argentina</a></li>
+			<li class="flag_item "><a id="flag_cl_fly" class="flag_link flag_cl" hreflang="es-CL" title="Chile" href="index.php?s=34313">Chile</a></li>
+			<li class="flag_item "><a id="flag_co_fly" class="flag_link flag_co" hreflang="es-CO" title="Colombia" href="index.php?s=34317">Colombia</a></li>
+			<li class="flag_item "><a id="flag_pe_fly" class="flag_link flag_pe" hreflang="es-PE" title="Peru" href="index.php?s=34321">Perú</a></li>
+			<li class="flag_item "><a id="flag_ve_fly" class="flag_link flag_ve" hreflang="es-VE" title="Venezuela" href="index.php?s=34325">Venezuela</a></li>
+		</ul>
+		</li>
+		<li class="europe col region">
+		<div class="flag_heading">Europe</div>
+		<ul>
+			<li class="flag_item "><a id="flag_gb_fly" class="flag_link flag_gb" hreflang="en-GB" title="United Kingdom" href="index.php?s=34282">United Kingdom</a></li>
+			<li class="flag_item "><a id="flag_it_fly" class="flag_link flag_it" hreflang="it" title="Italy" href="index.php?s=34286">Italia</a></li>
+			<li class="flag_item "><a id="flag_es_fly" class="flag_link flag_es" hreflang="es" title="Spain" href="index.php?s=34287">España</a></li>
+			<li class="flag_item "><a id="flag_de_fly" class="flag_link flag_de" hreflang="de" title="Germany" href="index.php?s=34449">Deutschland</a></li>
+			<li class="flag_item "><a id="flag_fr_fly" class="flag_link flag_fr" hreflang="fr" title="France" href="index.php?s=34285">France</a></li>
+			<li class="flag_item "><a id="flag_se_fly" class="flag_link flag_se" hreflang="sv" title="Sweden" href="index.php?s=34341">Sverige</a></li>
+			<li class="flag_item "><a id="flag_nl_fly" class="flag_link flag_nl" hreflang="nl" title="The Netherlands" href="index.php?s=34345">Nederland</a></li>
+			<li class="flag_item "><a id="flag_tr_fly" class="flag_link flag_tr" hreflang="tr" title="Turkey" href="index.php?s=34349">Türkiye</a></li>
+			<li class="flag_item "><a id="flag_dk_fly" class="flag_link flag_dk" hreflang="da" title="Denmark" href="index.php?s=34353">Danmark</a></li>
+			<li class="flag_item "><a id="flag_ie_fly" class="flag_link flag_ie" hreflang="en-IE" title="Ireland" href="index.php?s=34357">Ireland</a></li>
+			<li class="flag_item "><a id="flag_cz_fly" class="flag_link flag_cz" hreflang="cs" title="Czech Republic" href="index.php?s=34361">Česká republika</a></li>
+			<li class="flag_item "><a id="flag_at_fly" class="flag_link flag_at" hreflang="de-AT" title="Austria" href="index.php?s=34365">Österreich</a></li>
+			<li class="flag_item "><a id="flag_gr_fly" class="flag_link flag_gr" hreflang="el" title="Greece" href="index.php?s=34369">Ελλάδα</a></li>
+			<li class="flag_item "><a id="flag_fi_fly" class="flag_link flag_fi" hreflang="fi" title="Finland" href="index.php?s=34373">Suomi</a></li>
+		</ul>
+		</li>
+		<li class="europe col1 region">
+		<div class="flag_heading empty">&nbsp;</div>
+		<ul>
+			<li class="flag_item "><a id="flag_hu_fly" class="flag_link flag_hu" hreflang="hu" title="Hungary" href="index.php?s=34377">Magyarország</a></li>
+			<li class="flag_item "><a id="flag_no_fly" class="flag_link flag_no" hreflang="nb" title="Norway" href="index.php?s=34381">Norge</a></li>
+			<li class="flag_item "><a id="flag_pl_fly" class="flag_link flag_pl" hreflang="pl" title="Poland" href="index.php?s=34385">Polska</a></li>
+			<li class="flag_item "><a id="flag_pt_fly" class="flag_link flag_pt" hreflang="pt-PT" title="Portugal" href="index.php?s=34389">Portugal</a></li>
+			<li class="flag_item "><a id="flag_ru_fly" class="flag_link flag_ru" hreflang="ru" title="Russia" href="index.php?s=34288">Россия</a></li>
+			<li class="flag_item "><a id="flag_sk_fly" class="flag_link flag_sk" hreflang="sk" title="Slovakia" href="index.php?s=34393">Slovensko</a></li>
+			<li class="flag_item "><a id="flag_rs_fly" class="flag_link flag_rs" hreflang="sr" title="Serbia" href="index.php?s=34397">Srbija</a></li>
+			<li class="flag_item "><a id="flag_ch_fly" class="flag_link flag_ch" hreflang="de-CH" title="Switzerland" href="index.php?s=34401">Schweiz</a></li>
+			<li class="flag_item "><a id="flag_ch_fly" class="flag_link flag_ch" hreflang="fr-CH" title="Switzerland" href="index.php?s=34405">Suisse</a></li>
+			<li class="flag_item "><a id="flag_ch_fly" class="flag_link flag_ch" hreflang="it-CH" title="Switzerland" href="index.php?s=34409">Svizzera</a></li>
+			<li class="flag_item "><a id="flag_be_fly" class="flag_link flag_be" hreflang="fr-BE" title="Belgium" href="index.php?s=34413">Belgique</a></li>
+			<li class="flag_item "><a id="flag_be_fly" class="flag_link flag_be" hreflang="nl-BE" title="Belgium" href="index.php?s=34417">België</a></li>
+		</ul>
+		</li>
+		<li class="apac col region">
+		<div class="flag_heading">Asia Pacific</div>
+		<ul>
+			<li class="flag_item "><a id="flag_jp_fly" class="flag_link flag_jp" hreflang="ja" title="Japan" href="index.php?s=34291">日本</a></li>
+			<li class="flag_item "><a id="flag_cn_fly" class="flag_link flag_cn" hreflang="zh-Hans" title="China" href="index.php?s=34292">中国</a></li>
+			<li class="flag_item "><a id="flag_cn_fly" class="flag_link flag_cn" hreflang="zh-Hans" title="Chinese International" href="index.php?s=34423">中文国际版</a></li>
+			<li class="flag_item "><a id="flag_in_fly" class="flag_link flag_in" hreflang="en-IN" title="India" href="index.php?s=34290">India</a></li>
+			<li class="flag_item "><a id="flag_au_fly" class="flag_link flag_au" hreflang="en-AU" title="Australia" href="index.php?s=34283">Australia</a></li>
+			<li class="flag_item "><a id="flag_my_fly" class="flag_link flag_my" hreflang="en-MY" title="Malaysia" href="index.php?s=34294">Malaysia</a></li>
+			<li class="flag_item "><a id="flag_nz_fly" class="flag_link flag_nz" hreflang="en-NZ" title="New Zealand" href="index.php?s=34284">New Zealand</a></li>
+			<li class="flag_item "><a id="flag_ph_fly" class="flag_link flag_ph" hreflang="en-PH" title="Philippines" href="index.php?s=34425">Philippines</a></li>
+			<li class="flag_item "><a id="flag_sg_fly" class="flag_link flag_sg" hreflang="en-SG" title="Singapore" href="index.php?s=34293">Singapore</a></li>
+			<li class="flag_item "><a id="flag_id_fly" class="flag_link flag_id" hreflang="id" title="Indonesia" href="index.php?s=34295">Indonesia</a></li>
+			<li class="flag_item "><a id="flag_kr_fly" class="flag_link flag_kr" hreflang="ko" title="South Korea" href="index.php?s=34429">대한민국</a></li>
+			<li class="flag_item "><a id="flag_th_fly" class="flag_link flag_th" hreflang="th" title="Thailand" href="index.php?s=34296">ไทย</a></li>
+			<li class="flag_item "><a id="flag_vn_fly" class="flag_link flag_vn" hreflang="vi" title="Vietnam" href="index.php?s=34433">Việt Nam</a></li>
+			<li class="flag_item "><a id="flag_tw_fly" class="flag_link flag_tw" hreflang="zh-Hant" title="Taiwan" href="index.php?s=34437">台灣</a></li>
+			<li class="flag_item "><a id="flag_hk_fly" class="flag_link flag_hk" hreflang="en-HK" title="Hong Kong" href="index.php?s=34441">Hong Kong</a></li>
+			<li class="flag_item "><a id="flag_hk_fly" class="flag_link flag_hk" hreflang="zh-hk" title="Hong Kong" href="index.php?s=34445">香港</a></li>
+		</ul>
+		</li>
+		<li class="africa col region">
+		<div class="flag_heading">Africa &amp; the Middle East</div>
+		<ul>
+			<li class="flag_item "><a id="flag_ar_intl_fly" class="flag_link flag_ar_intl" hreflang="ar" title="Arabic" href="index.php?s=34578">العربية‬</a></li>
+			<li class="flag_item "><a id="flag_eg_fly" class="flag_link flag_eg" hreflang="ar-EG" title="Egypt" href="index.php?s=34329">مصر</a></li>
+			<li class="flag_item "><a id="flag_za_fly" class="flag_link flag_za" hreflang="en-ZA" title="South Africa" href="index.php?s=34333">South Africa</a></li>
+			<li class="flag_item "><a id="flag_il_fly" class="flag_link flag_il" hreflang="he" title="Israel" href="index.php?s=34337">ישראל</a></li>
+		</ul>
+		</li>
+		</ul>
+		</div>
+	</div>
+</div><!--/searchMenu-->
+
+<script type="text/javascript">
+$(document).ready(function() {
+	$('.wd_featureboxes_middle .wd_featurebox p.more').each(function(){
+		$(this).parent().parent().prepend(this);
+	});
+	$('.wd_newsfeed_releases-teaser .item').each(function(){
+		$(this).children('.wd_date').insertAfter($(this).children('.wd_title'));
+	});
+});
+</script>
+
+
+
+<!-- begin spin_special_output(body_end) -->
+<script wd_script_id="piwik_tracking_code"></script>
+<!-- Piwik Tracking Code -->
+<script type="text/javascript">
+  var _paq = _paq || [];
+
+  _paq.push(["setCustomVariable", 1, "Content Type", "Standard", "page"]);
+
+  _paq.push(["setCustomVariable", 3, "Navigation Page", "US Resources", "page"]);
+
+  _paq.push(["trackPageView"]);
+  _paq.push(["enableLinkTracking"]);
+  (function() {
+    var u="//stats.drivetheweb.com/";
+    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+    _paq.push(["setSiteId", 4086]);
+    var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0];
+    g.type="text/javascript"; g.async=true; g.defer=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+<noscript>
+	<img src="https://stats.drivetheweb.com/piwik.php?idsite=4086&rec=1" style="border:0" alt="" />
+</noscript>
+<!-- End Piwik Tracking Code -->
+		
+<!-- end spin_special_output(body_end) -->
+</body>
+</html>

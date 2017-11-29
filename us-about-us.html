@@ -1,0 +1,1401 @@
+<!doctype html>
+<html lang="en">
+<head>
+<!-- begin spin_special_output(head_start) -->
+<script type="text/javascript" src="js/jquery-webdriver.js" wd_script_id="jquery-webdriver.js"></script>
+<script type="text/javascript" src="js/webdriver.js" wd_script_id="webdriver.js"></script>
+<script type="text/javascript">webDriver.push_jQuery();</script>
+<script type="text/javascript" src="js/jquery-ui.js" wd_script_id="jquery-ui.js"></script>
+<script type="text/javascript" src="js/wd_resize.js" wd_script_id="wd_resize.js"></script>
+<link href="css/wd_modal.css" type="text/css" rel="stylesheet" wd_script_id="wd_modal.css">
+<link href="css/wd_wcag.css" type="text/css" rel="stylesheet" wd_script_id="wd_wcag.css">
+<script type="text/javascript" wd_script_id="wd_modal_script">
+(function($) {
+	webDriver.resizeModal = function() {
+		$(this).find(".wd_modal").wd_modal("resize");
+//		return false;
+	}
+	
+	var modals = [];
+		
+	function _value(value, base) {
+		if (typeof value == "string" && value.indexOf("%") > 0) {
+			return  base * parseInt(value, 10) / 100;
+		} else {
+			return parseInt(value, 10);
+		}
+	}
+	
+	var wd_modal = function(element, options) {
+		this.init(element, options);
+	};
+	
+	wd_modal.prototype = {
+		init: function(element, options) {
+			var self = this;
+			
+			this.isOpen = false;
+			this.opener = null;
+			
+			this.$element = $(element);
+			this._options = {
+				autoOpen: false,
+				closeExisting: false,
+				closeOnEscape: true,
+				closeOnOverlayClick: true,
+				fadeDuration: null,
+				margin: "10%",
+				padding: 10
+			};
+			
+			this.options(options);
+			
+			this.$overlay = $("<div>").addClass("wd_modal-overlay").attr("wd_resize","resizeModal").appendTo($("body")).hide();
+			this.$outer = $("<div>").addClass("wd_modal-outer").appendTo(this.$overlay);
+			this.$inner = $("<div>").addClass("wd_modal-inner").appendTo(this.$outer).append(this.$element);
+			// Hack because I can't figure out where the extra few pixels at the bottom of the content are coming from
+			this.$inner.css("overflow-y", "hidden");
+			this.$close = $("<a class=\"wd_modal-close fa fa-times-circle\" href=\"#close\" title=\"Close\"><span class=\"wd_sr-only\">Close Dialog<\/span><\/a>")
+					.on("click", function(event) {self.close(); event.preventDefault();})
+					.appendTo(this.$outer);
+			this.$element.addClass("wd_modal");
+			
+			if (this._options.autoOpen)
+				this.open(this._options.closeExisting);
+		},
+		
+		options: function(options) {
+			if (options) {
+				$.extend(this._options, options);
+
+				this._options.fadeDuration = parseInt(this._options.fadeDuration, 10);
+				if (isNaN(this._options.fadeDuration))
+					this._options.fadeDuration = false;
+				
+				if (!$.isArray(this._options.margin))
+					this._options.margin = [this._options.margin];
+				if (this._options.margin.length < 2)
+					this._options.margin[1] = this._options.margin[0];
+				if (this._options.margin.length < 3)
+					this._options.margin[2] = this._options.margin[0];
+				if (this._options.margin.length < 4)
+					this._options.margin[3] = this._options.margin[1];
+				
+				if (!$.isArray(this._options.padding))
+					this._options.padding = [this._options.padding];
+				if (this._options.padding.length < 2)
+					this._options.padding[1] = this._options.padding[0];
+				if (this._options.padding.length < 3)
+					this._options.padding[2] = this._options.padding[0];
+				if (this._options.padding.length < 4)
+					this._options.padding[3] = this._options.padding[1];
+			} else {
+				return this._options;
+			}
+		},
+		
+		reload: function(options) {
+			if (options) {
+				this.options(options);
+			}
+			
+			this.resize();
+		},
+		
+		open: function(closeExisting, now) {
+			if (this.isOpen)
+				return;
+			
+			var self = this;
+			var myCloseExisting = closeExisting;
+			
+			if (!this.opener)
+				this.opener = document.activeElement;
+
+			if (closeExisting && modals.length > 0) {
+				for (var i = modals.length - 1; i >= 0; --i)
+					modals[i].close(true, true);
+			}
+
+			this.$overlay.addClass("wd_modal-current");
+			$("body").append(this.$overlay);
+
+			if (!now && this._options.fadeDuration) {
+				this.$overlay.fadeIn(this._options.fadeDuration, function() {self.open(myCloseExisting, true);});
+			} else {
+				if (modals.length == 0) {
+					$("body").css("overflow","hidden");
+					$(document).on("keydown.wd_modal", function (event) {
+						var current = modals[modals.length - 1];
+						if ((event.which == 27 || event.keyCode == 27) && current._options.closeOnEscape) {
+							current.close();
+							event.stopImmediatePropagation();
+							event.preventDefault();
+						}
+					});
+				}
+
+				if (this._options.closeOnOverlayClick) {
+					this.$overlay.on("click.wd_modal", function (event) {
+						if (event.target == this) {
+							self.close();
+							event.preventDefault();
+						}
+					});
+				}
+
+				modals.push(this);
+				
+				this.$overlay.show();
+				
+				var $focus = this.$element.find(":focusable");
+				if ($focus.length > 0)
+					$focus[0].focus();
+				
+				this.isOpen = true;
+
+				this.$element.trigger("open");
+			}
+		},
+		
+		close: function(skipCurrent, now) {
+			if (!this.isOpen)
+				return;
+			
+			this.$element.trigger("beforeClose");
+			
+			// TODO: allow closing of lower modals
+			modals.pop();
+			
+			if (modals.length == 0) {
+				$("body").css("overflow","");
+				$(document).off("keydown.wd_modal");
+			}
+			
+			this.$overlay.off("click.wd_modal");
+			
+			if (this.opener) {
+				this.opener.focus();
+				this.opener = null;
+			}
+			
+			this.isOpen = false;
+			this.$overlay.removeClass("wd_modal-current").hide();
+			
+			if (!skipCurrent && modals.length > 0)
+				modals[modals.length-1].$overlay.addClass("wd_modal-current");
+			
+			this.$element.trigger("close");
+		},
+		
+		destroy: function() {
+			this.close(false, true);
+			$("body").append(this.$element);
+			this.$overlay.remove();
+		},
+		
+		resize: function() {
+			if (!this.isOpen)
+				return;
+			
+			var self = this;
+			var winWidth = $(window).width();
+			var winHeight = $(window).height();
+			
+			var margin = this._options.margin;
+			var padding = this._options.padding;
+			
+			var width = winWidth - _value(margin[1], winWidth) - _value(margin[3], winWidth) - _value(padding[1], winWidth) - _value(padding[1], winWidth);
+			var height = winHeight - _value(margin[0], winHeight) - _value(margin[2], winHeight) - _value(padding[0], winHeight) - _value(padding[2], winHeight);
+			
+			this.$inner.css("max-width", width);
+			this.$inner.css("max-height", height);
+			
+			$.each(["Top", "Right", "Bottom", "Left"], function(i, v) {
+				self.$outer.css("padding" + v, _value(padding[i])+"px");
+			});
+			
+			var fixed = this.$element.find("[wd_need_fixed_container]").is(":visible");
+			
+			this.$inner.css("width", width);
+			this.$inner.css("height", height);
+
+			webDriver.doResize(this.$inner);
+			
+			if (!fixed) {
+				this.$inner.css("width", "auto");
+				this.$inner.css("height", "auto");
+				if (this.$element.outerHeight() > height)
+					this.$inner.css("height", height);
+				if (this.$element.outerWidth() > width)
+					this.$inner.css("width", width);
+			}
+		}
+	};
+
+	$.fn.wd_modal = function(options) {
+		if (options == "exists") {
+			return !!$(this).data("wd_modal");
+		} else if (typeof options == "string") {
+            var instance = $(this).data("wd_modal");
+			if (!instance)
+				return null;
+			var args = Array.prototype.slice.call(arguments, 1);
+            return instance[options].apply(instance, args);
+        } else {
+            return this.each(function() {
+                var instance = $(this).data("wd_modal");
+                if (instance) {
+                    instance.reload(options);
+                } else {
+                    $(this).data("wd_modal", new wd_modal(this, options));
+                }
+            });
+        }
+    };
+})(webDriver.jQuery);
+</script>
+<script type="text/javascript" src="js/wd_hashchange.js" wd_script_id="wd_hashchange.js"></script>
+<script type="text/javascript" wd_script_id="asset_modal_support_script">
+			(function($) {
+				var prev_group_id = "";
+				var prev_type_id = "";
+				var prev_item_id = "";
+				var prev_hash = false;
+				var on_close = "back";
+				function hash_update() {
+					var hash = window.location.hash || "#";
+					if (hash == prev_hash) return;
+
+					var type_id = "";
+					var item_id = ""
+					var group_id = "main";
+
+					var apos = hash.indexOf("assets_");
+					if (apos >= 0) {
+						type_id = hash.substr(apos+7);
+
+						var dpos = type_id.indexOf("-");
+						if (dpos >= 0) {
+							group_id = type_id.substr(0, dpos);
+							type_id = type_id.substr(dpos+1);
+						}
+
+						var cpos = type_id.indexOf(":");
+						if (cpos >= 0) {
+							item_id = type_id.substr(cpos+1);
+							type_id = type_id.substr(0, cpos);
+						}
+					}
+
+					if (type_id == "")
+						type_id = "all";
+
+					if ((type_id != prev_type_id || group_id != prev_group_id) && item_id == "") {
+						var $carousel = $(".wd_asset_carousel_"+group_id+"_list")
+						if ($carousel.length > 0)
+							$carousel.wd_carousel("filter", (type_id == "all") ? false : ".wd_asset_type_"+type_id);
+
+						var $slideshow = $(".wd_asset_slideshow_"+group_id+"_list")
+						if ($slideshow.length > 0)
+							$slideshow.wd_slideshow("filter", (type_id == "all") ? false : ".wd_asset_type_"+type_id);
+
+						$(".wd_asset_carousel_type_link").removeClass("wd_active");
+						$(".wd_asset_carousel_type_link.wd_asset_type_"+type_id).addClass("wd_active");
+
+						prev_type_id = type_id;
+						on_close = "back";
+					}
+
+					if (type_id != prev_type_id || item_id != prev_item_id || group_id != prev_group_id) {
+						if (item_id == "") {
+							var save_close = on_close;
+							on_close = false;
+							hide_asset_modal();
+							on_close = save_close;
+						} else {
+							load_asset_modal(group_id, type_id, item_id);
+						}
+
+						prev_item_id = item_id;
+
+						if (prev_hash === false)
+							on_close = "reset";
+					}
+
+					prev_group_id = group_id;
+					prev_hash = hash;
+				}
+
+				hide_asset_modal = function() {
+					$(".wd_asset_modal").wd_modal("close");
+				}
+
+				load_asset_modal = function(group_id, type_id, item_id) {
+					var $modal = $(".wd_asset_modal_"+group_id);;
+					if ($modal.length == 0)
+						return;
+
+					if (!$modal.wd_modal("exists")) {
+						$modal.wd_modal({
+							autoOpen: false,
+						});
+
+						$modal.show();
+
+						$modal.on("close", function() {
+							if (on_close == "back") {
+								history.back();
+							} else if (on_close == "reset") {
+								var href = window.location.href;
+								href = href.replace(/#.*$/, "#assets_all");
+								window.location.replace(href);
+							}
+						});
+					}
+
+					$modal.wd_modal("open", true);
+					
+					var $slideshow = $(".wd_asset_slideshow_"+group_id+"_list");
+					if ($slideshow) {
+						var $slideshow_item = $slideshow.find(".wd_asset_"+type_id+"-"+item_id).not(".wd_clone");
+						if ($slideshow_item)
+							$slideshow.wd_slideshow("scrollToItem", $slideshow_item);
+					}
+
+					var $carousel = $(".wd_asset_carousel_"+group_id+"_list");
+					if ($carousel) {
+						var $carousel_item = $carousel.find(".wd_asset_"+type_id+"-"+item_id).not(".wd_clone");
+						if ($carousel_item)
+							$carousel.wd_carousel("scrollToItem", $carousel_item);
+					}
+				}
+				
+				$(function() {
+					setTimeout(hash_update, 10);
+					$(window).hashchange(hash_update);
+				});
+			})(webDriver.jQuery);
+		</script>
+<style type="text/css" wd_script_id="asset_modal_support_style">)
+			.wd_asset_modal .wd_captioned_image {
+				max-width: 100%;
+				max-height: 100%;
+			}
+			.wd_asset_modal img {
+				max-width: 100%;
+				max-height: 100%;
+			}
+		</style>
+<style type="text/css" wd_script_id="asset_carousel_style">
+			.wd_asset_carousel_aspect {
+				position: relative;
+				height: 100%;
+				clear: both;
+			}
+			.wd_asset_carousel {
+				background-color: #666666;
+			}
+			.wd_asset_carousel_list .wd_asset_carousel a,
+			.wd_asset_carousel_list .wd_asset_carousel a:link,
+			.wd_asset_carousel_list .wd_asset_carousel a:visited {
+				color: inherit;
+			}
+			.wd_asset_carousel_list .wd_asset_carousel a:hover {
+				text-decoration: none;
+				background-color: inherit;
+			}
+			.wd_carousel.wd_asset_carousel_wrapper a.wd_carousel-arrow:link,
+			.wd_carousel.wd_asset_carousel_wrapper a.wd_carousel-arrow:visited {
+				color: #aaaaaa;
+				font-size: 2em;
+				position: relative;
+				left: 0;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				transform: none;
+				margin: 10px 0;
+			}
+			.wd_carousel.wd_asset_carousel_wrapper a.wd_carousel-arrow:hover {
+				color: #666666;
+			}
+			.wd_carousel.wd_asset_carousel_wrapper .wd_carousel-prev {
+				float: left;
+			}
+			.wd_carousel.wd_asset_carousel_wrapper .wd_carousel-next {
+				float: right;
+			}
+		</style>
+<script type="text/javascript" src="js/wd_imagesloaded.js" wd_script_id="wd_imagesloaded.js"></script>
+<link href="css/wd_carousel.css" type="text/css" rel="stylesheet" wd_script_id="wd_carousel.css">
+<script type="text/javascript" wd_script_id="wd_carousel_script">
+(function($, undefined) {
+	webDriver.loadCarousel = function() {
+		var options = {};
+		var options_string = $(this).attr("wd_carousel_options");
+		if (options_string)
+			options = JSON.parse(options_string);
+		$(this).wd_carousel(options);
+	}
+	
+	webDriver.resizeCarousel = function() {
+		$(this).find(".wd_carousel-list").wd_carousel("resize");
+		return false;
+	}
+	
+	var wd_carousel = function(element, options) {
+		this.init(element, options);
+	};
+	
+	wd_carousel.prototype = {
+		init: function(element, options) {
+			var self = this;
+			
+			this.$element = $(element);
+			this._options = {
+				selector: "li",
+				center: true,
+				slideSpeed: 500,
+				slideEasing: "linear",
+				infinite: true,
+				widthMode: "content", // content, columns, width
+				heightMode: "fixed", // content, fixed
+				columns: 3,
+				minWidth: 250,
+				scrollUnit: "item", // item, page
+				scrollSize: 1,
+				dragThreshold: 10,
+				"class": "",
+				autoScroll: 0
+			};
+			
+			this.options(options);
+			
+			this.$container = $("<div>").addClass("wd_carousel").attr("wd_resize","resizeCarousel").insertBefore(this.$element);
+			if (this._options["class"])
+				this.$container.addClass(this._options["class"]);
+			this.$cropper = $("<div>").addClass("wd_carousel-cropper").appendTo(this.$container);
+			this.$element
+					.addClass("wd_carousel-list")
+					.appendTo(this.$cropper)
+					.css({position:"absolute",top:0,left:0})
+					.on("dragstart", "*", function(event) {event.preventDefault();});
+			this.$prev = $("<a class=\"wd_carousel-arrow wd_carousel-prev fa fa-chevron-left\" href=\"#prev\"><\/a>")
+					.on("click", function(event) {
+						self.stop();
+						self.prev();
+						event.preventDefault();
+					})
+					.appendTo(this.$container);
+			this.$next = $("<a class=\"wd_carousel-arrow wd_carousel-next fa fa-chevron-right\" href=\"#next\"><\/a>")
+					.on("click", function(event) {
+						self.stop();
+						self.next();
+						event.preventDefault();
+					})
+					.appendTo(this.$container);
+			
+//			this.$dragger = $("<div>")
+//					.addClass("wd_carousel-dragger")
+//					.appendTo(this.$cropper)
+			this.$cropper
+					.on("click", function(event) {
+						self.onClick(event);
+					})
+					.on("mousedown touchstart", function(event) {
+						self.dragStart(event);
+					})
+					.on("mousemove touchmove", function(event) {
+						self.dragMove(event);
+					})
+					.on("mouseup touchend mouseleave touchcancel", function(event) {
+						self.dragEnd(event);
+					});
+			this.dragging = false;
+			this.dragged = false;
+			
+			this.$items = this.$element.children(this._options.selector);
+			this.$items.addClass("wd_carousel-item");
+			
+			// Remove any non-items (e.g. unintended text nodes)
+			this.$element.empty();
+			this.$element.append(this.$items);
+
+			this.navEnabled = true;
+			this.currentIndex = 0;
+			this.$currentItem = this.$items.eq(0);
+			
+			this.$clones = $([]);
+			
+			this.size_known = false;
+			this.$element.wd_imagesloaded(
+				function() {
+					self.size_known = true;					
+					self.resize();
+				},
+				"size"
+			);
+			
+			this.reset();
+			
+			this.start(this._options.autoScroll);
+		},
+		
+		options: function(options) {
+			if (options) {
+				$.extend(this._options, options);
+			} else {
+				return this._options;
+			}
+		},
+		
+		reload: function(options) {
+			if (options) {
+				this.options(options);
+			}
+			
+			this.resize();
+		},
+
+		reset: function() {
+			this.$items.data("wd_carousel-index", null);
+			this.$clones.data("wd_carousel-index", null);
+			this.$element.children(".wd_clone").detach();
+			
+			var $children = this.$element.children();
+			this.itemCount = $children.length;
+			$children.each(function(index) {
+				$(this).data("wd_carousel-index", index);
+			});
+			
+			if (this.itemCount > 0) {
+				var $last_child = $children.eq(-1);
+				this.listWidth = $last_child.position().left + $last_child.outerWidth();
+			} else {
+				this.listWidth = 0;
+			}
+			
+			var cropperWidth = this.$cropper.innerWidth();
+			
+			if (this.itemCount < 2 || this.listWidth <= cropperWidth) {
+				var position = this._options.center ? ((cropperWidth-this.listWidth)/2) : 0;
+				this.$element.css("left", position);
+				$children.addClass("wd_carousel-current");
+				if (this.itemCount > 0 && this.size_known) {
+					this.$currentItem = this.itemAt(this.listWidth/2);
+					this.currentIndex = this.$currentItem.data("wd_carousel-index");
+				}
+				this.hideNav(true);
+			} else {
+				var left = cropperWidth;
+				for (var i = -1; i > -$children.length; --i) {
+					var $item = $children.eq(i);
+					var $clone = $item.data("wd_carousel-clone-left");
+					if (!$clone)
+						$clone = this.clone($item, "left");
+					this.$element.prepend($clone);
+					$clone.data("wd_carousel-index", i);
+					left -= $item.outerWidth();
+					if (left <= 0)
+						break;
+				}
+				
+				var right = 0;
+				for (var i = 0; i < $children.length; ++i) {
+					var $item = $children.eq(i);
+					var $clone = $item.data("wd_carousel-clone-right");
+					if (!$clone)
+						$clone = this.clone($item, "right");
+					this.$element.append($clone);
+					$clone.data("wd_carousel-index", $children.length+i);
+					right += $item.outerWidth();
+					if (right >= cropperWidth)
+						break;
+				}
+
+				this.hideNav(false);
+
+				var index = this.$currentItem.data("wd_carousel-index");
+				if (!index)
+					index = 0;
+				this.scrollToIndex(index, true);
+			}
+		},
+				
+		clone: function($item, dir) {
+			var $clone = $item.clone(true)
+				.attr("id","")
+				.addClass("wd_clone")
+				.data("wd_carousel-cloned-from", $item);
+		
+			$clone.find("[id]").each(function() {
+				$(this).attr("id", "");
+			});
+
+			$item.data("wd_carousel-clone-"+dir, $clone);
+			
+			this.$clones = this.$clones.add($clone);
+			
+			return $clone;
+		},
+				
+		hideNav: function(hide) {
+			this.$prev.toggle(!hide);
+			this.$next.toggle(!hide);
+			this.navEnabled = !hide;
+		},
+				
+		next: function() {
+			return this.scrollBy(this._options.scrollSize, this._options.scrollUnit);
+		},
+
+		prev: function() {
+			return this.scrollBy(-this._options.scrollSize, this._options.scrollUnit);
+		},
+		
+		scrollBy: function(count, unit) {
+			if (!this.navEnabled)
+				return false;
+			
+			var index;
+			if (unit == "item") {
+				index = this.currentIndex + count;
+			} else { // unit == "page"
+				var pageWidth = this.$cropper.innerWidth();
+				var offset = count;
+				if (this._options.center) {
+					pageWidth /= 2;
+					++offset;
+				}
+				var position = offset * pageWidth - this.$element.position().left;
+				var $item = this.itemAt(position);
+				index = $item.data("wd_carousel-index");
+				if (index == this.currentIndex)
+					index += (count < 0) ? -1 : 1;
+			}
+			
+			return this.scrollToIndex(index);
+		},
+				
+		_doAutoScroll: function() {
+			if (this.navEnabled && this.autoScrollInterval > 0) {
+				var self = this;
+				this.autoScrollTimer = setTimeout(function() {
+						self.next();
+					},
+					this.autoScrollInterval
+				);
+			}
+		},
+		
+		start: function(interval) {
+			this.pause();
+			if (interval !== undefined)
+				this.autoScrollInterval = interval;
+			this._doAutoScroll();
+		},
+		
+		pause: function() {
+			if (this.autoScrollTimer) {
+				clearTimeout(this.autoScrollTimer);
+				this.autoScrollTimer = null;
+			}
+		},
+				
+		stop: function() {
+			this.pause();
+			this.autoScrollInterval = 0;
+		},
+		
+		scrollToIndex: function(index, now) {
+			if (this.itemCount == 0 || !this.navEnabled)
+				return false;
+			
+			this.pause();
+			
+			var $children = this.$element.children().not(".wd_clone");
+			
+			index = (index + $children.length) % $children.length;
+			var $child = $children.eq(index);
+			
+			this.$element.find(".wd_carousel-current").removeClass("wd_carousel-current");
+			$child.addClass("wd_carousel-current");
+			
+			var position = -$child.position().left;
+			if (this._options.center) {
+				position += this.$cropper.innerWidth()/2 - $child.outerWidth()/2;
+			}
+			
+			if (this._options.slideEasing && !now) {
+				this.$element.stop();
+				
+				var cur_offset = this._options.center ? (this.$cropper.innerWidth() / 2) : 0;
+				var cur_pos = this.$element.position().left;
+				var $cur_item = this.itemAt(cur_offset - cur_pos);
+				var cur_dist = Math.abs(position - cur_pos);
+				
+				var $clone, clone_pos, clone_dist;
+				$clone = $cur_item.data("wd_carousel-clone-left");
+				if ($clone) {
+					var clone_pos = -$clone.position().left;
+					if (this._options.center) {
+						clone_pos += this.$cropper.innerWidth()/2 - $clone.outerWidth()/2;
+					}
+					clone_dist = Math.abs(position - clone_pos);
+					if (clone_dist < cur_dist) {
+						cur_pos = clone_pos;
+						cur_dist = clone_dist;
+					}
+				}
+
+				$clone = $cur_item.data("wd_carousel-clone-right");
+				if ($clone) {
+					var clone_pos = -$clone.position().left;
+					if (this._options.center) {
+						clone_pos += this.$cropper.innerWidth()/2 - $clone.outerWidth()/2;
+					}
+					clone_dist = Math.abs(position - clone_pos);
+					if (clone_dist < cur_dist) {
+						cur_pos = clone_pos;
+						cur_dist = clone_dist;
+					}
+				}
+
+				var self = this;
+				this.$element.css("left", cur_pos);
+				this.$element.animate({left: position}, this._options.slideSpeed, this._options.slideEasing, function() {self.start();});
+			} else {
+				this.$element.css("left", position);
+				this.start();
+			}
+
+			this.currentIndex = index;
+			this.$currentItem = $child;
+		},
+				
+		scrollToItem: function(item) {
+			var index = $(item).data("wd_carousel-index");
+			if (index !== null)
+				this.scrollToIndex(index);
+		},
+				
+		makeItemCurrent: function(item) {
+			var $item = $(item);
+			if (!$item.hasClass("wd_carousel-current")) {
+				this.$element.find(".wd_carousel-current").removeClass("wd_carousel-current");
+				
+				var $clonedFrom = $item.data("wd_carousel-cloned-from");
+				if ($clonedFrom) {
+					var clone_pos = $item.position().left;
+					var item_pos = $clonedFrom.position().left;
+					var offset = clone_pos - item_pos;
+					this.$element.css("left", this.$element.css("left") + offset);
+					this.dragListX += offset;
+					$item = $clonedFrom;
+				}
+				
+				$item.addClass("wd_carousel-current");
+				this.currentIndex = $item.data("wd_carousel-index");
+				this.$currentItem = $item;
+			}
+		},
+				
+		itemAt: function(position) {
+			var $children = this.$element.children();
+			if ($children.length == 0)
+				return null;
+			
+			var $item = $children.eq(Math.floor($children.length/2));
+			var dir = 0;
+			while (true) {
+				if (position < $item.position().left) {
+					$item = $item.prev();
+					if (dir == 1)
+						break;
+					dir = -1;
+				} else if (position > $item.position().left + $item.outerWidth()) {
+					$item = $item.next();
+					if (dir == -1)
+						break;
+					dir = 1;
+				} else {
+					break;
+				}
+				if ($item.length == 0)
+					break;
+			}
+			
+			return $item;
+		},
+				
+		onClick: function(event) {
+			if (this.dragged) {
+				event.stopImmediatePropagation();
+				event.stopPropagation();
+				event.preventDefault();
+			}
+		},
+				
+		dragStart: function(event) {
+			this.dragged = false;
+
+			if (!this.navEnabled)
+				return;
+
+			this.pause();
+			this.dragIndex = this.currentIndex;
+			
+			this.dragStartX = this.eventPosition(event);
+			if (this.dragStartX === undefined)
+				return;
+			
+			this.dragListX = this.$element.position().left;
+
+//			this.$cropper.addClass("dragging");
+			this.dragging = true;
+		},
+				
+		dragMove: function(event) {
+			if (!this.dragging)
+				return;
+			
+			event.preventDefault();
+			
+			var pos = this.eventPosition(event);
+			var delta = pos - this.dragStartX;
+			
+			if (!this.dragged && Math.abs(delta) >= this._options.dragThreshold) {
+				this.$cropper.addClass("dragging");
+				this.dragged = true;
+			}
+			
+			if (this.dragged) {
+				var list_position = this.dragListX+delta;
+				this.$element.css("left", list_position);
+				
+				var offset = this._options.center ? (this.$cropper.innerWidth() / 2) : 0;
+				var position = offset - this.$element.position().left;
+				var $item = this.itemAt(position);
+				this.makeItemCurrent($item);
+			}
+		},
+				
+		dragEnd: function(event) {
+			if (!this.dragging)
+				return;
+			
+			if (this.dragged) {
+				var offset = this._options.center ? (this.$cropper.innerWidth() / 2) : 0;
+				var position = offset - this.$element.position().left;
+				var $item = this.itemAt(position);
+				var index = $item.data("wd_carousel-index");
+				if (index !== null && index != this.dragIndex)
+					this.stop();
+				this.scrollToIndex(index);
+			}
+
+			this.$cropper.removeClass("dragging");
+			this.dragging = false;
+			this.start();
+		},
+				
+		eventPosition: function(event) {
+			if (event.originalEvent && event.originalEvent.touches) {
+				var touches = event.originalEvent.touches;
+				if (touches.length != 1)
+					return undefined;
+				return touches[0].pageX;
+			} else {
+				return event.pageX;
+			}
+		},
+				
+		filter: function(selector) {
+			this.$element.children().detach();
+			var $items = this.$items;
+			if (selector)
+				$items = $items.filter(selector);
+			if ($items.length > 0)
+				this.$element.append($items);
+			this.reset();
+		},
+		
+		destroy: function() {
+			this.stop();
+			this.filter(false);
+			this.$clones = $([]);
+			this.$items
+				.removeClass("wd_carousel-item")
+				.data("wd_carousel-index", null)
+				.data("wd_carousel-clone-right", null)
+				.data("wd_carousel-clone-left", null);
+			this.$element
+				.removeClass("wd_carousel-list")
+				.insertBefore(this.$container);
+			this.$container.remove();
+		},
+		
+		resize: function() {
+			if (this._options.widthMode != "content") {
+				var totalWidth = this.$cropper.innerWidth();
+				var columns = this._options.columns;
+				if (this.widthMode == "width")
+					columns = Math.max(Math.floor(totalWidth / this._options.minWidth), 1);
+				var width = totalWidth / columns;
+				this.$items.outerWidth(width);
+				this.$clones.outerWidth(width);
+			}
+			
+			webDriver.doResize(this.$element);
+			
+			if (this._options.heightMode == "content") {
+				var height = this.$element.outerHeight();
+				this.$cropper.height(height);
+			}
+			
+			this.reset();
+		}
+	};
+
+	$.fn.wd_carousel = function(options) {
+		var args = Array.prototype.slice.call(arguments, 1);
+		var result = this;
+		
+		this.each(function() {
+			var instance = $(this).data("wd_carousel");
+			if (typeof options == "string") {
+				var res = instance[options].apply(instance, args);
+				if (typeof res != "undefined") {
+					result = res;
+					return false;
+				}
+			} else {
+                if (instance) {
+                    instance.reload(options);
+                } else {
+                    $(this).data("wd_carousel", new wd_carousel(this, options));
+                }
+			}
+        });
+		
+		return result;
+    };
+})(webDriver.jQuery);
+</script>
+<style type="text/css" wd_script_id="featureboxes_style">
+		.wd_featurebox_icon {
+			display: inline;
+		}
+		.wd_featurebox_icon img {
+			vertical-align: middle;
+		}
+		div.wd_featurebox_group div.wd_tabs_wrapper {
+			border: none;
+			border-bottom: 1px solid #E1E1E1;
+			padding: 0 0 5px 0;
+		}
+		div.wd_featurebox_group div.wd_featurebox {
+			border: none;
+			padding: 8px 0 0 0;
+		}
+		div.wd_featurebox_group li.wd_tab {
+			float: none;
+			color: #666666;
+		}
+		div.wd_featurebox_group li.wd_tab-active {
+			border: none;
+			background-color: transparent;
+			color: #000000;
+			font-weight: bold;
+		}
+		div.wd_featurebox_group li.wd_tab-inactive {
+			cursor: auto;
+		}
+	</style>
+<style type="text/css" wd_script_id="search_form_style">
+		.wd_search_form .wd_input_datepicker {
+			margin-right: 2px;
+		}
+		.wd_search_type_checkbox {
+			margin-left: 20px;
+		}
+		</style>
+<script type="text/javascript" wd_script_id="search_form_script">
+			function wd_toggle_search_form(link, advanced) {
+				var $ = webDriver.jQuery;
+				var $container = $(link).closest(".wd_search_form_container");
+				var basic_form = $container.find(".wd_search_form_basic");
+				var basic_query = basic_form.find('input[name="query"]');
+				var advanced_form = $container.find(".wd_search_form_advanced");
+				var advanced_query = advanced_form.find('input[name="query"]');
+
+				if (advanced) {
+					advanced_query.val(basic_query.val());
+					advanced_form.show();
+					basic_form.hide();
+				} else {
+					basic_query.val(advanced_query.val());
+					basic_form.show();
+					advanced_form.hide();
+				}
+			}
+
+			function wd_toggle_search_type_checkboxes(radio) {
+				var $ = webDriver.jQuery;
+				var $radio = $(radio);
+				var all = $radio.val() == "All" ? $radio.is(":checked") : !$radio.is(":checked");
+				var $checkboxes = $radio.closest(".wd_form_field").find(".wd_search_type_checkbox");
+				$checkboxes.find('input[type="checkbox"]').prop("disabled", all);
+				$checkboxes.toggle(!all);
+			}
+
+			webDriver.jQuery(function ($) {
+				$('.wd_search_type_radio input[type="radio"]').each(function() {wd_toggle_search_type_checkboxes(this);});
+			});
+		</script>
+<link href="thirdparty/font-awesome/css/font-awesome.min.css" type="text/css" rel="stylesheet" wd_script_id="font-awesome.min.css">
+<script type="text/javascript">webDriver.pop_jQuery();</script>
+
+<!-- end spin_special_output(head_start) -->
+
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=1090">
+	<title>US Press Center | About TripAdvisor</title>
+	
+ <meta name="keywords" content="MediaRoom" />
+ <meta name="description" content="MediaRoom" />
+ <meta name="twitter:card" content="summary" />
+ <meta name="twitter:title" content="Media Center" />
+ <meta name="twitter:description" content="About TripAdvisor TripAdvisor, the world's largest travel site**, enables travelers to unleash the full potential of every trip. With over 570 million reviews and opinions covering the world's largest selection of travel listings worldwide -- covering 7.3 million accommodations, airlines, attractions, and restaurants -- TripAdvisor provides travelers with the wisdom of the crowds to help them decide where to stay, how to fly, what to do and where to eat. TripAdvisor also compares prices from more than 200 hotel booking sites so travelers can find the lowest price on the hotel that's right for them. TripAdvisor-branded sites are available in 49 markets, and are home to the world's largest travel community of 455 million average monthly unique visitors*, all looking to get the most out of every trip. TripAdvisor: Know better. Book better. Go better. TripAdvisor, Inc. (NASDAQ: TRIP), through its subsidiaries, manages and operates websites under 20 other travel media brands:  www.airfarewatchdog.com, www.bookingbuddy.com, www.citymaps.com, www.cruisecritic.com, www.familyvacationcritic.com,   www.flipkey.com, www.thefork.com (including www.lafourchette.com, www.eltenedor.com, www.iens.nl and www.dimmi.com.au), www.gateguru.com, www.holidaylettings.co.uk, www.holidaywatchdog.com, www.housetrip.com, www.jetsetter.com, www.niumba.com, www.onetime.com, www.oyster.com, www.seatguru.com, www.smartertravel.com, www.tingo.com, www.vacationhomerentals.com and www.viator.com. *Source: TripAdvisor log files, average monthly unique visitors, Q3 2017 **Source: comScore Media Metrix for TripAdvisor Sites, worldwide, July 2017 " />
+ <meta property="og:site_name" content="MediaRoom" />
+ <meta property="og:url" content="https://tripadvisor.mediaroom.com/US-about-us" />
+ <meta property="og:title" content="Media Center" />
+ <meta property="og:description" content="About TripAdvisor TripAdvisor, the world's largest travel site**, enables travelers to unleash the full potential of every trip. With over 570 million reviews and opinions covering the world's largest selection of travel listings worldwide -- covering 7.3 million accommodations, airlines, attractions, and restaurants -- TripAdvisor provides travelers with the wisdom of the crowds to help them decide where to stay, how to fly, what to do and where to eat. TripAdvisor also compares prices from more than 200 hotel booking sites so travelers can find the lowest price on the hotel that's right for them. TripAdvisor-branded sites are available in 49 markets, and are home to the world's largest travel community of 455 million average monthly unique visitors*, all looking to get the most out of every trip. TripAdvisor: Know better. Book better. Go better. TripAdvisor, Inc. (NASDAQ: TRIP), through its subsidiaries, manages and operates websites under 20 other travel media brands:  www.airfarewatchdog.com, www.bookingbuddy.com, www.citymaps.com, www.cruisecritic.com, www.familyvacationcritic.com,   www.flipkey.com, www.thefork.com (including www.lafourchette.com, www.eltenedor.com, www.iens.nl and www.dimmi.com.au), www.gateguru.com, www.holidaylettings.co.uk, www.holidaywatchdog.com, www.housetrip.com, www.jetsetter.com, www.niumba.com, www.onetime.com, www.oyster.com, www.seatguru.com, www.smartertravel.com, www.tingo.com, www.vacationhomerentals.com and www.viator.com. *Source: TripAdvisor log files, average monthly unique visitors, Q3 2017 **Source: comScore Media Metrix for TripAdvisor Sites, worldwide, July 2017 " />
+	
+	<link type="text/css" rel="stylesheet" href="css/style.css">
+	<link type="text/css" rel="stylesheet" href="css/jquery.dropdown.min.css">
+	<link type="text/css" rel="stylesheet" href="css/font-awesome.min.css">
+	<script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+	<script type="text/javascript" src="js/jquery.dropdown.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/wdcontent.css">
+	<link rel="alternate" href="https://tripadvisor.mediaroom.com/press-releases?pagetemplate=rss" type="application/rss+xml" title="Media Center | Press Releases">	<style>.flag{background-position: 0px -18px;}</style>
+</head>
+
+<body class="wd_pageid_20290">
+
+<div class="topbar">
+	<div class=" widthLimit">
+		<a href="https://www.tripadvisor.com/"><img src="images/ta_logo.png" alt="Reviews of Hotels, Flights and Vacation Rentals" class="mastheadLogoImage"></a>
+		<div class="headerRight">
+		<a href="https://www.tripadvisor.com/" class="homelink">Go back to TripAdvisor</a>
+		<a href="#" class="searchMenu fa fa-search" data-jq-dropdown="#searchMenu" data-horizontal-offset="8" data-vertical-offset="14"> </a>
+		</div>
+	</div>
+</div>
+
+<div class="header"></div>
+
+<div class="heroimage widthLimit">
+	<div class="herotext">Media Center</div>
+</div>
+
+<div class="mainnav widthLimit">
+	<ul>
+		<li class="mannav-about"><a href="index.php?s=20290">About TripAdvisor</a></li>
+		<li class="mannav-investor"><a href="http://ir.tripadvisor.com/" target="_blank">Investor Relations</a></li>
+		<li class="mannav-resources"><a href="index.php?s=20292">Resources</a></li>
+		<li class="mannav-contact"><a href="index.php?s=20289">Contact Us</a></li>
+	</ul>
+</div>
+<div class="widthLimit"><img src="images/shadow-mainnav.png" width="1090" height="21"></div>
+
+<div class="contentArea widthLimit">
+
+		<div class="leftNav pad-20">
+	<div class="nav pad-20">
+<p><a href="US-press-releases" target="_self">Press Releases</a></p>
+<p><a href="https://tripadvisor.mediaroom.com/US-in-the-news" target="_self">In the News</a></p>
+<p><a href="our-brand" target="_self">Our Brand</a></p>
+<p><a href="https://www.tripadvisor.com/blog/" target="_self">Our Blog</a></p>
+<p><a href="https://tripadvisor.mediaroom.com/US-testimonials" target="_self">Testimonials</a></p>
+</div><!--/nav-->
+<div class="wd_featureboxes_left wd_featureboxes-vertical">
+<div id="wd_featurebox-standard_3572" class="wd_featurebox_container wd_featurebox-standard"><div class="wd_featurebox_title"></div><div class="wd_featurebox">
+			
+		
+			
+		<table width="231" class="wd_imagetable" border="0" cellpadding="0" cellspacing="0" align="left" style="margin: 0px 0px 0px 0px;" role="presentation"><tr><td><img src="/image/Q32017.jpg" border="0" alt="" title=""  /></td></tr></table>
+</div></div></div>
+	</div><!--/leftNav-->
+	
+	<div class="content" ><div id="wd_printable_content"><h1>About TripAdvisor</h1>
+
+<div>
+<p style="color: rgb(0, 0, 0); font-family: arial, helvetica, sans-serif; font-size: medium;">TripAdvisor, the world&#39;s largest travel site**, enables travelers to unleash the full potential of every trip. With&nbsp;over 570 million reviews and opinions covering the world&#39;s largest selection of travel listings worldwide -- covering 7.3 million accommodations, airlines, attractions, and restaurants -- TripAdvisor provides travelers with the wisdom of the crowds to help them decide where to stay, how to fly, what to do and where to eat. TripAdvisor also compares prices from more than 200 hotel booking sites so travelers can find the lowest price on the hotel that&#39;s right for them. TripAdvisor-branded sites are available in 49 markets, and are home to the world&#39;s largest travel community of 455 million average monthly unique visitors*, all looking to get the most out of every trip. TripAdvisor: Know better. Book better. Go better.</p>
+
+<p style="color: rgb(0, 0, 0); font-family: arial, helvetica, sans-serif; font-size: medium;">TripAdvisor, Inc.&nbsp;(NASDAQ: TRIP), through its subsidiaries, manages and operates websites under 20 other travel media brands:&nbsp;<br />
+<a href="http://www.airfarewatchdog.com/" rel="nofollow" style="color: rgb(0, 175, 135); text-decoration-line: none;" target="_blank">www.airfarewatchdog.com</a>,&nbsp;<a href="http://www.bookingbuddy.com/" rel="nofollow" style="color: rgb(0, 175, 135); text-decoration-line: none;" target="_blank">www.bookingbuddy.com</a>,&nbsp;<a href="http://www.citymaps.com/" rel="nofollow" style="color: rgb(0, 175, 135); text-decoration-line: none;" target="_blank">www.citymaps.com</a>,&nbsp;<a href="http://www.cruisecritic.com/" rel="nofollow" style="color: rgb(0, 175, 135); text-decoration-line: none;" target="_blank">www.cruisecritic.com</a>,&nbsp;<a href="http://www.familyvacationcritic.com/" rel="nofollow" style="color: rgb(0, 175, 135); text-decoration-line: none;" target="_blank">www.familyvacationcritic.com</a>,&nbsp;&nbsp;&nbsp;<a href="http://www.flipkey.com/" rel="nofollow" style="color: rgb(0, 175, 135); text-decoration-line: none;" target="_blank">www.flipkey.com</a>,&nbsp;<a href="http://www.thefork.com/" rel="nofollow" style="color: rgb(0, 175, 135); text-decoration-line: none;" target="_blank">www.thefork.com</a>&nbsp;(including&nbsp;<a href="http://www.lafourchette.com/" rel="nofollow" style="color: rgb(0, 175, 135); text-decoration-line: none;" target="_blank">www.lafourchette.com</a>,&nbsp;<a href="http://www.eltenedor.com/" rel="nofollow" style="color: rgb(0, 175, 135); text-decoration-line: none;" target="_blank">www.eltenedor.com</a>,&nbsp;<a href="http://www.iens.nl/" rel="nofollow" style="color: rgb(0, 175, 135); text-decoration-line: none;" target="_blank">www.iens.nl</a>&nbsp;and&nbsp;<a href="http://www.dimmi.com.au/" rel="nofollow" style="color: rgb(0, 175, 135); text-decoration-line: none;" target="_blank">www.dimmi.com.au</a>),&nbsp;<a href="http://www.gateguru.com/" rel="nofollow" style="color: rgb(0, 175, 135); text-decoration-line: none;" target="_blank">www.gateguru.com</a>,&nbsp;<a href="http://www.holidaylettings.co.uk/" rel="nofollow" style="color: rgb(0, 175, 135); text-decoration-line: none;" target="_blank">www.holidaylettings.co.uk</a>,&nbsp;<a href="http://www.holidaywatchdog.com/" rel="nofollow" style="color: rgb(0, 175, 135); text-decoration-line: none;" target="_blank">www.holidaywatchdog.com</a>,&nbsp;<a href="http://www.housetrip.com/" rel="nofollow" style="color: rgb(0, 175, 135); text-decoration-line: none;" target="_blank">www.housetrip.com</a>,&nbsp;<a href="http://www.jetsetter.com/" rel="nofollow" style="color: rgb(0, 175, 135); text-decoration-line: none;" target="_blank">www.jetsetter.com</a>,&nbsp;<a href="http://www.niumba.com/" rel="nofollow" style="color: rgb(0, 175, 135); text-decoration-line: none;" target="_blank">www.niumba.com</a>,&nbsp;<a href="http://www.onetime.com/" rel="nofollow" style="color: rgb(0, 175, 135); text-decoration-line: none;" target="_blank">www.onetime.com</a>,&nbsp;<a href="http://www.oyster.com/" rel="nofollow" style="color: rgb(0, 175, 135); text-decoration-line: none;" target="_blank">www.oyster.com</a>,&nbsp;<a href="http://www.seatguru.com/" rel="nofollow" style="color: rgb(0, 175, 135); text-decoration-line: none;" target="_blank">www.seatguru.com</a>,&nbsp;<a href="http://www.smartertravel.com/" rel="nofollow" style="color: rgb(0, 175, 135); text-decoration-line: none;" target="_blank">www.smartertravel.com</a>,&nbsp;<a href="http://www.tingo.com/" rel="nofollow" style="color: rgb(0, 175, 135); text-decoration-line: none;" target="_blank">www.tingo.com</a>,&nbsp;<a href="http://www.vacationhomerentals.com/" rel="nofollow" style="color: rgb(0, 175, 135); text-decoration-line: none;" target="_blank">www.vacationhomerentals.com</a>&nbsp;and&nbsp;<a href="http://www.viator.com/" rel="nofollow" style="color: rgb(0, 175, 135); text-decoration-line: none;" target="_blank">www.viator.com</a>.</p>
+
+<p style="color: rgb(0, 0, 0); font-family: arial, helvetica, sans-serif; font-size: medium;">*Source: TripAdvisor log files, average monthly unique visitors, Q3 2017<br />
+**Source: comScore Media Metrix for TripAdvisor Sites, worldwide,&nbsp;<span class="xn-chron">July 2017</span></p>
+</div>
+
+<div class="wd_standard">
+<div class="wd_category wd_category_0"><div class="wd_category_items wd_category_items_0"><div class="item"><div class="item_name"><h1>Our Team</h1></div></div>
+<div class="item"><table width="175" class="wd_imagetable" border="0" cellpadding="0" cellspacing="0" align="left" style="margin: 10px 10px 10px 0px;" role="presentation"><tr><td><img src="/image/skaufer.jpg" border="0" alt="" title=""  /></td></tr></table>
+<div class="item_name">Stephen Kaufer</div><p>President and CEO</p>
+
+<p>Steve co-founded TripAdvisor in 2000 with the mission to help travelers around the world plan and book the perfect trip. Under his leadership, TripAdvisor has grown into the largest travel site in the world. As CEO, Steve has led the growth of TripAdvisor, Inc., which includes 24 other travel media brands that operate in 48 markets worldwide. Prior to co-founding TripAdvisor, Steve was president of CDS, Inc., an independent software vendor, and prior to that, was co-founder and vice president of engineering of CenterLine Software. Steve holds several software patents.&nbsp;Over the years Steve has won a number of awards for his entrepreneurship and leadership in the travel industry including being inducted into the 2015 British Travel &amp; Hospitality Hall of Fame, receiving the 2015 Pioneer Award by the International Society of Hospitality Consultants and 2005 Ernst &amp; Young Entrepreneur of the Year Award. Steve is on the board of directors at Glassdoor (<a href="http://www.glassdoor.com/" target="_blank">www.glassdoor.com</a>); CarGurus (<a href="http://www.cargurus.com/" target="_blank">www.cargurus.com</a>); and the Neuroendocrine Tumor Research Foundation (<a href="http://www.netrf.org/" target="_blank">www.netrf.org</a>). He&#39;s a fan of his brother-in-law&#39;s robot sculptures at Lipson Robotics (<a href="http://www.lipsonrobotics.com/" target="_blank">www.lipsonrobotics.com</a>). Steve has a degree in computer science from Harvard University.</p>
+
+<p>Steve&#39;s favorite travel destination is&nbsp;<a href="http://www.tripadvisor.com/Tourism-g293983">Jerusalem, Israel</a>.</p>
+</div>
+<div class="item"><table width="175" class="wd_imagetable" border="0" cellpadding="0" cellspacing="0" align="left" style="margin: 10px 10px 10px 0px;" role="presentation"><tr><td><img src="/image/eteunissen.jpg" border="0" alt="" title=""  /></td></tr></table>
+<div class="item_name">Ernst Teunissen</div><p>Chief Financial Officer, TripAdvisor</p>
+
+<p>Ernst is responsible for overseeing TripAdvisor&#39;s global finance operations including accounting, investor relations, tax, corporate development and real estate. Ernst previously served as executive vice president and chief financial officer of Cimpress N.V., formerly known as Vistaprint N.V. where he had similar responsibilities. Prior to joining Cimpress as vice president of corporate strategy in 2009, Teunissen was a founder and director of two corporate finance and management consulting firms, Manifold Partners and ThreeStone Ventures Limited. Before that, he worked in investment banking as an executive director at Morgan Stanley&#39;s Telecoms and Media Group in London and as a senior associate director for Deutsche Bank in both London and Singapore. Early on, Teunissen worked as a consultant at Monitor Company, a global strategy firm in Europe and Asia. He holds a BBA from Nijenrode University, The Netherlands School of Business and an MBA from the University of Oregon.</p>
+
+<p>Ernst&#39;s favorite travel destination is&nbsp;<a href="https://www.tripadvisor.com/Tourism-g187244">Valbonne, France</a>.</p>
+</div>
+<div class="item"><table width="175" class="wd_imagetable" border="0" cellpadding="0" cellspacing="0" align="left" style="margin: 10px 10px 10px 0px;" role="presentation"><tr><td><img src="/image/skalvert_2014.jpg" border="0" alt="" title=""  /></td></tr></table>
+<div class="item_name">Seth Kalvert</div><p>Senior Vice President, General Counsel and Secretary</p>
+
+<p>Seth Kalvert has responsibility for all of the legal activities of TripAdvisor, Inc.&nbsp;Prior to assuming his role as General Counsel in August 2011, Seth held various positions at Expedia, Inc., most recently as Vice President, Associate General Counsel since February 2006, where he had primary responsibility for the legal aspects of the company&#39;s mergers and acquisitions and other transactional work, along with the global Expedia brand, and managed a team that provided legal support for various Expedia brands, including TripAdvisor and Hotwire, in addition to privacy and trademarks across Expedia, Inc.&nbsp;Before joining Expedia, Seth held various legal positions at IAC/InterActiveCorp, which he joined in July 2001. Previously, Seth held a business development role at a privately-held online social networking and e-commerce company and practiced law in the New York office of Debevoise &amp; Plimpton, LLP.&nbsp;Seth holds an AB from Brown University and a JD from Columbia Law School.</p>
+
+<p>Seth&#39;s favorite travel destination is&nbsp;<a href="http://www.tripadvisor.com/Tourism-g255122">Queenstown, New Zealand</a>.</p>
+</div>
+<div class="item"><table width="175" class="wd_imagetable" border="0" cellpadding="0" cellspacing="0" align="left" style="margin: 10px 10px 10px 0px;" role="presentation"><tr><td><img src="/image/gfritz_1.jpg" border="0" alt="" title=""  /></td></tr></table>
+<div class="item_name">Gary Fritz</div><p>Chief Growth Officer and President of Asia Pacific</p>
+
+<p>As chief growth officer, Gary is responsible for growing and leading strategy across the entire family of TripAdvisor brands. In his dual role as president of APAC, he leads TripAdvisor&rsquo;s operations and strategy throughout the Asia Pacific region. Before joining TripAdvisor, Gary founded the advisory and investment group Amanogawa, LLC, where he advised the leadership of several multi-national companies on global strategy and expansion plans. Gary&rsquo;s relationship with TripAdvisor spans more than a decade. He held a variety of senior executive roles at Expedia, Inc. from 2003-2012 when TripAdvisor was part of Expedia. From 2008 to 2012, Gary served as president, Partner Services Group for Expedia, where he led Expedia&rsquo;s commercial activity and strategy on a global basis. Gary oversaw the sales, technology and operations teams on a global basis. Prior to Expedia, Gary worked with the global consultancy McKinsey &amp; Company for 3 years focused on telecom and distressed debt practices. Gary currently serves on the board of advisors for Button, Darkstore and Kwibon, as well as Chairing the University of Washington&rsquo;s campaign for inclusive education. Gary holds a Master&rsquo;s degree from MIT and a BA from the University of Pennsylvania.</p>
+
+<p>Gary&#39;s favorite travel destination is&nbsp;<a href="https://www.tripadvisor.com/Tourism-g298184">Tokyo</a>.</p>
+</div>
+<div class="item"><table width="175" class="wd_imagetable" border="0" cellpadding="0" cellspacing="0" align="left" style="margin: 10px 10px 10px 0px;" role="presentation"><tr><td><img src="/image/bgrous.jpg" border="0" alt="" title=""  /></td></tr></table>
+<div class="item_name">Beth Grous</div><p>Chief People Officer, TripAdvisor</p>
+
+<p>Beth is responsible for leading TripAdvisor&#39;s global human resources organization. Previously, Beth was at Nuance Communications, a global provider of speech and imaging solutions, where she served as the senior vice president of human resources. Prior to Nuance, Grous spent three years at Sanofi Corporation, a global healthcare organization, where she was the vice president of human resources. Beth also held a number of roles at Genzyme Corporation for nine years, including vice president of human resources, before it was acquired by Sanofi. Earlier on, Grous held human resources leadership positions at Perot Systems Healthcare Services, Reebok International, Aramark Educational Services and Federated Department Stores. Grous holds a bachelor&#39;s degree in English from Cornell University.</p>
+
+<p>Beth&#39;s favorite travel destination is&nbsp;<a href="http://www.tripadvisor.com/Tourism-g29220">Maui, Hawaii</a>.</p>
+</div>
+<div class="item"><table width="175" class="wd_imagetable" border="0" cellpadding="0" cellspacing="0" align="left" style="margin: 10px 10px 10px 0px;" role="presentation"><tr><td><img src="/image/dhalpin.jpg" border="0" alt="" title=""  /></td></tr></table>
+<div class="item_name">Dermot Halpin</div><p>President, Attractions and Vacation Rentals</p>
+
+<p>Dermot Halpin leads the attractions and vacation rentals businesses at TripAdvisor, which includes leadership of Viator, FlipKey, Holiday Lettings, Niumba, Vacation Home Rentals and HouseTrip. &nbsp;Dermot has extensive experience in building high-growth consumer internet platforms, through organic growth and acquisition, particularly in the travel space. &nbsp;Prior to joining TripAdvisor in 2012, Dermot was president of Expedia EMEA, where he oversaw the expansion of Expedia, Hotels.com, and the Expedia affiliate network in Europe, the Middle East and Asia. &nbsp;In addition to Expedia, Dermot was previously CEO at Autoquake and Managing Director at Tele2. &nbsp;He was on the board of Voyages SNCF, ELong, and is now on the board of Ding.com. &nbsp;Dermot holds an MBA from INSEAD and studied engineering at University College Dublin, Ireland.</p>
+
+<p>Dermot&#39;s favorite travel destination is&nbsp;<a href="http://www.tripadvisor.com/Tourism-g312741">Buenos Aires, Argentina</a>.</p>
+</div>
+<div class="item"><table width="175" class="wd_imagetable" border="0" cellpadding="0" cellspacing="0" align="left" style="margin: 10px 10px 10px 0px;" role="presentation"><tr><td><img src="/image/robin+ingle1.jpg" border="0" alt="" title=""  /></td></tr></table>
+<div class="item_name">Robin Ingle</div><p>Senior Vice President, Sales</p>
+
+<p>Robin Ingle is responsible for TripAdvisor&#39;s global commercial relationships with partners for our auction, display and hotel solutions advertising sales. Her teams are also responsible for advertising operations, research and analytics in support of TripAdvisor&#39;s global business. She joined TripAdvisor in 2001 and through the developmental years of the company, held roles in business development and international development before taking on the full scope of the global advertising sales organization. Prior to joining TripAdvisor, Robin served as vice president of advertising at Access Media, vice president of sales for MediaPassage and director of display advertising at the Chicago Sun-Times.</p>
+
+<p>Robin&#39;s favorite travel destination is the&nbsp;<a href="https://www.tripadvisor.com/Tourism-g147353-British_Virgin_Islands-Vacations.html">British Virgin Islands</a>.</p>
+</div>
+<div class="item"><table width="175" class="wd_imagetable" border="0" cellpadding="0" cellspacing="0" align="left" style="margin: 10px 10px 10px 0px;" role="presentation"><tr><td><img src="/image/bjelensberger_2014.jpg" border="0" alt="" title=""  /></td></tr></table>
+<div class="item_name">Bertrand Jelensperger</div><p>CEO, lafourchette &amp; SVP, TripAdvisor Restaurants</p>
+
+<p><o:p></o:p></p>
+
+<p>Bertrand Jelensperger is responsible for the strategy and operations of TripAdvisor&rsquo;s restaurant business as well as serves as CEO of lafourchette. In 2007, Bertrand co-founded lafourchette, an online restaurant booking platform that has a network of more than 34,000 restaurant partners across Europe and is now the leading online and mobile reservation platform for restaurants in France, Spain, Switzerland, Belgium, Italy, Brazil, Portugal, Netherlands, Sweden, Denmark and Australia. In 2014, lafourchette was acquired by TripAdvisor, which now allows users to search availability and reserve a table for a specific date and time directly from TripAdvisor. Prior to lafourchette, Bertrand co-founded Boursipoly, an online gaming company and led the team at JTECH, a paging system for the hospitality industry in France and Spain. He currently serves on the board of Doctolib (<a href="http://www.doctolib.fr/" target="_blank">www.doctolib.fr</a>). Bertrand earned his degree at the HEC business school in Paris.<o:p></o:p></p>
+</div>
+<div class="item"><table width="175" class="wd_imagetable" border="0" cellpadding="0" cellspacing="0" align="left" style="margin: 10px 10px 10px 0px;" role="presentation"><tr><td><img src="/image/bmessing.jpg" border="0" alt="" title=""  /></td></tr></table>
+<div class="item_name">Barbara Messing</div><p>Chief Marketing Officer</p>
+
+<p>Barbara Messing leads the global marketing efforts as TripAdvisor continues to expand its global footprint as the world&rsquo;s largest travel site. Messing leads all of TripAdvisor&#39;s consumer and business-to-business marketing activities, including brand development and experience, customer relationship marketing, search engine marketing, customer acquisition &amp; retention, public relations, industry relations and global partnerships.&nbsp;Prior to joining TripAdvisor, Messing spent nine years at Hotwire, also part of the Expedia, Inc. family, where she served in a number of leadership roles, most recently serving as vice president and general manager of Travel Ticker. Messing also served in roles including vice president of customer experience and director of product development. Messing serves on the board of directors of Mashable LLC and the XO Group. She holds an undergraduate degree from Northwestern University and a J.D. from Stanford University.</p>
+
+<p>Barbara&#39;s favorite travel destination is&nbsp;<a href="http://www.tripadvisor.com/Tourism-g293791">Addis Ababa, Ethiopia</a>.</p>
+</div>
+<div class="item"><table width="175" class="wd_imagetable" border="0" cellpadding="0" cellspacing="0" align="left" style="margin: 10px 10px 10px 0px;" role="presentation"><tr><td><img src="/image/bsaltzburg.jpg" border="0" alt="" title=""  /></td></tr></table>
+<div class="item_name">Bryan Saltzburg</div><p>Senior Vice President and General Manager, Global Flights Business</p>
+
+<p>Bryan Saltzburg leads the company&#39;s global Flights product that now operates in over 44 countries and 26 languages. In addition to TripAdvisor&#39;s flights metasearch, Bryan also oversees both the SeatGuru and GateGuru brands, the savvy traveler&#39;s go-to sites for in-depth airport, aircraft amenity and flight information. During his eight years at TripAdvisor, he also led the New Initiatives group that oversaw the launch, growth and development of both the Flight and Vacation Rentals categories. Prior to joining TripAdvisor, Bryan worked for Travelocity, most recently serving as vice president of leisure businesses. Over his eight years there, he was responsible for launching their cruise business, and managing its dynamic packaging, activities and events, and insurance businesses. Bryan previously held marketing and business development positions at Walt Disney Company, Neutrogena, and Princess Cruises. He holds a BS in education and social policy from Northwestern University and an MBA from the Marshall School of Business at the University of Southern California.</p>
+
+<p>Bryan&#39;s favorite travel destination is&nbsp;<a href="http://www.tripadvisor.com/Tourism-g303908">Ko Phi Phi, Thailand</a>.</p>
+</div>
+<div class="item"><table width="175" class="wd_imagetable" border="0" cellpadding="0" cellspacing="0" align="left" style="margin: 10px 10px 10px 0px;" role="presentation"><tr><td><img src="/image/nshanny_2015.jpg" border="0" alt="" title=""  /></td></tr></table>
+<div class="item_name">Nick Shanny</div><p>Senior Vice President, Core Engineering</p>
+
+<p>Nick co-founded TripAdvisor in 2000 with Stephen Kaufer and today is responsible for leading TripAdvisor&rsquo;s engineering organization worldwide. During the early days at TripAdvisor, Nick co-wrote the original platform that powered the site, built a first-class engineering team and led the development of the site design and architecture. In 2007, Nick joined CarGurus where he led engineering. Two years later, Nick returned to the TripAdvisor family working at SmarterTravel Media Group, where he grew the engineering organization and helped build several e-commerce platforms, including Tingo and SniqueAway. From there, Nick returned to TripAdvisor to lead the Vacation Rental engineering teams. Before launching TripAdvisor, Nick worked at Microsoft in their R&amp;D organization and CenterLine Software where he met Kaufer. Nick studied Computer Science at the University of Wisconsin, Madison.</p>
+
+<p>Nick&#39;s favorite travel destination is&nbsp;<a href="https://www.tripadvisor.com/Tourism-g147365-Grand_Cayman_Cayman_Islands-Vacations.html">Grand Cayman Island</a>.</p>
+</div>
+</div></div>
+</div>
+</div>	</div><!--/content-->
+
+</div><!--/contentArea-->
+
+<div style="clear:both;">&nbsp;</div>
+
+<div class="footer">
+	<div class="widthLimit">
+	<div class="footerLogo-wrapper"><img src="images/logo_small_new.png" alt="" title="" border="0"></div>
+	<div class="flagMenu-wrapper">
+		<div class="flagMenu-input">
+			<a href="#" class="flagMenu" data-jq-dropdown="#flagMenu" data-horizontal-offset="10" data-vertical-offset="-500"> 
+			<div class="flag"></div> United States 
+			<i class="fa fa-chevron-down"></i></a>
+		</div>
+	</div>
+	<div class="wd_featureboxes_footer wd_featureboxes-vertical">
+<div id="wd_featurebox-standard_3515" class="wd_featurebox_container wd_featurebox-standard"><div class="wd_featurebox_title"></div><div class="wd_featurebox">
+			
+		
+			
+		<p><a href="https://tripadvisor.mediaroom.com/us-about-us" target="_blank">About Us</a>&nbsp;|&nbsp;<a href="https://www.tripadvisor.com/UserReview" target="_blank">Write a review</a>&nbsp;|&nbsp;<a href="https://www.tripadvisor.com/careers/" target="_blank">Careers</a>&nbsp;|&nbsp;<a href="https://www.tripadvisor.com/MemberProfile" target="_blank">Membership</a>&nbsp;|&nbsp;<a href="https://www.tripadvisor.com/blog/" target="_blank">Blog</a>&nbsp;|&nbsp;<a href="https://www.tripadvisor.com/SiteIndex" target="_blank">Site Map</a>&nbsp;|&nbsp;<a href="https://www.tripadvisor.com/Affiliates" target="_blank">Become an Affiliate</a>&nbsp;|&nbsp;<a href="https://the-tripadvisor-store.myshopify.com/" rel="nofollow" target="_blank">The TripAdvisor Store</a>&nbsp;|&nbsp;<a href="https://www.tripadvisor.com/TravelersChoice" target="_blank">Travelers&#39; Choice</a>&nbsp;|&nbsp;<a href="https://www.tripadvisor.com/Owners" target="_blank">Owners</a>&nbsp;|&nbsp;<a href="https://www.tripadvisor.com/BusinessAdvantage" target="_blank">Business Advantage</a>&nbsp;|&nbsp;<a href="https://www.tripadvisor.com/Owners" target="_blank">DMO/CVB</a>&nbsp;|&nbsp;<a href="http://ir.tripadvisor.com/" target="_blank">Investor Relations</a>&nbsp;|&nbsp;<a href="https://www.tripadvisorsupport.com/hc/en-us" target="_blank">Help&nbsp;Center&nbsp;<img height="10" src="images/bell.png" width="14" /></a></p>
+
+<div>&copy; 2017 TripAdvisor LLC All rights reserved. TripAdvisor&nbsp;<a href="us-terms-of-use" target="_blank">Terms of Use</a>&nbsp;and&nbsp;<a href="us-privacy-policy" target="_blank">Privacy Policy</a>.</div>
+
+<div>
+<p>TripAdvisor LLC is not a booking agent or tour operator, and does not charge any service fees to users of our site. Our partners (airlines, travel providers, and booking agents) who list airfare, tours, and travel packages on TripAdvisor are required to include all fees and surcharges in their listed prices. Examples include the Federal September 11th Security Fee, international departure and arrival taxes and fees, federal excise tax, and other service, handling and miscellaneous fees and surcharges. When you book with one of our partners, please be sure to check their site for a full disclosure of all applicable fees as required by the U.S. Department of Transportation. Airfares are generally quoted per person in USD unless otherwise noted.</p>
+
+<p>For your convenience, TripAdvisor LLC calculates an average price for each hotel, which is based on the rates of available rooms obtained from our booking partners. For tours and attractions, the price displayed is usually the lowest available per person adult price. For any travel packages or deals listed, TripAdvisor LLC does not guarantee any specific rates or prices. In addition, average hotel prices are updated nightly and displayed in your preferred currency using prevailing conversion rates. Since these converted prices are estimates, please check with the booking site for the exact amount and currency.</p>
+
+<p>Furthermore, TripAdvisor LLC makes no guarantees for availability of prices advertised on our site. Listed prices may require a stay of a particular length or have blackout dates, qualifications or restrictions.</p>
+</div>
+
+<div>TripAdvisor LLC is not responsible for content on external web sites. Taxes, fees not included for deals content.</div>
+</div></div></div>
+	</div>
+</div><!--/footer-->
+
+
+<div id="searchMenu" class="jq-dropdown jq-dropdown-tip jq-dropdown-anchor-right">
+	<div class="jq-dropdown-panel">
+	<div class="wd_search_form_container"><form name="basic_search" method="get" action="https://tripadvisor.mediaroom.com/index.php?s=20322" class="wd_search_form wd_search_form_basic"><input type="hidden" name="s" value="search_results" /><input type="text" name="query" value="" size="32" placeholder="Keywords..." title="Keywords..." /> <input type="submit" name="submit" value="Search"></form>
+</div>	</div>
+</div><!--/searchMenu-->
+
+
+<div id="flagMenu" class="jq-dropdown jq-dropdown-anchor-right">
+	<div class="jq-dropdown-panel">
+		<div class="pad-20">
+		<ul id="FLAGS_FLY">
+		<li class="america col region">
+		<div class="flag_heading">The Americas</div>
+		<ul>
+			<li class="flag_item active"><a id="flag_us_fly" class="flag_link flag_us" hreflang="en" title="United States" href="index.php?s=34281">United States</a></li>
+			<li class="flag_item "><a id="flag_ca_fly" class="flag_link flag_ca" hreflang="en-CA" title="Canada (English)" href="index.php?s=34297">Canada (English)</a></li>
+			<li class="flag_item "><a id="flag_ca_fly" class="flag_link flag_ca" hreflang="fr-CA" title="Canada (French)" href="index.php?s=34301">Canada (Français)</a></li>
+			<li class="flag_item "><a id="flag_br_fly" class="flag_link flag_br" hreflang="pt" title="Brazil" href="index.php?s=34289">Brasil</a></li>
+			<li class="flag_item "><a id="flag_mx_fly" class="flag_link flag_mx" hreflang="es-MX" title="Mexico" href="index.php?s=34305">México</a></li>
+			<li class="flag_item "><a id="flag_ar_fly" class="flag_link flag_ar" hreflang="es-AR" title="Argentina" href="index.php?s=34309">Argentina</a></li>
+			<li class="flag_item "><a id="flag_cl_fly" class="flag_link flag_cl" hreflang="es-CL" title="Chile" href="index.php?s=34313">Chile</a></li>
+			<li class="flag_item "><a id="flag_co_fly" class="flag_link flag_co" hreflang="es-CO" title="Colombia" href="index.php?s=34317">Colombia</a></li>
+			<li class="flag_item "><a id="flag_pe_fly" class="flag_link flag_pe" hreflang="es-PE" title="Peru" href="index.php?s=34321">Perú</a></li>
+			<li class="flag_item "><a id="flag_ve_fly" class="flag_link flag_ve" hreflang="es-VE" title="Venezuela" href="index.php?s=34325">Venezuela</a></li>
+		</ul>
+		</li>
+		<li class="europe col region">
+		<div class="flag_heading">Europe</div>
+		<ul>
+			<li class="flag_item "><a id="flag_gb_fly" class="flag_link flag_gb" hreflang="en-GB" title="United Kingdom" href="index.php?s=34282">United Kingdom</a></li>
+			<li class="flag_item "><a id="flag_it_fly" class="flag_link flag_it" hreflang="it" title="Italy" href="index.php?s=34286">Italia</a></li>
+			<li class="flag_item "><a id="flag_es_fly" class="flag_link flag_es" hreflang="es" title="Spain" href="index.php?s=34287">España</a></li>
+			<li class="flag_item "><a id="flag_de_fly" class="flag_link flag_de" hreflang="de" title="Germany" href="index.php?s=34449">Deutschland</a></li>
+			<li class="flag_item "><a id="flag_fr_fly" class="flag_link flag_fr" hreflang="fr" title="France" href="index.php?s=34285">France</a></li>
+			<li class="flag_item "><a id="flag_se_fly" class="flag_link flag_se" hreflang="sv" title="Sweden" href="index.php?s=34341">Sverige</a></li>
+			<li class="flag_item "><a id="flag_nl_fly" class="flag_link flag_nl" hreflang="nl" title="The Netherlands" href="index.php?s=34345">Nederland</a></li>
+			<li class="flag_item "><a id="flag_tr_fly" class="flag_link flag_tr" hreflang="tr" title="Turkey" href="index.php?s=34349">Türkiye</a></li>
+			<li class="flag_item "><a id="flag_dk_fly" class="flag_link flag_dk" hreflang="da" title="Denmark" href="index.php?s=34353">Danmark</a></li>
+			<li class="flag_item "><a id="flag_ie_fly" class="flag_link flag_ie" hreflang="en-IE" title="Ireland" href="index.php?s=34357">Ireland</a></li>
+			<li class="flag_item "><a id="flag_cz_fly" class="flag_link flag_cz" hreflang="cs" title="Czech Republic" href="index.php?s=34361">Česká republika</a></li>
+			<li class="flag_item "><a id="flag_at_fly" class="flag_link flag_at" hreflang="de-AT" title="Austria" href="index.php?s=34365">Österreich</a></li>
+			<li class="flag_item "><a id="flag_gr_fly" class="flag_link flag_gr" hreflang="el" title="Greece" href="index.php?s=34369">Ελλάδα</a></li>
+			<li class="flag_item "><a id="flag_fi_fly" class="flag_link flag_fi" hreflang="fi" title="Finland" href="index.php?s=34373">Suomi</a></li>
+		</ul>
+		</li>
+		<li class="europe col1 region">
+		<div class="flag_heading empty">&nbsp;</div>
+		<ul>
+			<li class="flag_item "><a id="flag_hu_fly" class="flag_link flag_hu" hreflang="hu" title="Hungary" href="index.php?s=34377">Magyarország</a></li>
+			<li class="flag_item "><a id="flag_no_fly" class="flag_link flag_no" hreflang="nb" title="Norway" href="index.php?s=34381">Norge</a></li>
+			<li class="flag_item "><a id="flag_pl_fly" class="flag_link flag_pl" hreflang="pl" title="Poland" href="index.php?s=34385">Polska</a></li>
+			<li class="flag_item "><a id="flag_pt_fly" class="flag_link flag_pt" hreflang="pt-PT" title="Portugal" href="index.php?s=34389">Portugal</a></li>
+			<li class="flag_item "><a id="flag_ru_fly" class="flag_link flag_ru" hreflang="ru" title="Russia" href="index.php?s=34288">Россия</a></li>
+			<li class="flag_item "><a id="flag_sk_fly" class="flag_link flag_sk" hreflang="sk" title="Slovakia" href="index.php?s=34393">Slovensko</a></li>
+			<li class="flag_item "><a id="flag_rs_fly" class="flag_link flag_rs" hreflang="sr" title="Serbia" href="index.php?s=34397">Srbija</a></li>
+			<li class="flag_item "><a id="flag_ch_fly" class="flag_link flag_ch" hreflang="de-CH" title="Switzerland" href="index.php?s=34401">Schweiz</a></li>
+			<li class="flag_item "><a id="flag_ch_fly" class="flag_link flag_ch" hreflang="fr-CH" title="Switzerland" href="index.php?s=34405">Suisse</a></li>
+			<li class="flag_item "><a id="flag_ch_fly" class="flag_link flag_ch" hreflang="it-CH" title="Switzerland" href="index.php?s=34409">Svizzera</a></li>
+			<li class="flag_item "><a id="flag_be_fly" class="flag_link flag_be" hreflang="fr-BE" title="Belgium" href="index.php?s=34413">Belgique</a></li>
+			<li class="flag_item "><a id="flag_be_fly" class="flag_link flag_be" hreflang="nl-BE" title="Belgium" href="index.php?s=34417">België</a></li>
+		</ul>
+		</li>
+		<li class="apac col region">
+		<div class="flag_heading">Asia Pacific</div>
+		<ul>
+			<li class="flag_item "><a id="flag_jp_fly" class="flag_link flag_jp" hreflang="ja" title="Japan" href="index.php?s=34291">日本</a></li>
+			<li class="flag_item "><a id="flag_cn_fly" class="flag_link flag_cn" hreflang="zh-Hans" title="China" href="index.php?s=34292">中国</a></li>
+			<li class="flag_item "><a id="flag_cn_fly" class="flag_link flag_cn" hreflang="zh-Hans" title="Chinese International" href="index.php?s=34423">中文国际版</a></li>
+			<li class="flag_item "><a id="flag_in_fly" class="flag_link flag_in" hreflang="en-IN" title="India" href="index.php?s=34290">India</a></li>
+			<li class="flag_item "><a id="flag_au_fly" class="flag_link flag_au" hreflang="en-AU" title="Australia" href="index.php?s=34283">Australia</a></li>
+			<li class="flag_item "><a id="flag_my_fly" class="flag_link flag_my" hreflang="en-MY" title="Malaysia" href="index.php?s=34294">Malaysia</a></li>
+			<li class="flag_item "><a id="flag_nz_fly" class="flag_link flag_nz" hreflang="en-NZ" title="New Zealand" href="index.php?s=34284">New Zealand</a></li>
+			<li class="flag_item "><a id="flag_ph_fly" class="flag_link flag_ph" hreflang="en-PH" title="Philippines" href="index.php?s=34425">Philippines</a></li>
+			<li class="flag_item "><a id="flag_sg_fly" class="flag_link flag_sg" hreflang="en-SG" title="Singapore" href="index.php?s=34293">Singapore</a></li>
+			<li class="flag_item "><a id="flag_id_fly" class="flag_link flag_id" hreflang="id" title="Indonesia" href="index.php?s=34295">Indonesia</a></li>
+			<li class="flag_item "><a id="flag_kr_fly" class="flag_link flag_kr" hreflang="ko" title="South Korea" href="index.php?s=34429">대한민국</a></li>
+			<li class="flag_item "><a id="flag_th_fly" class="flag_link flag_th" hreflang="th" title="Thailand" href="index.php?s=34296">ไทย</a></li>
+			<li class="flag_item "><a id="flag_vn_fly" class="flag_link flag_vn" hreflang="vi" title="Vietnam" href="index.php?s=34433">Việt Nam</a></li>
+			<li class="flag_item "><a id="flag_tw_fly" class="flag_link flag_tw" hreflang="zh-Hant" title="Taiwan" href="index.php?s=34437">台灣</a></li>
+			<li class="flag_item "><a id="flag_hk_fly" class="flag_link flag_hk" hreflang="en-HK" title="Hong Kong" href="index.php?s=34441">Hong Kong</a></li>
+			<li class="flag_item "><a id="flag_hk_fly" class="flag_link flag_hk" hreflang="zh-hk" title="Hong Kong" href="index.php?s=34445">香港</a></li>
+		</ul>
+		</li>
+		<li class="africa col region">
+		<div class="flag_heading">Africa &amp; the Middle East</div>
+		<ul>
+			<li class="flag_item "><a id="flag_ar_intl_fly" class="flag_link flag_ar_intl" hreflang="ar" title="Arabic" href="index.php?s=34578">العربية‬</a></li>
+			<li class="flag_item "><a id="flag_eg_fly" class="flag_link flag_eg" hreflang="ar-EG" title="Egypt" href="index.php?s=34329">مصر</a></li>
+			<li class="flag_item "><a id="flag_za_fly" class="flag_link flag_za" hreflang="en-ZA" title="South Africa" href="index.php?s=34333">South Africa</a></li>
+			<li class="flag_item "><a id="flag_il_fly" class="flag_link flag_il" hreflang="he" title="Israel" href="index.php?s=34337">ישראל</a></li>
+		</ul>
+		</li>
+		</ul>
+		</div>
+	</div>
+</div><!--/searchMenu-->
+
+<script type="text/javascript">
+$(document).ready(function() {
+	$('.wd_featureboxes_middle .wd_featurebox p.more').each(function(){
+		$(this).parent().parent().prepend(this);
+	});
+	$('.wd_newsfeed_releases-teaser .item').each(function(){
+		$(this).children('.wd_date').insertAfter($(this).children('.wd_title'));
+	});
+});
+</script>
+
+
+
+<!-- begin spin_special_output(body_end) -->
+<script wd_script_id="piwik_tracking_code"></script>
+<!-- Piwik Tracking Code -->
+<script type="text/javascript">
+  var _paq = _paq || [];
+
+  _paq.push(["setCustomVariable", 1, "Content Type", "Standard", "page"]);
+
+  _paq.push(["setCustomVariable", 3, "Navigation Page", "US About Us", "page"]);
+
+  _paq.push(["trackPageView"]);
+  _paq.push(["enableLinkTracking"]);
+  (function() {
+    var u="//stats.drivetheweb.com/";
+    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+    _paq.push(["setSiteId", 4086]);
+    var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0];
+    g.type="text/javascript"; g.async=true; g.defer=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+<noscript>
+	<img src="https://stats.drivetheweb.com/piwik.php?idsite=4086&rec=1" style="border:0" alt="" />
+</noscript>
+<!-- End Piwik Tracking Code -->
+		
+<!-- end spin_special_output(body_end) -->
+</body>
+</html>
