@@ -1,38 +1,31 @@
 <!DOCTYPE html>
-<html class="no-js " lang="en-US" xmlns="http://www.w3.org/1999/xhtml" prefix="og: http://ogp.me/ns#"      xmlns:og="http://opengraphprotocol.org/schema/" xmlns:fb="http://www.facebook.com/2008/fbml">
+<html class="no-js " lang="en-US" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:fb="http://www.facebook.com/2008/fbml" xmlns="http://www.w3.org/1999/html">
 <head itemscope itemtype="http://schema.org/WebSite">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge"><script type="text/javascript">(window.NREUM||(NREUM={})).loader_config={xpid:"Vg8AUVZbGwACV1VXDggA"};window.NREUM||(NREUM={}),__nr_require=function(t,n,e){function r(e){if(!n[e]){var o=n[e]={exports:{}};t[e][0].call(o.exports,function(n){var o=t[e][1][n];return r(o||n)},o,o.exports)}return n[e].exports}if("function"==typeof __nr_require)return __nr_require;for(var o=0;o<e.length;o++)r(e[o]);return r}({1:[function(t,n,e){function r(t){try{s.console&&console.log(t)}catch(n){}}var o,i=t("ee"),a=t(15),s={};try{o=localStorage.getItem("__nr_flags").split(","),console&&"function"==typeof console.log&&(s.console=!0,o.indexOf("dev")!==-1&&(s.dev=!0),o.indexOf("nr_dev")!==-1&&(s.nrDev=!0))}catch(c){}s.nrDev&&i.on("internal-error",function(t){r(t.stack)}),s.dev&&i.on("fn-err",function(t,n,e){r(e.stack)}),s.dev&&(r("NR AGENT IN DEVELOPMENT MODE"),r("flags: "+a(s,function(t,n){return t}).join(", ")))},{}],2:[function(t,n,e){function r(t,n,e,r,o){try{d?d-=1:i("err",[o||new UncaughtException(t,n,e)])}catch(s){try{i("ierr",[s,c.now(),!0])}catch(u){}}return"function"==typeof f&&f.apply(this,a(arguments))}function UncaughtException(t,n,e){this.message=t||"Uncaught error with no additional information",this.sourceURL=n,this.line=e}function o(t){i("err",[t,c.now()])}var i=t("handle"),a=t(16),s=t("ee"),c=t("loader"),f=window.onerror,u=!1,d=0;c.features.err=!0,t(1),window.onerror=r;try{throw new Error}catch(l){"stack"in l&&(t(8),t(7),"addEventListener"in window&&t(5),c.xhrWrappable&&t(9),u=!0)}s.on("fn-start",function(t,n,e){u&&(d+=1)}),s.on("fn-err",function(t,n,e){u&&(this.thrown=!0,o(e))}),s.on("fn-end",function(){u&&!this.thrown&&d>0&&(d-=1)}),s.on("internal-error",function(t){i("ierr",[t,c.now(),!0])})},{}],3:[function(t,n,e){t("loader").features.ins=!0},{}],4:[function(t,n,e){function r(t){}if(window.performance&&window.performance.timing&&window.performance.getEntriesByType){var o=t("ee"),i=t("handle"),a=t(8),s=t(7),c="learResourceTimings",f="addEventListener",u="resourcetimingbufferfull",d="bstResource",l="resource",p="-start",h="-end",m="fn"+p,w="fn"+h,v="bstTimer",y="pushState",g=t("loader");g.features.stn=!0,t(6);var b=NREUM.o.EV;o.on(m,function(t,n){var e=t[0];e instanceof b&&(this.bstStart=g.now())}),o.on(w,function(t,n){var e=t[0];e instanceof b&&i("bst",[e,n,this.bstStart,g.now()])}),a.on(m,function(t,n,e){this.bstStart=g.now(),this.bstType=e}),a.on(w,function(t,n){i(v,[n,this.bstStart,g.now(),this.bstType])}),s.on(m,function(){this.bstStart=g.now()}),s.on(w,function(t,n){i(v,[n,this.bstStart,g.now(),"requestAnimationFrame"])}),o.on(y+p,function(t){this.time=g.now(),this.startPath=location.pathname+location.hash}),o.on(y+h,function(t){i("bstHist",[location.pathname+location.hash,this.startPath,this.time])}),f in window.performance&&(window.performance["c"+c]?window.performance[f](u,function(t){i(d,[window.performance.getEntriesByType(l)]),window.performance["c"+c]()},!1):window.performance[f]("webkit"+u,function(t){i(d,[window.performance.getEntriesByType(l)]),window.performance["webkitC"+c]()},!1)),document[f]("scroll",r,{passive:!0}),document[f]("keypress",r,!1),document[f]("click",r,!1)}},{}],5:[function(t,n,e){function r(t){for(var n=t;n&&!n.hasOwnProperty(u);)n=Object.getPrototypeOf(n);n&&o(n)}function o(t){s.inPlace(t,[u,d],"-",i)}function i(t,n){return t[1]}var a=t("ee").get("events"),s=t(18)(a,!0),c=t("gos"),f=XMLHttpRequest,u="addEventListener",d="removeEventListener";n.exports=a,"getPrototypeOf"in Object?(r(document),r(window),r(f.prototype)):f.prototype.hasOwnProperty(u)&&(o(window),o(f.prototype)),a.on(u+"-start",function(t,n){var e=t[1],r=c(e,"nr@wrapped",function(){function t(){if("function"==typeof e.handleEvent)return e.handleEvent.apply(e,arguments)}var n={object:t,"function":e}[typeof e];return n?s(n,"fn-",null,n.name||"anonymous"):e});this.wrapped=t[1]=r}),a.on(d+"-start",function(t){t[1]=this.wrapped||t[1]})},{}],6:[function(t,n,e){var r=t("ee").get("history"),o=t(18)(r);n.exports=r,o.inPlace(window.history,["pushState","replaceState"],"-")},{}],7:[function(t,n,e){var r=t("ee").get("raf"),o=t(18)(r),i="equestAnimationFrame";n.exports=r,o.inPlace(window,["r"+i,"mozR"+i,"webkitR"+i,"msR"+i],"raf-"),r.on("raf-start",function(t){t[0]=o(t[0],"fn-")})},{}],8:[function(t,n,e){function r(t,n,e){t[0]=a(t[0],"fn-",null,e)}function o(t,n,e){this.method=e,this.timerDuration=isNaN(t[1])?0:+t[1],t[0]=a(t[0],"fn-",this,e)}var i=t("ee").get("timer"),a=t(18)(i),s="setTimeout",c="setInterval",f="clearTimeout",u="-start",d="-";n.exports=i,a.inPlace(window,[s,"setImmediate"],s+d),a.inPlace(window,[c],c+d),a.inPlace(window,[f,"clearImmediate"],f+d),i.on(c+u,r),i.on(s+u,o)},{}],9:[function(t,n,e){function r(t,n){d.inPlace(n,["onreadystatechange"],"fn-",s)}function o(){var t=this,n=u.context(t);t.readyState>3&&!n.resolved&&(n.resolved=!0,u.emit("xhr-resolved",[],t)),d.inPlace(t,y,"fn-",s)}function i(t){g.push(t),h&&(x?x.then(a):w?w(a):(E=-E,O.data=E))}function a(){for(var t=0;t<g.length;t++)r([],g[t]);g.length&&(g=[])}function s(t,n){return n}function c(t,n){for(var e in t)n[e]=t[e];return n}t(5);var f=t("ee"),u=f.get("xhr"),d=t(18)(u),l=NREUM.o,p=l.XHR,h=l.MO,m=l.PR,w=l.SI,v="readystatechange",y=["onload","onerror","onabort","onloadstart","onloadend","onprogress","ontimeout"],g=[];n.exports=u;var b=window.XMLHttpRequest=function(t){var n=new p(t);try{u.emit("new-xhr",[n],n),n.addEventListener(v,o,!1)}catch(e){try{u.emit("internal-error",[e])}catch(r){}}return n};if(c(p,b),b.prototype=p.prototype,d.inPlace(b.prototype,["open","send"],"-xhr-",s),u.on("send-xhr-start",function(t,n){r(t,n),i(n)}),u.on("open-xhr-start",r),h){var x=m&&m.resolve();if(!w&&!m){var E=1,O=document.createTextNode(E);new h(a).observe(O,{characterData:!0})}}else f.on("fn-end",function(t){t[0]&&t[0].type===v||a()})},{}],10:[function(t,n,e){function r(t){var n=this.params,e=this.metrics;if(!this.ended){this.ended=!0;for(var r=0;r<d;r++)t.removeEventListener(u[r],this.listener,!1);if(!n.aborted){if(e.duration=a.now()-this.startTime,4===t.readyState){n.status=t.status;var i=o(t,this.lastSize);if(i&&(e.rxSize=i),this.sameOrigin){var c=t.getResponseHeader("X-NewRelic-App-Data");c&&(n.cat=c.split(", ").pop())}}else n.status=0;e.cbTime=this.cbTime,f.emit("xhr-done",[t],t),s("xhr",[n,e,this.startTime])}}}function o(t,n){var e=t.responseType;if("json"===e&&null!==n)return n;var r="arraybuffer"===e||"blob"===e||"json"===e?t.response:t.responseText;return h(r)}function i(t,n){var e=c(n),r=t.params;r.host=e.hostname+":"+e.port,r.pathname=e.pathname,t.sameOrigin=e.sameOrigin}var a=t("loader");if(a.xhrWrappable){var s=t("handle"),c=t(11),f=t("ee"),u=["load","error","abort","timeout"],d=u.length,l=t("id"),p=t(14),h=t(13),m=window.XMLHttpRequest;a.features.xhr=!0,t(9),f.on("new-xhr",function(t){var n=this;n.totalCbs=0,n.called=0,n.cbTime=0,n.end=r,n.ended=!1,n.xhrGuids={},n.lastSize=null,p&&(p>34||p<10)||window.opera||t.addEventListener("progress",function(t){n.lastSize=t.loaded},!1)}),f.on("open-xhr-start",function(t){this.params={method:t[0]},i(this,t[1]),this.metrics={}}),f.on("open-xhr-end",function(t,n){"loader_config"in NREUM&&"xpid"in NREUM.loader_config&&this.sameOrigin&&n.setRequestHeader("X-NewRelic-ID",NREUM.loader_config.xpid)}),f.on("send-xhr-start",function(t,n){var e=this.metrics,r=t[0],o=this;if(e&&r){var i=h(r);i&&(e.txSize=i)}this.startTime=a.now(),this.listener=function(t){try{"abort"===t.type&&(o.params.aborted=!0),("load"!==t.type||o.called===o.totalCbs&&(o.onloadCalled||"function"!=typeof n.onload))&&o.end(n)}catch(e){try{f.emit("internal-error",[e])}catch(r){}}};for(var s=0;s<d;s++)n.addEventListener(u[s],this.listener,!1)}),f.on("xhr-cb-time",function(t,n,e){this.cbTime+=t,n?this.onloadCalled=!0:this.called+=1,this.called!==this.totalCbs||!this.onloadCalled&&"function"==typeof e.onload||this.end(e)}),f.on("xhr-load-added",function(t,n){var e=""+l(t)+!!n;this.xhrGuids&&!this.xhrGuids[e]&&(this.xhrGuids[e]=!0,this.totalCbs+=1)}),f.on("xhr-load-removed",function(t,n){var e=""+l(t)+!!n;this.xhrGuids&&this.xhrGuids[e]&&(delete this.xhrGuids[e],this.totalCbs-=1)}),f.on("addEventListener-end",function(t,n){n instanceof m&&"load"===t[0]&&f.emit("xhr-load-added",[t[1],t[2]],n)}),f.on("removeEventListener-end",function(t,n){n instanceof m&&"load"===t[0]&&f.emit("xhr-load-removed",[t[1],t[2]],n)}),f.on("fn-start",function(t,n,e){n instanceof m&&("onload"===e&&(this.onload=!0),("load"===(t[0]&&t[0].type)||this.onload)&&(this.xhrCbStart=a.now()))}),f.on("fn-end",function(t,n){this.xhrCbStart&&f.emit("xhr-cb-time",[a.now()-this.xhrCbStart,this.onload,n],n)})}},{}],11:[function(t,n,e){n.exports=function(t){var n=document.createElement("a"),e=window.location,r={};n.href=t,r.port=n.port;var o=n.href.split("://");!r.port&&o[1]&&(r.port=o[1].split("/")[0].split("@").pop().split(":")[1]),r.port&&"0"!==r.port||(r.port="https"===o[0]?"443":"80"),r.hostname=n.hostname||e.hostname,r.pathname=n.pathname,r.protocol=o[0],"/"!==r.pathname.charAt(0)&&(r.pathname="/"+r.pathname);var i=!n.protocol||":"===n.protocol||n.protocol===e.protocol,a=n.hostname===document.domain&&n.port===e.port;return r.sameOrigin=i&&(!n.hostname||a),r}},{}],12:[function(t,n,e){function r(){}function o(t,n,e){return function(){return i(t,[f.now()].concat(s(arguments)),n?null:this,e),n?void 0:this}}var i=t("handle"),a=t(15),s=t(16),c=t("ee").get("tracer"),f=t("loader"),u=NREUM;"undefined"==typeof window.newrelic&&(newrelic=u);var d=["setPageViewName","setCustomAttribute","setErrorHandler","finished","addToTrace","inlineHit","addRelease"],l="api-",p=l+"ixn-";a(d,function(t,n){u[n]=o(l+n,!0,"api")}),u.addPageAction=o(l+"addPageAction",!0),u.setCurrentRouteName=o(l+"routeName",!0),n.exports=newrelic,u.interaction=function(){return(new r).get()};var h=r.prototype={createTracer:function(t,n){var e={},r=this,o="function"==typeof n;return i(p+"tracer",[f.now(),t,e],r),function(){if(c.emit((o?"":"no-")+"fn-start",[f.now(),r,o],e),o)try{return n.apply(this,arguments)}finally{c.emit("fn-end",[f.now()],e)}}}};a("setName,setAttribute,save,ignore,onEnd,getContext,end,get".split(","),function(t,n){h[n]=o(p+n)}),newrelic.noticeError=function(t){"string"==typeof t&&(t=new Error(t)),i("err",[t,f.now()])}},{}],13:[function(t,n,e){n.exports=function(t){if("string"==typeof t&&t.length)return t.length;if("object"==typeof t){if("undefined"!=typeof ArrayBuffer&&t instanceof ArrayBuffer&&t.byteLength)return t.byteLength;if("undefined"!=typeof Blob&&t instanceof Blob&&t.size)return t.size;if(!("undefined"!=typeof FormData&&t instanceof FormData))try{return JSON.stringify(t).length}catch(n){return}}}},{}],14:[function(t,n,e){var r=0,o=navigator.userAgent.match(/Firefox[\/\s](\d+\.\d+)/);o&&(r=+o[1]),n.exports=r},{}],15:[function(t,n,e){function r(t,n){var e=[],r="",i=0;for(r in t)o.call(t,r)&&(e[i]=n(r,t[r]),i+=1);return e}var o=Object.prototype.hasOwnProperty;n.exports=r},{}],16:[function(t,n,e){function r(t,n,e){n||(n=0),"undefined"==typeof e&&(e=t?t.length:0);for(var r=-1,o=e-n||0,i=Array(o<0?0:o);++r<o;)i[r]=t[n+r];return i}n.exports=r},{}],17:[function(t,n,e){n.exports={exists:"undefined"!=typeof window.performance&&window.performance.timing&&"undefined"!=typeof window.performance.timing.navigationStart}},{}],18:[function(t,n,e){function r(t){return!(t&&t instanceof Function&&t.apply&&!t[a])}var o=t("ee"),i=t(16),a="nr@original",s=Object.prototype.hasOwnProperty,c=!1;n.exports=function(t,n){function e(t,n,e,o){function nrWrapper(){var r,a,s,c;try{a=this,r=i(arguments),s="function"==typeof e?e(r,a):e||{}}catch(f){l([f,"",[r,a,o],s])}u(n+"start",[r,a,o],s);try{return c=t.apply(a,r)}catch(d){throw u(n+"err",[r,a,d],s),d}finally{u(n+"end",[r,a,c],s)}}return r(t)?t:(n||(n=""),nrWrapper[a]=t,d(t,nrWrapper),nrWrapper)}function f(t,n,o,i){o||(o="");var a,s,c,f="-"===o.charAt(0);for(c=0;c<n.length;c++)s=n[c],a=t[s],r(a)||(t[s]=e(a,f?s+o:o,i,s))}function u(e,r,o){if(!c||n){var i=c;c=!0;try{t.emit(e,r,o,n)}catch(a){l([a,e,r,o])}c=i}}function d(t,n){if(Object.defineProperty&&Object.keys)try{var e=Object.keys(t);return e.forEach(function(e){Object.defineProperty(n,e,{get:function(){return t[e]},set:function(n){return t[e]=n,n}})}),n}catch(r){l([r])}for(var o in t)s.call(t,o)&&(n[o]=t[o]);return n}function l(n){try{t.emit("internal-error",n)}catch(e){}}return t||(t=o),e.inPlace=f,e.flag=a,e}},{}],ee:[function(t,n,e){function r(){}function o(t){function n(t){return t&&t instanceof r?t:t?c(t,s,i):i()}function e(e,r,o,i){if(!l.aborted||i){t&&t(e,r,o);for(var a=n(o),s=h(e),c=s.length,f=0;f<c;f++)s[f].apply(a,r);var d=u[y[e]];return d&&d.push([g,e,r,a]),a}}function p(t,n){v[t]=h(t).concat(n)}function h(t){return v[t]||[]}function m(t){return d[t]=d[t]||o(e)}function w(t,n){f(t,function(t,e){n=n||"feature",y[e]=n,n in u||(u[n]=[])})}var v={},y={},g={on:p,emit:e,get:m,listeners:h,context:n,buffer:w,abort:a,aborted:!1};return g}function i(){return new r}function a(){(u.api||u.feature)&&(l.aborted=!0,u=l.backlog={})}var s="nr@context",c=t("gos"),f=t(15),u={},d={},l=n.exports=o();l.backlog=u},{}],gos:[function(t,n,e){function r(t,n,e){if(o.call(t,n))return t[n];var r=e();if(Object.defineProperty&&Object.keys)try{return Object.defineProperty(t,n,{value:r,writable:!0,enumerable:!1}),r}catch(i){}return t[n]=r,r}var o=Object.prototype.hasOwnProperty;n.exports=r},{}],handle:[function(t,n,e){function r(t,n,e,r){o.buffer([t],r),o.emit(t,n,e)}var o=t("ee").get("handle");n.exports=r,r.ee=o},{}],id:[function(t,n,e){function r(t){var n=typeof t;return!t||"object"!==n&&"function"!==n?-1:t===window?0:a(t,i,function(){return o++})}var o=1,i="nr@id",a=t("gos");n.exports=r},{}],loader:[function(t,n,e){function r(){if(!x++){var t=b.info=NREUM.info,n=l.getElementsByTagName("script")[0];if(setTimeout(u.abort,3e4),!(t&&t.licenseKey&&t.applicationID&&n))return u.abort();f(y,function(n,e){t[n]||(t[n]=e)}),c("mark",["onload",a()+b.offset],null,"api");var e=l.createElement("script");e.src="https://"+t.agent,n.parentNode.insertBefore(e,n)}}function o(){"complete"===l.readyState&&i()}function i(){c("mark",["domContent",a()+b.offset],null,"api")}function a(){return E.exists&&performance.now?Math.round(performance.now()):(s=Math.max((new Date).getTime(),s))-b.offset}var s=(new Date).getTime(),c=t("handle"),f=t(15),u=t("ee"),d=window,l=d.document,p="addEventListener",h="attachEvent",m=d.XMLHttpRequest,w=m&&m.prototype;NREUM.o={ST:setTimeout,SI:d.setImmediate,CT:clearTimeout,XHR:m,REQ:d.Request,EV:d.Event,PR:d.Promise,MO:d.MutationObserver};var v=""+location,y={beacon:"bam.nr-data.net",errorBeacon:"bam.nr-data.net",agent:"js-agent.newrelic.com/nr-1044.min.js"},g=m&&w&&w[p]&&!/CriOS/.test(navigator.userAgent),b=n.exports={offset:s,now:a,origin:v,features:{},xhrWrappable:g};t(12),l[p]?(l[p]("DOMContentLoaded",i,!1),d[p]("load",r,!1)):(l[h]("onreadystatechange",o),d[h]("onload",r)),c("mark",["firstbyte",s],null,"api");var x=0,E=t(17)},{}]},{},["loader",2,10,4,3]);</script>
-    <meta name="viewport" content="width=device-width">
-    <meta itemprop="name" content="Vacation Home Rentals">
-    <meta name="description" content="Great deals and reviews for vacation homes, villas, beach houses, and condo rentals from VacationHomeRentals.com. Over 100,000 vacation homes for rent by owner in Florida, California, Hawaii, Maine, Arizona and more." />
-    <meta name="author" content="Vacation Home Rentals" />
-    <meta property="fb:app_id" content="170570539623448"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta itemprop="name" content="Flipkey">
+    <meta name="description" content="Find amazing deals, authentic guest reviews, and a comprehensive selection of more than 300,000 of active properties vacation rentals around the world." />
+    <meta name="author" content="Flipkey" />
 
-    <title>Vacation Rentals: Homes, Beach Houses, Condos, Cabins & Villas for Rent by Owner</title>
-    <link rel="shortcut icon" href="//assets.vacationhomerentals.com/res/1380077868/assets/hl-loggedinpages/images/favicon_vhr.ico"/>
+    <title>Vacation Rentals – Beach Houses, Cabins, Condos, Cottages, Vacation Homes & Villas | FlipKey</title>
+    <link rel="shortcut icon" href="//s4.fkimg.com/res/1380077868/assets/hl-loggedinpages/images/favicon_flipkey.ico"/>
 
-    <meta name="google-site-verification" content="XsH6E4lPvoak7YpImt0hn3pw-ldqPVto4X-3kvEf_WE" />
-<!-- Open Graph Metadata -->
-<meta property="og:type" content="company"/>
-<meta property="og:site_name" content="Vacation Home Rentals"/>
-<meta property="og:title" content="Vacation Rentals: Homes, Beach Houses, Condos, Cabins & Villas for Rent by Owner"/>
-    <meta property="og:url" content="https://www.vacationhomerentals.com"/>
-<meta property="og:image" content="http://assets.vacationhomerentals.com/res/1380077868/assets/public/images/header/logos/2017/VHR-en_US.svg"/>
-<meta property="og:image:secure_url" content="https://assets.vacationhomerentals.com/res/1380077868/assets/public/images/header/logos/2017/VHR-en_US.svg"/>
-<meta property="og:image:type" content="image/jpeg"/>
-<meta property="og:description" content="Great deals and reviews for vacation homes, villas, beach houses, and condo rentals from VacationHomeRentals.com. Over 100,000 vacation homes for rent by owner in Florida, California, Hawaii, Maine, Arizona and more."/>
-<!-- end -->
-            <link rel="canonical" href="https://www.vacationhomerentals.com"/>
+            <meta name="google-site-verification" content="5zMOBNO0vM3TskJ5c5NPBYHL_l_yO0Ew-Yb69dbPA20" />
+    
+                <link rel="canonical" href="https://www.flipkey.com"/>
     
     
 
-    <!-- CSS Assets -->
-<link type="text/css" rel="stylesheet" href="//assets.vacationhomerentals.com/res/1380077868/assets/production/common/css/brand_vhr.min.baf86356d38f98b1205c9f21.css">
+    <!-- HL CSS Assets -->
+<link type="text/css" rel="stylesheet" href="//s4.fkimg.com/res/1380077868/assets/production/common/css/brand_fk.min.449a81d54848ded9e6b31783.css">
 
 <!-- Page level assets -->
 <!-- Home CSS Assets -->
-<link type="text/css" rel="stylesheet" href="//assets.vacationhomerentals.com/res/1380077868/assets/production/home/css/home-vhr.min.ca7bb66e3c46473f1895192c.css">
+<link type="text/css" rel="stylesheet" href="//s4.fkimg.com/res/1380077868/assets/production/home/css/home-fk.min.2391eff6326244d20a137bfa.css">
+
+    <script>!function(a,b,c){function d(a){var b,c=document.createElement("script");c.src="//p.smartertravel.com"+a,c.async=!0,b=document.getElementsByTagName("script")[0],b.parentNode.insertBefore(c,b)}function e(a){if("register"===a){f.API_KEY=arguments&&arguments[1]?arguments[1]:null;for(var b=0;b<g.length;b++)d(g[b])}else f._queue.push(arguments)}var f,g=["/ext/partner/flipkey-v2/flipkey-v2-hosted.min.js","/b/api/ups/preflight.js"];return f=a[b]=a[b]||e,f._init?void(a.console&&a.console.warn&&a.console.warn("SmarterAds bootstrap snippet has already been included.")):(a.SmarterTravelNetworkNS=b,f.BOOTSTRAP_VERSION="2.0.0",f._init=!0,f._queue=[],void f("register",c))}(window,"smarter","zckaaZBoTsyjSxQrB6tpKQ");smarter("load");</script>
 
     <script>
 !function(e,n,t){function o(e,n){return typeof e===n}function s(){var e,n,t,s,r,i,a;for(var l in w)if(w.hasOwnProperty(l)){if(e=[],n=w[l],n.name&&(e.push(n.name.toLowerCase()),n.options&&n.options.aliases&&n.options.aliases.length))for(t=0;t<n.options.aliases.length;t++)e.push(n.options.aliases[t].toLowerCase());for(s=o(n.fn,"function")?n.fn():n.fn,r=0;r<e.length;r++)i=e[r],a=i.split("."),1===a.length?Modernizr[a[0]]=s:(!Modernizr[a[0]]||Modernizr[a[0]]instanceof Boolean||(Modernizr[a[0]]=new Boolean(Modernizr[a[0]])),Modernizr[a[0]][a[1]]=s),y.push((s?"":"no-")+a.join("-"))}}function r(e){var n=x.className,t=Modernizr._config.classPrefix||"";if(S&&(n=n.baseVal),Modernizr._config.enableJSClass){var o=new RegExp("(^|\\s)"+t+"no-js(\\s|$)");n=n.replace(o,"$1"+t+"js$2")}Modernizr._config.enableClasses&&(n+=" "+t+e.join(" "+t),S?x.className.baseVal=n:x.className=n)}function i(){return"function"!=typeof n.createElement?n.createElement(arguments[0]):S?n.createElementNS.call(n,"http://www.w3.org/2000/svg",arguments[0]):n.createElement.apply(n,arguments)}function a(){var e=n.body;return e||(e=i(S?"svg":"body"),e.fake=!0),e}function l(e,t,o,s){var r,l,f,u,c="modernizr",d=i("div"),p=a();if(parseInt(o,10))for(;o--;)f=i("div"),f.id=s?s[o]:c+(o+1),d.appendChild(f);return r=i("style"),r.type="text/css",r.id="s"+c,(p.fake?p:d).appendChild(r),p.appendChild(d),r.styleSheet?r.styleSheet.cssText=e:r.appendChild(n.createTextNode(e)),d.id=c,p.fake&&(p.style.background="",p.style.overflow="hidden",u=x.style.overflow,x.style.overflow="hidden",x.appendChild(p)),l=t(d,e),p.fake?(p.parentNode.removeChild(p),x.style.overflow=u,x.offsetHeight):d.parentNode.removeChild(d),!!l}function f(e,n){return!!~(""+e).indexOf(n)}function u(e){return e.replace(/([a-z])-([a-z])/g,function(e,n,t){return n+t.toUpperCase()}).replace(/^-/,"")}function c(e,n){return function(){return e.apply(n,arguments)}}function d(e,n,t){var s;for(var r in e)if(e[r]in n)return t===!1?e[r]:(s=n[e[r]],o(s,"function")?c(s,t||n):s);return!1}function p(e){return e.replace(/([A-Z])/g,function(e,n){return"-"+n.toLowerCase()}).replace(/^ms-/,"-ms-")}function m(n,o){var s=n.length;if("CSS"in e&&"supports"in e.CSS){for(;s--;)if(e.CSS.supports(p(n[s]),o))return!0;return!1}if("CSSSupportsRule"in e){for(var r=[];s--;)r.push("("+p(n[s])+":"+o+")");return r=r.join(" or "),l("@supports ("+r+") { #modernizr { position: absolute; } }",function(e){return"absolute"==getComputedStyle(e,null).position})}return t}function h(e,n,s,r){function a(){c&&(delete P.style,delete P.modElem)}if(r=o(r,"undefined")?!1:r,!o(s,"undefined")){var l=m(e,s);if(!o(l,"undefined"))return l}for(var c,d,p,h,v,g=["modernizr","tspan","samp"];!P.style&&g.length;)c=!0,P.modElem=i(g.shift()),P.style=P.modElem.style;for(p=e.length,d=0;p>d;d++)if(h=e[d],v=P.style[h],f(h,"-")&&(h=u(h)),P.style[h]!==t){if(r||o(s,"undefined"))return a(),"pfx"==n?h:!0;try{P.style[h]=s}catch(y){}if(P.style[h]!=v)return a(),"pfx"==n?h:!0}return a(),!1}function v(e,n,t,s,r){var i=e.charAt(0).toUpperCase()+e.slice(1),a=(e+" "+z.join(i+" ")+i).split(" ");return o(n,"string")||o(n,"undefined")?h(a,n,s,r):(a=(e+" "+E.join(i+" ")+i).split(" "),d(a,n,t))}function g(e,n,o){return v(e,t,t,n,o)}var y=[],w=[],C={_version:"3.3.1",_config:{classPrefix:"",enableClasses:!0,enableJSClass:!0,usePrefixes:!0},_q:[],on:function(e,n){var t=this;setTimeout(function(){n(t[e])},0)},addTest:function(e,n,t){w.push({name:e,fn:n,options:t})},addAsyncTest:function(e){w.push({name:null,fn:e})}},Modernizr=function(){};Modernizr.prototype=C,Modernizr=new Modernizr,Modernizr.addTest("svg",!!n.createElementNS&&!!n.createElementNS("http://www.w3.org/2000/svg","svg").createSVGRect);var x=n.documentElement,S="svg"===x.nodeName.toLowerCase(),_=C._config.usePrefixes?" -webkit- -moz- -o- -ms- ".split(" "):["",""];C._prefixes=_;var b=C.testStyles=l;Modernizr.addTest("touchevents",function(){var t;if("ontouchstart"in e||e.DocumentTouch&&n instanceof DocumentTouch)t=!0;else{var o=["@media (",_.join("touch-enabled),("),"heartz",")","{#modernizr{top:9px;position:absolute}}"].join("");b(o,function(e){t=9===e.offsetTop})}return t});var T="Moz O ms Webkit",z=C._config.usePrefixes?T.split(" "):[];C._cssomPrefixes=z;var E=C._config.usePrefixes?T.toLowerCase().split(" "):[];C._domPrefixes=E;var N={elem:i("modernizr")};Modernizr._q.push(function(){delete N.elem});var P={style:N.elem.style};Modernizr._q.unshift(function(){delete P.style}),C.testAllProps=v,C.testAllProps=g,Modernizr.addTest("flexbox",g("flexBasis","1px",!0)),Modernizr.addTest("csstransforms",function(){return-1===navigator.userAgent.indexOf("Android 2.")&&g("transform","scale(1)",!0)}),Modernizr.addTest("cssanimations",g("animationName","a",!0)),s(),r(y),delete C.addTest,delete C.addAsyncTest;for(var j=0;j<Modernizr._q.length;j++)Modernizr._q[j]();e.Modernizr=Modernizr}(window,document);
@@ -44,7 +37,7 @@
 
         hl.config.pageType = "home";
             
-    hl.config.imgPath = "//assets.vacationhomerentals.com/res/1380077868/assets/public/images/";
+    hl.config.imgPath = "//s4.fkimg.com/res/1380077868/assets/public/images/";
 
     // Date formats
     hl.config.datepickerDateFormat = "mm/dd/yy";
@@ -58,17 +51,17 @@
         startTime: new Date().getTime()
     };
 
-    hl.config.traveler = {"credentials":[],"baseUrl":"https:\/\/www.vacationhomerentals.com\/traveler\/","externalId":null,"returnTo":"https:\/\/www.vacationhomerentals.com\/","paths":{"auth":"auth","inbox":"inbox","join":"join?returnTo=https%3A%2F%2Fwww.vacationhomerentals.com%2F","signin":"signin?returnTo=https%3A%2F%2Fwww.vacationhomerentals.com%2F","signout":"signout","welcome":"welcome?returnTo=https%3A%2F%2Fwww.vacationhomerentals.com%2F","updateSubscriptions":"updateSubscriptions","getLoginUrl":"getLoginUrl","getMemberInfo":"getMemberInfo"},"isSignedIn":false,"showOverlay":false,"userId":null,"membershipEnabled":true,"loginType":"","showLoginAction":null,"needsRedirect":false,"doReload":false,"origin":"https:\/\/www.tripadvisor.com","showFBTooltip":true,"cookieUpdated":false};
-    hl.config.baseUrl = 'https://www.vacationhomerentals.com/content/';
+    hl.config.traveler = {"credentials":[],"baseUrl":"https:\/\/www.flipkey.com\/traveler\/","externalId":null,"returnTo":"https:\/\/www.flipkey.com\/","paths":{"auth":"auth","inbox":"inbox","join":"join?returnTo=https%3A%2F%2Fwww.flipkey.com%2F","signin":"signin?returnTo=https%3A%2F%2Fwww.flipkey.com%2F","signout":"signout","welcome":"welcome?returnTo=https%3A%2F%2Fwww.flipkey.com%2F","updateSubscriptions":"updateSubscriptions","getLoginUrl":"getLoginUrl","getMemberInfo":"getMemberInfo"},"isSignedIn":false,"showOverlay":false,"userId":null,"membershipEnabled":true,"loginType":"","showLoginAction":null,"needsRedirect":false,"doReload":false,"origin":"https:\/\/www.tripadvisor.com","showFBTooltip":true,"cookieUpdated":false};
+    hl.config.baseUrl = 'https://www.flipkey.com/content/';
     
     // Initialise TA global variable
     var ta = { s:{}, b:{pf:{}} };
 
     // Global configs
-    hl.config.qualarooScriptUrl = "//s3.amazonaws.com/ki.js/50137/auW.js";
+    hl.config.qualarooScriptUrl = "";
 
     // Global Org
-    hl.config.org = 'vh';
+    hl.config.org = 'fk';
 
     hl.config.selectors = {"searchForm":"#quickSearch","map":".smallMap"}
     // Prevent errors with console.log() in IE
@@ -81,168 +74,171 @@
     </script>
 <script>
     hl.config.abTest = {};
-    hl.config.abTest.testSlice = '89';
-    hl.config.abTest.testSegments = '';
+    hl.config.abTest.testSlice = '36';
+    hl.config.abTest.testSegments = 'Old_Style_PDP_Buttons_test';
 </script>
+
     <script>
-                
-        hl.config.firstThreeHomes = undefined;
-        hl.config.totalResults = 0;
+        
+        hl.config.imgPathFK = "//s4.fkimg.com/res/1380077868/assets/fk/images/";
+        hl.config.showSplitPaymentMobile = false;
 
-        hl.config.geoId = "";
-    </script>
+            </script>
 
-        <script src='https://www.google.com/recaptcha/api.js?hl=en' async defer></script>
+
+    <script src='https://www.google.com/recaptcha/api.js?hl=en' async defer></script>
 </head>
 
-<body class="vh home en_US">
+<body
+    class="fk home en_US ">
 <img src="/content/session_stats/index" width="1" height="1" alt="" title="" style="position:absolute;"/><!-- TripAdvisor cookie stats -->
 
 
 <div class="mobile-pane-lft mobile">
 </div>
 
+<div id="mobilePaneRht" class="mobile-pane-rht mobile" data-content-elm="">
+    <div class="pane-header-nav">
+        <button id="closeRightPane">
+            <i class="icon icon-caret-md-left"></i>
+            <span></span>Back        </button>
+    </div>
+    <div class="pane-content"></div>
+</div>
+
+
 <div id="mainPane" class="mainPane">
     
     <header class="page-header" id="header">
-        <div class="inner group container" itemscope itemtype="http://schema.org/Organization">
+        <div class="inner group" itemscope itemtype="http://schema.org/Organization">
 
-                            <!-- Mobile and Tablet menu "menu" button -->
-                <button id="menu-open-btn" class="header-btn visible-xs-inline-block">Menu</button>
+            
 
-                <!-- Main logo -->
-                <a class="logo" href="/" title="Vacation Home Rentals" itemprop="url"></a>
-
-                                <nav id="desktop-menu" class="desktop-menu hidden-xs row mobileHidden" role="navigation">
+                <nav  id="desktop-menu" class="desktop-menu visible-md-block visible-lg-block row mobileHidden" role="navigation">
     <ul>
-            <li class="sub-menu hmLinks sub-menu-signin">
-        <a class="nav-drop__tab" href="#" data-cube-track="clickSignIn">Sign in            <i class="icon icon-caret-down"></i>
-            <i class="icon icon-arrow-down-grey"></i>
+                <li class="sub-menu visible-md-block" id="sub-menu-more">
+            <a class="nav-drop__tab" href="#">More                <i class="icon icon-caret-down"></i>
+            </a>
+
+            <div class="sub-menu-content opens-right-below">
+                <ul class="link-list link-list--1col">
+
+                                                                                    
+                    <li class="sub-menu-level-2">
+                        <a class="nav-drop__tab" href="//helpcenter.flipkey.com"
+                           data-cube-track="clickHelp_Nav">
+                            <i class="icon icon-caret-right-circle"></i> Help                        </a>
+                        <!-- help sub menu -->
+                        <div class="sub-menu-content opens-right">
+                            <ul class="link-list link-list--1col link-list--border">
+                                <li>
+                                    <a href="//helpcenter.flipkey.com/Book-a-trip-a/">How to book</a>
+                                </li>
+                                <li>
+                                    <a href="//helpcenter.flipkey.com/faq/view/How-do-I-leave-a-review/">
+                                        Write a review                                    </a>
+                                </li>
+                                <li>
+                                    <a href="//helpcenter.flipkey.com">Traveler Help Center</a>
+                                </li>
+                                <li>
+                                    <a href="https://rentalsupport.tripadvisor.com/" rel="nofollow">Owner Help Center</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+
+                                            <li class="sub-menu-level-2 currency-switcher">
+                                                        <a class="nav-drop__tab" href="#">
+                                <i class="icon icon-caret-right-circle"></i>
+                                <span class="js-chosen-currency"><span>$</span> USD</span>
+                            </a>
+
+                            <!-- Currency switcher sub menu -->
+                            <div class="sub-menu-content opens-right">
+                                <ul class="link-list link-list--1col link-list--border">
+                                                                            <li>
+                                            <button data-currency="GBP">
+                                                <span>£</span> GBP                                            </button>
+                                        </li>
+                                                                            <li>
+                                            <button data-currency="USD">
+                                                <span>$</span> USD                                            </button>
+                                        </li>
+                                                                            <li>
+                                            <button data-currency="CHF">
+                                                <span>fr.</span> CHF                                            </button>
+                                        </li>
+                                                                            <li>
+                                            <button data-currency="EUR">
+                                                <span>€</span> EUR                                            </button>
+                                        </li>
+                                                                            <li>
+                                            <button data-currency="AUD">
+                                                <span>$</span> AUD                                            </button>
+                                        </li>
+                                                                            <li>
+                                            <button data-currency="CAD">
+                                                <span>$</span> CAD                                            </button>
+                                        </li>
+                                                                            <li>
+                                            <button data-currency="SEK">
+                                                <span>Skr</span> SEK                                            </button>
+                                        </li>
+                                                                            <li>
+                                            <button data-currency="THB">
+                                                <span>฿</span> THB                                            </button>
+                                        </li>
+                                                                            <li>
+                                            <button data-currency="ZAR">
+                                                <span>R</span> ZAR                                            </button>
+                                        </li>
+                                                                    </ul>
+                            </div>
+                        </li>
+                                    </ul>
+            </div>
+        </li>
+
+                        <li class="sub-menu hmLinks sub-menu-signin">
+        <a class="nav-drop__tab" href="#" data-cube-track="clickSignIn">
+            Sign in            <i class="icon icon-caret-down"></i>
         </a>
         <div class="sub-menu-content opens-right-below">
             <ul class="link-list link-list--1col">
-                <li class=" sub-menu-level-2">
-                    <a href="https://rentals.tripadvisor.com/login?site=vhr" rel="nofollow" data-cube-track="clickListYourProperty_Nav">Owners / Managers</a>
+                <li class="sub-menu-level-2">
+                    <a href="https://rentals.tripadvisor.com/" rel="nofollow"
+                       data-cube-track="clickListYourProperty_Nav">
+                        Owners / Managers                    </a>
                 </li>
-                <li class=" sub-menu-level-2">
-                    <a href="https://www.vacationhomerentals.com/traveler/signin?returnTo=https%3A%2F%2Fwww.vacationhomerentals.com%2F" data-cube-track="clickSigninTravelers">Travelers</a>
+                <li class="sub-menu-level-2">
+                    <a href="https://www.flipkey.com/traveler/signin?returnTo=https%3A%2F%2Fwww.flipkey.com%2F"
+                       data-cube-track="clickSigninTravelers">
+                        Travelers                    </a>
                 </li>
             </ul>
         </div>
     </li>
     <li class="sub-menu hmLinks sub-menu-join">
-        <a class="nav-drop__tab" href="#" data-cube-track="clickJoin">Join            <i class="icon icon-caret-down"></i>
-            <i class="icon icon-arrow-down-grey"></i>
+        <a class="nav-drop__tab" href="#" data-cube-track="clickJoin">
+            Join            <i class="icon icon-caret-down"></i>
         </a>
         <div class="sub-menu-content opens-right-below">
             <ul class="link-list link-list--1col">
-                <li class=" sub-menu-level-2">
-                    <a href="https://rentals.tripadvisor.com/register?m=26527" rel="nofollow" data-cube-track="clickJoinOwners">List your property</a>
+                <li class="sub-menu-level-2">
+                    <a href="https://rentals.tripadvisor.com/register?m=20348" rel="nofollow" data-cube-track="clickJoinOwners">
+                        List your property                    </a>
                 </li>
-                <li class=" sub-menu-level-2">
-                    <a href="https://www.vacationhomerentals.com/traveler/join?returnTo=https%3A%2F%2Fwww.vacationhomerentals.com%2F" data-cube-track="clickJoinTravelers">Travelers</a>
+                <li class="sub-menu-level-2">
+                    <a href="https://www.flipkey.com/traveler/join?returnTo=https%3A%2F%2Fwww.flipkey.com%2F" data-cube-track="clickJoinTravelers">Travelers</a>
                 </li>
             </ul>
         </div>
     </li>
-        <li>
-            <a href="//help.vacationhomerentals.com">Help</a>
-        </li>
-
-        <li>
-            <a href="/deals.html">Deals</a>
-        </li>
-
-        <li class="sub-menu discover-tab">
-            <a  class="nav-drop__tab" href="">Discover                <i class="icon icon-caret-down"></i>
-            </a>
-            <div class="sub-menu-content">
-                <ul class="link-list link-list--1col">
-                                                                <li class="sub-menu-level-2">
-                            <a class="nav-drop__tab" href="#">
-                                Rental type                                <i class="icon icon-caret-right"></i>
-                            </a>
-                            <div class="sub-menu-content opens-left">
-                                <div class="sub-menu-content__left">
-                                    <ul class="link-list link-list--1col link-list--border">
-                                                                                    <li>
-                                                <a href="/beach-rentals/">
-                                                    Beach rentals                                                </a>
-                                            </li>
-                                                                                    <li>
-                                                <a href="/mountain-view-rentals/">
-                                                    Mountain view rentals                                                </a>
-                                            </li>
-                                                                                    <li>
-                                                <a href="/pet-friendly-rentals/">
-                                                    Pet-friendly rentals                                                </a>
-                                            </li>
-                                                                                    <li>
-                                                <a href="/rentals-with-hot-tub/">
-                                                    Rentals with a hot tub                                                </a>
-                                            </li>
-                                                                                    <li>
-                                                <a href="/rentals-with-pool/">
-                                                    Rentals with a pool                                                </a>
-                                            </li>
-                                                                                    <li>
-                                                <a href="/waterfront-rentals/">
-                                                    Waterfront rentals                                                </a>
-                                            </li>
-                                                                                    <li>
-                                                <a href="/2-bedroom-rentals/">
-                                                    2-bedroom rentals                                                </a>
-                                            </li>
-                                                                                    <li>
-                                                <a href="/3-bedroom-rentals/">
-                                                    3-bedroom rentals                                                </a>
-                                            </li>
-                                                                                    <li>
-                                                <a href="/4-plus-bedroom-rentals/">
-                                                    4+ bedroom rentals                                                </a>
-                                            </li>
-                                                                            </ul>
-                                </div>
-                            </div>
-                        </li>
-                                                                <li class="sub-menu-level-2">
-                            <a class="nav-drop__tab" href="#">
-                                Property type                                <i class="icon icon-caret-right"></i>
-                            </a>
-                            <div class="sub-menu-content opens-left">
-                                <div class="sub-menu-content__left">
-                                    <ul class="link-list link-list--1col link-list--border">
-                                                                                    <li>
-                                                <a href="/apartment-rentals/" >
-                                                    Apartment rentals                                                </a>
-                                            </li>
-                                                                                    <li>
-                                                <a href="/cabin-rentals/" >
-                                                    Cabin rentals                                                </a>
-                                            </li>
-                                                                                    <li>
-                                                <a href="/condo-rentals/" >
-                                                    Condo rentals                                                </a>
-                                            </li>
-                                                                                    <li>
-                                                <a href="/villa-rentals/" >
-                                                    Villa rentals                                                </a>
-                                            </li>
-                                                                            </ul>
-                                </div>
-                            </div>
-                        </li>
-                                                                            </ul>
-            </div>
-        </li>
-        <li>
-            <a href="/content/booking/manage_booking" id="manageBooking">Manage your booking</a>
-        </li>
-                    <li class="sub-menu hmLinks currency-switcher visible-lg-block">
-                <a class="nav-drop__tab" href="" >
+                            <li class="sub-menu hmLinks currency-switcher visible-lg-block">
+                <a class="nav-drop__tab" href="#">
                     <span class="js-chosen-currency"><span>$</span> USD</span>
                     <i class="icon icon-caret-down"></i>
-                    <i class="icon icon-arrow-down-grey"></i>
                 </a>
 
                 <!-- Currency switcher sub menu -->
@@ -264,32 +260,134 @@
                                 <button data-currency="EUR">
                                     <span>€</span> EUR                                </button>
                             </li>
+                                                    <li>
+                                <button data-currency="AUD">
+                                    <span>$</span> AUD                                </button>
+                            </li>
+                                                    <li>
+                                <button data-currency="CAD">
+                                    <span>$</span> CAD                                </button>
+                            </li>
+                                                    <li>
+                                <button data-currency="SEK">
+                                    <span>Skr</span> SEK                                </button>
+                            </li>
+                                                    <li>
+                                <button data-currency="THB">
+                                    <span>฿</span> THB                                </button>
+                            </li>
+                                                    <li>
+                                <button data-currency="ZAR">
+                                    <span>R</span> ZAR                                </button>
+                            </li>
                                             </ul>
                 </div>
             </li>
-            </ul>
-</nav>
-                                <nav class="desktop-menu visible-sm-block row mobileHidden" role="navigation">
-    <ul class="">
-                    </ul>
-</nav>
+                <li class="sub-menu hmLinks visible-lg-block">
+            <a class="nav-drop__tab" href="//helpcenter.flipkey.com"
+               data-cube-track="clickHelp_Nav">
+                Help                <i class="icon icon-caret-down"></i>
+            </a>
+            <!-- help sub menu -->
+            <div class="sub-menu-content">
+                <ul class="link-list link-list--1col link-list--border">
+                    <li>
+                        <a href="//helpcenter.flipkey.com/Book-a-trip-a/">How to book</a>
+                    </li>
+                    <li>
+                        <a href="//helpcenter.flipkey.com/faq/view/How-do-I-leave-a-review/">
+                            Write a review                        </a>
+                    </li>
+                    <li>
+                        <a href="//helpcenter.flipkey.com">Traveler Help Center</a>
+                    </li>
+                    <li>
+                        <a href="https://rentalsupport.tripadvisor.com/" rel="nofollow">Owner Help Center</a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+        <li>
+            <a href="https://rentals.tripadvisor.com/register?m=20348" class="nav-link visible-md-block visible-lg-block" rel="nofollow"
+               data-cube-track="clickListYourProperty_Nav">
+                List Your Property        </li>
 
-                                <nav id="nav-menu" class="nav-menu" role="navigation">
+        <!-- Explore Menu -->
+        <li class="sub-menu discover-tab visible-md-block visible-lg-block">
+            <a class="nav-drop__tab" href="#">Explore                <i class="icon icon-caret-down"></i>
+            </a>
+            <div class="sub-menu-content ">
+    <ul class="link-list link-list--1col">
+        
+        <li class="sub-menu-level-2">
+            <a href="/vacation-rentals/">
+                Find a rental            </a>
+        </li>
+                                    <li class="sub-menu-level-2">
+                    <a class="nav-drop__tab" href="#">
+                        Rental Types                        <i class="icon icon-caret-right-circle"></i>
+                    </a>
+                    <div class="sub-menu-content opens-left">
+                        <div class="sub-menu-content__left">
+                            <ul class="link-list link-list--1col link-list--border">
+                                                                    <li>
+                                        <a href="/beach-rentals/">
+                                            Beach rentals                                        </a>
+                                    </li>
+                                                                    <li>
+                                        <a href="/kid-friendly-rentals/">
+                                            Kid-friendly rentals                                        </a>
+                                    </li>
+                                                                    <li>
+                                        <a href="/rentals-with-a-pool/">
+                                            Rentals with a pool                                        </a>
+                                    </li>
+                                                                    <li>
+                                        <a href="/rentals-with-a-hot-tub/">
+                                            Rentals with a hot tub                                        </a>
+                                    </li>
+                                                                    <li>
+                                        <a href="/pet-friendly-rentals/">
+                                            Pet-friendly rentals                                        </a>
+                                    </li>
+                                                            </ul>
+                        </div>
+                    </div>
+                </li>
+                                                    <li class="sub-menu-level-2">
+            <a href="/vacation-inspiration/">
+                Travel Inspiration            </a>
+        </li>
+    </ul>
+</div>        </li>
+        <li>
+            <a href="/content/booking/manage_booking" id="manageBooking" data-cube-track="clickMMB_Nav">Manage your booking</a>
+        </li>
+
+                    </ul>
+</nav>                <nav id="nav-menu" class="nav-menu" role="navigation">
     <h3>Travelers</h3>
     <ul>
                                 <li class="sub-menu-level-2">
-            <a class="reg-controller" href="https://www.vacationhomerentals.com/traveler/signin?returnTo=https%3A%2F%2Fwww.vacationhomerentals.com%2F" data-cube-track="clickJoinTravelers">Sign in</a>
+            <a class="reg-controller" href="https://www.flipkey.com/traveler/signin?returnTo=https%3A%2F%2Fwww.flipkey.com%2F" data-cube-track="clickJoinTravelers">Sign in</a>
         </li>
         <li class="sub-menu-level-2">
-            <a class="reg-controller" href="https://www.vacationhomerentals.com/traveler/join?returnTo=https%3A%2F%2Fwww.vacationhomerentals.com%2F" data-cube-track="clickSigninTravelers">Join</a>
+            <a class="reg-controller" href="https://www.flipkey.com/traveler/join?returnTo=https%3A%2F%2Fwww.flipkey.com%2F" data-cube-track="clickSigninTravelers">Join</a>
         </li>
-                            <li>            <a href="/content/booking/manage_booking" id="manageBooking" data-cube-track="clickMMB_Nav">
-                Manage your booking</a>
+                            <li>
+            <a href="/vacation-rentals/" id="vacationRentals"
+               data-cube-track="clickMMB_Nav">
+                Find a rental            </a>
         </li>
-                    <li class="sub-menu currency-switcher" >
-                <span class="js-chosen-currency"><span>$</span> USD</span>
-                <i class="icon icon-arrow-down-grey"></i>
+                <li>
+            <a href="/content/booking/manage_booking" id="manageBooking"
+               data-cube-track="clickMMB_Nav">
+                Manage your booking            </a>
+        </li>
 
+                            <li class="sub-menu currency-switcher" >
+                <span class="js-chosen-currency"><span>$</span> USD</span>
+                <i class="icon icon-caret-down-circle"></i>
                 <ul>
                                             <li>
                             <button data-currency="GBP">
@@ -307,49 +405,116 @@
                             <button data-currency="EUR">
                                 <span>€</span> EUR                            </button>
                         </li>
+                                            <li>
+                            <button data-currency="AUD">
+                                <span>$</span> AUD                            </button>
+                        </li>
+                                            <li>
+                            <button data-currency="CAD">
+                                <span>$</span> CAD                            </button>
+                        </li>
+                                            <li>
+                            <button data-currency="SEK">
+                                <span>Skr</span> SEK                            </button>
+                        </li>
+                                            <li>
+                            <button data-currency="THB">
+                                <span>฿</span> THB                            </button>
+                        </li>
+                                            <li>
+                            <button data-currency="ZAR">
+                                <span>R</span> ZAR                            </button>
+                        </li>
                                     </ul>
             </li>
-                <li>
-            <a href="//help.vacationhomerentals.com">Help</a>
+        
+        <li>
+            <a href="//helpcenter.flipkey.com/Book-a-trip-a/" id="howItWorks"
+               data-cube-track="clickMMB_Nav" onclick="">
+                How to book            </a>
         </li>
         <li>
-            <a href="/deals.html">Deals</a>
+            <a href="//helpcenter.flipkey.com" id="helpCenter"
+               data-cube-track="clickMMB_Nav">
+                Traveler Help Center            </a>
+        </li>
+        <li>
+            <a href="//helpcenter.flipkey.com/faq/view/How-do-I-leave-a-review/" id="vacationRentals"
+               data-cube-track="clickMMB_Nav">
+                Write a review            </a>
         </li>
     </ul>
     <h3>Owners</h3>
     <ul>
                             <li>
-        <a href="https://rentals.tripadvisor.com/login?site=vhr" rel="nofollow" data-cube-track="clickOwnerLogin_Nav">Owner login</a>
+        <a href="https://rentals.tripadvisor.com/" rel="nofollow" data-cube-track="clickOwnerLogin_Nav">Sign in</a>
     </li>
         <li>
-        <a href="https://rentals.tripadvisor.com/register?m=26527" class="nav-link-has-border" rel="nofollow" data-cube-track="clickListYourProperty_Nav">List your property</a>
+        <a href="https://rentals.tripadvisor.com/register?m=20348" class="nav-link-has-border" rel="nofollow" data-cube-track="clickListYourProperty_Nav">List your property</a>
     </li>
                 <li>
-            <a href="https://rentalsupport.tripadvisor.com/?l=en_US" rel="nofollow">Help</a>
+            <a href="https://rentalsupport.tripadvisor.com/"
+               class="nav-link-has-border" rel="nofollow"
+               data-cube-track="clickOwnerHelpCenter_Nav">
+                Owner Help Center            </a>
         </li>
     </ul>
 </nav>
+                <!-- Mobile and Tablet menu "menu" button -->
+                <button id="menu-open-btn" class="header-btn visible-xs-inline-block visible-sm-inline-block">Menu</button>
+                <a class="logo" href="/" title="FlipKey" itemprop="url"></a>
+
                     </div>
     </header>
 
     <div class="menu-overlay"></div>
+    <div id="modalLoginForm" class="login-wrapper"></div>
 
+        <div class="headerStrip container">
+        <div class="inner">
+            
+            
+                    </div>
+    </div>
     
+    
+
+    <main id="wrapper" class="container" >
+
         
-            <div class="container search-container ver-4 ">
-            <div class="visible-xs mobile-header">Search 105,200+ Vacation Rentals</div>
-            <form action="/homesearch.asp"  method="post" id="quickSearch" class="group search-form">
-<input type="hidden" name="csrf_token" value="d04a6c4ae68158b5a67407d4ab0f2320" />
+        
+        <div id="page" class="inner page">
+
+                            <article class="group">
+            
+<div class="home">
+    <div class="container">
+        <div>
+            
+<section id="searchBanner" class="searchBanner">
+    <div class="banner-container heroImage3"  role="banner">
+        <div class="banner-text">
+                                                                        <h1 title="Find the perfect vacation rental">
+                                                        Find the perfect<br class="mobileView">
+                            vacation rental                        </h1>
+                                                        </div>
+    </div>
+
+    <div class="searchPositioning">
+        <div class="searchContainer section-contents" role="search">
+            <div class="searchContent">
+                <form action="/homesearch.asp"  method="post" id="quickSearch" class="group search-form">
+<input type="hidden" name="csrf_token" value="703efbc2c07220ba81a779e6b1f43c93" />
 
 
 <label for="destination">Where do you want to go?</label>
-<input type="text" name="destination" value="" id="destination" placeholder="Where do you want to go?" data-live-seach-url="//www.vacationhomerentals.com/content/srp/saut/?s=%s" data-srp-url=""  />    <span class="clearSearchTerm mobile">&#x2715;</span>
+<input type="text" name="destination" value="" id="destination" placeholder="Where do you want to go?" data-live-seach-url="//www.flipkey.com/content/srp/saut/?s=%s" data-srp-url=""  />    <span class="clearSearchTerm mobile">&#x2715;</span>
 
     <div class="searchFormDivider leftField search-divider-arrive">
-    <label for="arriveDate">Check in</label>    <input type="text" name="arriveDate" value="" id="arriveDate" class="arriveDate" placeholder="Check in" autocomplete="off" maxlength="10"  />    </div>
+    <label for="arriveDate">Check-in</label>    <input type="text" name="arriveDate" value="" id="arriveDate" class="arriveDate" placeholder="Check-in" autocomplete="off" maxlength="10"  />    </div>
 
     <div class="searchFormDivider rightField search-divider-depart">
-    <label for="departDate">Check out</label>    <input type="text" name="departDate" value="" id="departDate" class="departDate" placeholder="Check out" autocomplete="off" maxlength="10"  />    </div>
+    <label for="departDate">Check-out</label>    <input type="text" name="departDate" value="" id="departDate" class="departDate" placeholder="Check-out" autocomplete="off" maxlength="10"  />    </div>
 
     <div class="searchFormDivider leftField sleeps-wrap search-divider-guests">
         <label for="selectNights">Sleeps</label>        
@@ -430,509 +595,407 @@
 
 
 
-<button name="" type="button" class="btn-primary rightField js-no-busy" id="quickSearchSubmit" >Search</button></form>        </div>
-    
-    <div class="headerStrip container top">
-        <div class="inner">
-            
-            
-            
-                    </div>
+<button name="" type="button" class="btn-primary rightField js-no-busy" id="quickSearchSubmit" >Search</button></form>            </div>
+        </div>
     </div>
 
-    <main id="wrapper" class="container" >
-        <div id="page" class="inner page">
-            
-            
-                            <article class="group">
-            <div class="home">
-    <div class="container">
-        <div class="row">
-            <div class="col-xs-10 hidden-xs">
-                <div class="box map-box">
-                    <div class="box-title map-box-title">
-                        Search                        <span class="strong">105,000+</span>
-                        <h1>Vacation Rentals</h1>
-                    </div>
-                    <div class="homepage-map-wrapper">
-                        <div class="homepage-map">
-                            <img class='homepage-map' src="//assets.vacationhomerentals.com/res/1380077868/assets/vhr/images/state-maps/unitedstates.png" usemap="#homepage-map"/>
-                        </div>
-                        <map name="homepage-map">
-                            <area alt="Alaska" shape="rect" coords="5,5,26,19" href="/Alaska-vacation-rentals/g269/"><area alt="Idaho" shape="poly" coords="69,10,73,11,73,22,76,28,79,32,76,41,80,43,84,52,94,52,90,72,58,66,63,48,60,47,67,39,67,34,65,31" href="/Idaho-vacation-rentals/g279/"><area alt="Montana" shape="poly" coords="76,12,107,17,139,23,137,53,97,48,94,50,87,50,82,40,79,40,82,31,76,26,75,20" href="/Montana-vacation-rentals/g293/"><area alt="North Dakota" shape="poly" coords="142,23,178,24,178,31,180,34,181,47,140,45" href="/North-Dakota-vacation-rentals/g301/"><area alt="Oregon" shape="poly" coords="26,22,31,29,38,32,50,32,65,36,65,38,58,46,58,51,55,65,33,60,14,54" href="/Oregon-vacation-rentals/g304/"><area alt="Wyoming" shape="poly" coords="98,52,136,56,134,86,107,84,92,80" href="/Wyoming-vacation-rentals/g317/"><area alt="California" shape="poly" coords="12,56,36,63,30,86,59,133,53,139,54,146,39,144,27,125,19,124,14,90,7,69" href="/California-vacation-rentals/g272/"><area alt="Nevada" shape="poly" coords="39,65,72,73,63,118,59,118,58,126,34,87" href="/Nevada-vacation-rentals/g295/"><area alt="Utah" shape="poly" coords="75,73,90,75,90,83,101,86,97,116,68,112" href="/Utah-vacation-rentals/g311/"><area alt="Colorado" shape="poly" coords="104,87,146,90,145,120,100,118" href="/Colorado-vacation-rentals/g273/"><area alt="South Dakota" shape="poly" coords="141,49,180,50,178,53,182,54,181,70,181,75,171,73,168,72,138,71" href="/South-Dakota-vacation-rentals/g308/"><area alt="Arizona" shape="poly" coords="67,115,82,118,96,119,90,163,77,163,57,149,56,142,62,135,60,128,61,122,66,121" href="/Arizona-vacation-rentals/g270/"><area alt="New Mexico" shape="poly" coords="99,120,137,123,134,163,98,162,95,165,93,164" href="/New-Mexico-vacation-rentals/g298/"><area alt="Minnesota" shape="poly" coords="181,25,190,25,192,23,194,27,204,27,210,31,218,32,207,41,206,45,203,50,205,53,204,59,213,67,184,68,185,53,182,49,184,48" href="/Minnesota-vacation-rentals/g290/"><area alt="Nebraska" shape="poly" coords="137,74,169,75,173,77,181,78,185,91,188,97,149,97,148,88,137,86" href="/Nebraska-vacation-rentals/g294/"><area alt="Kansas" shape="poly" coords="149,100,189,99,191,102,191,106,193,108,193,123,148,121" href="/Kansas-vacation-rentals/g283/"><area alt="Iowa" shape="poly" coords="183,71,213,71,215,76,219,82,218,85,215,87,216,91,213,93,188,93,183,78" href="/Iowa-vacation-rentals/g282/"><area alt="Wisconsin" shape="poly" coords="209,43,215,42,220,44,225,49,231,49,235,54,235,69,234,76,221,77,216,73,216,65,207,58,208,53,208,50" href="/Wisconsin-vacation-rentals/g316/"><area alt="Michigan" shape="poly" coords="246,64,246,55,252,50,259,51,260,56,257,61,261,64,264,61,268,66,268,72,265,76,265,79,246,80,248,71" href="/Michigan-vacation-rentals/g289/" linked="11"><area alt="Oklahoma" shape="poly" coords="140,124,194,126,193,150,186,149,183,152,179,150,175,152,168,147,163,147,162,143,159,144,159,129" href="/Oklahoma-vacation-rentals/g303/"><area alt="Texas" shape="poly" coords="139,129,156,131,157,145,163,150,168,150,174,154,179,153,183,155,188,152,198,155,198,169,200,174,199,183,191,187,190,192,185,196,180,194,174,204,174,215,167,214,161,210,160,202,155,197,147,183,135,183,130,187,122,181,122,174,113,165,137,166" href="/Texas-vacation-rentals/g310/"><area alt="Missouri" shape="poly" coords="191,96,213,96,214,101,218,108,222,109,222,115,228,123,230,126,227,131,223,128,197,128,195,105" href="/Missouri-vacation-rentals/g292/"><area alt="Arkansas" shape="poly" coords="197,131,221,131,225,133,222,141,221,145,216,150,217,158,200,156,200,151,196,151" href="/Arkansas-vacation-rentals/g271/"><area alt="Louisiana" shape="poly" coords="200,160,217,161,219,164,215,170,216,175,229,176,231,182,227,186,218,186,211,182,203,182,203,170,200,169" href="/Louisiana-vacation-rentals/g285/"><area alt="Illinois" shape="poly" coords="223,80,234,78,238,83,238,105,239,108,237,112,237,118,230,122,225,116,225,108,220,105,215,96,218,91" href="/Illinois-vacation-rentals/g280/"><area alt="Indiana" shape="poly" coords="240,84,256,82,256,105,249,112,241,115,243,109,240,103" href="/Indiana-vacation-rentals/g281/"><area alt="Kentucky" shape="poly" coords="232,127,233,124,241,119,251,115,258,108,259,104,265,107,271,108,276,114,270,120" href="/Kentucky-vacation-rentals/g284/"><area alt="Ohio" shape="poly" coords="259,83,273,83,281,77,282,95,274,105,267,105,259,101" href="/Ohio-vacation-rentals/g302/"><area alt="Tennessee" shape="poly" coords="227,139,231,130,240,130,268,124,281,123,269,130,263,137" href="/Tennessee-vacation-rentals/g309/"><area alt="Maine" shape="poly" coords="337,19,345,16,348,21,349,29,357,34,341,47,340,53,335,37" href="/Maine-vacation-rentals/g286/"><area alt="Pennsylvania" shape="poly" coords="283,76,301,74,312,71,317,75,316,82,319,84,315,88,284,94" href="/Pennsylvania-vacation-rentals/g305/"><area alt="West Virginia" shape="poly" coords="274,108,280,114,288,112,299,96,291,98,284,96" href="/West-Virginia-vacation-rentals/g315/"><area alt="Mississippi" shape="poly" coords="225,144,238,141,238,176,233,179,230,173,218,172,222,164,220,157,220,151" href="/Mississippi-vacation-rentals/g291/"><area alt="Alabama" shape="poly" coords="240,141,255,141,261,161,261,171,246,172,244,175,246,178,244,178,240,176" href="/Alabama-vacation-rentals/g268/"><area alt="Virginia" shape="poly" coords="275,119,277,116,285,116,292,112,295,106,300,99,303,96,306,97,307,101,312,102,312,112,292,117" href="/Virginia-vacation-rentals/g313/"><area alt="North Carolina" shape="poly" coords="267,136,275,130,284,124,296,121,308,118,319,117,324,125,311,135,307,139,297,133,290,135,287,131" href="/North-Carolina-vacation-rentals/g300/"><area alt="South Carolina" shape="poly" coords="275,137,282,135,286,134,290,137,296,137,305,142,300,149,291,156" href="/South-Carolina-vacation-rentals/g307/"><area alt="Georgia" shape="poly" coords="259,141,272,139,290,161,289,169,285,169,284,173,266,173" href="/Georgia-vacation-rentals/g277/"><area alt="Florida" shape="poly" coords="247,175,263,174,266,176,286,176,288,172,297,189,304,200,304,216,292,206,284,198,282,185,272,178,262,181" href="/Florida-vacation-rentals/g276/"><area alt="Mexico" shape="poly" coords="39,148,47,148,54,149,75,164,96,167,99,164,109,164,120,175,120,182,127,189,132,189,136,185,145,185,151,196,157,204,158,210,163,215,168,218,173,218,174,217,174,221,170,224,169,227,170,230,170,240,109,240,108,237,102,231,97,224,90,214,85,206,82,202,78,197,77,192,75,188,72,186,67,180,65,173,64,166,64,161,58,157,52,154,50,154,50,161,51,170,55,177,58,183,59,188,63,196,66,201,67,207,70,211,71,219,76,223,78,225,81,228,78,232,72,225,68,220,63,216,61,214,61,208,60,203,56,198,53,195,50,194,45,188,50,188,50,182,52,180,47,174,43,169" href="/Mexico-vacation-rentals/g108/"><area linked="10" alt="Canada" shape="poly" coords="28,0,33,3,33,0,40,0,47,3,60,6,77,10,99,14,130,19,140,21,155,21,173,22,190,21,191,19,196,24,202,24,206,24,211,28,222,28,230,21,236,22,236,23,239,21,241,22,244,27,251,28,255,39,276,40,281,45,283,50,281,54,276,54,274,52,273,55,273,59,274,62,273,65,270,72,283,67,289,67,289,64,284,63,289,58,298,54,304,49,312,43,320,41,328,38,334,33,335,27,334,21,329,25,327,23,330,18,333,14,338,0,336,0" href="/Canada-vacation-rentals/g35/"><area linked="10" alt="Canada" shape="poly" coords="335,14,350,-1,360,-1,352,8,360,6,362,13,369,19,358,29,354,29,351,24,351,17,346,13,339,15" href="/Canada-vacation-rentals/g35/"><area linked="10" alt="Canada" shape="poly" coords="263,43,266,46,270,44,266,42" href="/Canada-vacation-rentals/g35/"><area linked="10" alt="Canada" shape="poly" coords="368,27,364,34,369,41" href="/Canada-vacation-rentals/g35/"><area alt="Michigan" shape="poly" coords="221,42,226,42,228,38,236,42,242,43,244,39,249,39,254,42,252,45,241,46,236,50,230,46" href="/Michigan-vacation-rentals/g289/" linked="11"><area linked="1" alt="New Hampshire" shape="rect" coords="338,81,359,95" href="/New-Hampshire-vacation-rentals/g296/"><area linked="1" alt="New Hampshire" shape="poly" coords="330,58,337,55,335,47,333,39,331,45,330,48" href="/New-Hampshire-vacation-rentals/g296/"><area linked="2" alt="Vermont" shape="rect" coords="338,99,359,113" href="/Vermont-vacation-rentals/g312/"><area linked="2" alt="Vermont" shape="poly" coords="322,43,322,50,326,59,328,59,328,45,331,42,329,38,323,42" href="/Vermont-vacation-rentals/g312/"><area linked="3" alt="Massachusetts" shape="poly" coords="325,60,325,64,335,62,335,59,336,61,340,63,337,56" href="/Massachusetts-vacation-rentals/g288/"><area linked="3" alt="Massachusetts" shape="rect" coords="338,117,359,131" href="/Massachusetts-vacation-rentals/g288/"><area alt="Washington" shape="poly" coords="27,5,35,7,35,12,39,9,39,3,68,9,63,32,52,29,43,29,38,29,37,28,32,28,31,21,27,19" href="/Washington-vacation-rentals/g314/"><area linked="4" alt="Connecticut" shape="rect" coords="338,135,359,149" href="/Connecticut-vacation-rentals/g274/"><area linked="4" alt="Connecticut" shape="poly" coords="326,66,332,66,333,69,327,73,326,69" href="/Connecticut-vacation-rentals/g274/"><area linked="5" alt="Rhode Island" shape="poly" coords="334,64,335,68,339,66" href="/Rhode-Island-vacation-rentals/g306/"><area linked="5" alt="Rhode Island" shape="rect" coords="338,154,359,168" href="/Rhode-Island-vacation-rentals/g306/"><area linked="6" alt="New Jersey" shape="rect" coords="338,172,359,186" href="/New-Jersey-vacation-rentals/g297/"><area linked="6" alt="New Jersey" shape="poly" coords="318,89,324,90,325,84,323,80,322,78,319,76,318,81,321,84,320,88" href="/New-Jersey-vacation-rentals/g297/"><area linked="7" alt="District of Columbia" shape="rect" coords="338,226,359,240" href="/District-of-Columbia-vacation-rentals/g428/"><area linked="7" alt="District of Columbia" shape="circle" coords="309,99,2" href="/District-of-Columbia-vacation-rentals/g428/"><area linked="8" alt="Maryland" shape="rect" coords="338,208,359,222" href="/Maryland-vacation-rentals/g287/"><area linked="9" alt="Delaware" shape="rect" coords="338,190,359,204" href="/Delaware-vacation-rentals/g275/"><area linked="9" alt="Delaware" shape="poly" coords="318,90,322,93,323,98,321,100,320,95,318,92" href="/Delaware-vacation-rentals/g275/"><area linked="8" alt="Maryland" shape="poly" coords="289,94,292,96,298,94,302,94,307,95,311,98,314,103,312,93,314,93,316,97,318,104,320,101,318,94,316,89,308,92,304,92,299,93,294,94" href="/Maryland-vacation-rentals/g287/"><area alt="Florida" shape="poly" coords="296,220,300,218,301,220,297,221" href="/Florida-vacation-rentals/g276/"><area alt="New York" shape="poly" coords="319,43,320,52,323,58,323,65,325,74,318,72,314,68,303,70,287,74,291,68,292,62,297,61,302,61,306,56,307,50,312,45" href="/New-York-vacation-rentals/g299/">                        </map>
-                        <div class="box-maps">
-                            <a class="box-hawaii" href="/Hawaii-vacation-rentals/g278/"></a>
-                            <a class="box-caribbean" href="/Caribbean-vacation-rentals/g8/"></a>
-                            <a class="box-europe" href="/Europe-vacation-rentals/g7/"></a>
-                            <a class="box-world" href="/vacation-rentals/international/"></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xs-14 hidden-xs">
-                <div class="box">
-                    <div class="photo-contents">
-                        <div class="ui-helper-hidden">
-                            <div class="prev-photo"></div>
-                            <div class="next-photo"></div>
-                        </div>
-                        <div class="move-photos" id="move-photos">
-                                                            <div class="rental-unit-images" >
-                                    <a href="/Williamsburg/proID-52639/">
-                                        <img class="listing-photo" src="https://p1.vhrimg.com/media/vr-splice-j/02/85/f2/d4.jpg" alt=""></a>
-                                </div>
-                                <div class="featured-info">
-                                    <div class="featured-info-photo">
-                                        <img src="https://p1.vhrimg.com/media/vr-splice-l/04/d0/b2/45.jpg" alt="Steve F." height="36" width="36">
-                                    </div>
-                                    <div class="featured-info-text">
-                                        <p class="property-title">
-                                            <a href="/Williamsburg/proID-52639/"class="strong">Williamsburg Condo - 5 Star Luxury - See  Reviews!</a></p>
-                                        <p class="subtitle">Williamsburg</p>
-                                    </div>
-                                </div>
-                                                            <div class="rental-unit-images" >
-                                    <a href="/Manuel-Antonio-National-Park/proID-1002303952/">
-                                        <img class="listing-photo" src="https://p1.vhrimg.com/media/vr-splice-j/00/03/1d/b4.jpg" alt=""></a>
-                                </div>
-                                <div class="featured-info">
-                                    <div class="featured-info-photo">
-                                        <img src="https://p1.vhrimg.com/media/vr-splice-l/04/ed/67/1c.jpg" alt="Tulemar Vacation Home Rentals" height="36" width="36">
-                                    </div>
-                                    <div class="featured-info-text">
-                                        <p class="property-title">
-                                            <a href="/Manuel-Antonio-National-Park/proID-1002303952/"class="strong">Luxury Villa - Tulemar Beach - Sunset Ocean Views!</a></p>
-                                        <p class="subtitle">Manuel Antonio</p>
-                                    </div>
-                                </div>
-                                                            <div class="rental-unit-images" >
-                                    <a href="/Branson/proID-47737/">
-                                        <img class="listing-photo" src="https://p1.vhrimg.com/media/vr-splice-j/02/88/36/2c.jpg" alt=""></a>
-                                </div>
-                                <div class="featured-info">
-                                    <div class="featured-info-photo">
-                                        <img src="https://p1.vhrimg.com/media/vr-splice-l/04/d0/b2/45.jpg" alt="Steve F." height="36" width="36">
-                                    </div>
-                                    <div class="featured-info-text">
-                                        <p class="property-title">
-                                            <a href="/Branson/proID-47737/"class="strong">Branson Condo - 5 Star Luxury - See  Reviews!</a></p>
-                                        <p class="subtitle">Branson</p>
-                                    </div>
-                                </div>
-                                                            <div class="rental-unit-images" >
-                                    <a href="/Lincoln-City/proID-45605/">
-                                        <img class="listing-photo" src="https://p1.vhrimg.com/media/vr-splice-j/02/87/cb/5b.jpg" alt=""></a>
-                                </div>
-                                <div class="featured-info">
-                                    <div class="featured-info-photo">
-                                        <img src="https://p1.vhrimg.com/media/vr-splice-l/04/d0/b0/81.jpg" alt="Steve Dopps" height="36" width="36">
-                                    </div>
-                                    <div class="featured-info-text">
-                                        <p class="property-title">
-                                            <a href="/Lincoln-City/proID-45605/"class="strong">Beach Retreat w/Ocean Views, Hot Tub, & Wi-Fi</a></p>
-                                        <p class="subtitle">Lincoln City</p>
-                                    </div>
-                                </div>
-                                                            <div class="rental-unit-images" >
-                                    <a href="/Kissimmee/proID-1004310181/">
-                                        <img class="listing-photo" src="https://p1.vhrimg.com/media/vr-splice-j/01/cb/6d/cd.jpg" alt=""></a>
-                                </div>
-                                <div class="featured-info">
-                                    <div class="featured-info-photo">
-                                        <img src="https://p1.vhrimg.com/media/vr-splice-l/02/2b/42/d7.jpg" alt="Amazing Disney Homes" height="36" width="36">
-                                    </div>
-                                    <div class="featured-info-text">
-                                        <p class="property-title">
-                                            <a href="/Kissimmee/proID-1004310181/"class="strong">SPECTACULAR!  "Potter's Castle!" 4 Min's Disney!</a></p>
-                                        <p class="subtitle">Kissimmee</p>
-                                    </div>
-                                </div>
-                                                    </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-6 hidden-xs">
-                <div class="box">
-                    <h3 class="box-title">
-                        Top20                        <span class="sub-text">Most Popular Vacation Rental Destinations</span>
-                    </h3>
-                    <ul class="top-20-list">
-                                                <li class="even">
-                            <a href="/Florida/Panhandle/Destin-vacation-rentals/g978/"><span class="count">1</span> Destin, Florida</a>
-                        </li>
-                                                <li class="odd">
-                            <a href="/Florida/Panhandle/Panama-City-Beach-condo-rentals/g983/"><span class="count">2</span> Panama City Beach, Florida</a>
-                        </li>
-                                                <li class="even">
-                            <a href="/Maryland/Eastern-Shore/Ocean-City-vacation-rentals/g1464/"><span class="count">3</span> Ocean City, Maryland</a>
-                        </li>
-                                                <li class="odd">
-                            <a href="/Florida/Disney/Orlando-vacation-rentals/g969/"><span class="count">4</span> Orlando, Florida</a>
-                        </li>
-                                                <li class="even">
-                            <a href="/Virginia/Hampton-Roads/Virginia-Beach-vacation-rentals/g1812/"><span class="count">5</span> Virginia Beach, Virginia</a>
-                        </li>
-                                                <li class="odd">
-                            <a href="/Florida/Atlantic-Coast-South/Miami-Beach-vacation-rentals/g1090/"><span class="count">6</span> Miami Beach, Florida</a>
-                        </li>
-                                                <li class="even">
-                            <a href="/Florida/Florida-Keys/Key-West-vacation-rentals/g1101/"><span class="count">7</span> Key West, Florida</a>
-                        </li>
-                                                <li class="odd">
-                            <a href="/Massachusetts/Cape-Cod-vacation-rentals/g688/"><span class="count">8</span> Cape Cod, Massachusetts</a>
-                        </li>
-                                                <li class="even">
-                            <a href="/Texas/Gulf-Coast/Galveston-vacation-rentals/g1764/"><span class="count">9</span> Galveston, Texas</a>
-                        </li>
-                                                <li class="odd">
-                            <a href="/North-Carolina/Outer-Banks-vacation-rentals/g849/"><span class="count">10</span> Outer Banks, North Carolina</a>
-                        </li>
-                                                <li class="even">
-                            <a href="/Maine-vacation-rentals/g286/"><span class="count">11</span> Maine</a>
-                        </li>
-                                                <li class="odd">
-                            <a href="/Pennsylvania/Poconos-vacation-rentals/g773/"><span class="count">12</span> Poconos, Pennsylvania</a>
-                        </li>
-                                                <li class="even">
-                            <a href="/Florida/Gulf-Coast-South/Naples-vacation-rentals/g1039/"><span class="count">13</span> Naples, Florida</a>
-                        </li>
-                                                <li class="odd">
-                            <a href="/Florida/Disney/Kissimmee-vacation-rentals/g961/"><span class="count">14</span> Kissimmee, Florida</a>
-                        </li>
-                                                <li class="even">
-                            <a href="/Florida/Gulf-Coast-Central/Siesta-Key-vacation-rentals/g1018/"><span class="count">15</span> Siesta Key, Florida</a>
-                        </li>
-                                                <li class="odd">
-                            <a href="/California/San-Diego-Area/San-Diego-vacation-rentals/g1222/"><span class="count">16</span> San Diego, California</a>
-                        </li>
-                                                <li class="even">
-                            <a href="/Oregon-vacation-rentals/g304/"><span class="count">17</span> Oregon</a>
-                        </li>
-                                                <li class="odd">
-                            <a href="/Florida/Atlantic-Coast-South/Fort-Lauderdale-vacation-rentals/g1082/"><span class="count">18</span> Fort Lauderdale, Florida</a>
-                        </li>
-                                                <li class="even">
-                            <a href="/Hawaii/Oahu-vacation-rentals/g631/"><span class="count">19</span> Oahu, Hawaii</a>
-                        </li>
-                                                <li class="odd">
-                            <a href="/South-Carolina/Myrtle-Beach-Area/Myrtle-Beach-vacation-rentals/g1329/"><span class="count">20</span> Myrtle Beach, SC</a>
-                        </li>
-                                            </ul>
-                </div>
-            </div>
-            <div class="col-sm-18 hidden-xs">
-                <div class="row">
-                    <div class="col-sm-13">
-                        <div class="box property-owner-box">
-                            <h3 class="box-title">Are You a Property Owner?</h3>
-                            <div class="signup-link-section">
-                                <span><a href="https://rentals.tripadvisor.com/register?m=26527" class="btn-primary" rel="nofollow">Sign up</a></span>
-                                <p>
-                                    Give us a try.                                    <br />
-                                    No risk. No obligation.                                </p>
-                            </div>
-                            <div class="row">
-                                                                    <div class="owner-testimonial">
-                                        <figure class="image">
-                                            <img src="//assets.vacationhomerentals.com/res/1380077868/assets/vhr/images/homepage/thumb_75x75_owner_3019.jpg" alt="Property #2725" />
-                                        </figure>
-                                        <caption>
-                                            <p>"Without your site I would have to sell our vacation home.  It produces almost 70% of my bookings!"</p>
-                                            Thomas S. - Owner, <a href="/Orlando/proID-2725/">Property #2725</a>
-                                        </caption>
-                                    </div>
-                                                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-11">
-                        <div class="box ad-box">
-                            <span>Advertisement</span>
-                            <a href="http://www.paradisecoast.com/">
-                                <img src="//assets.vacationhomerentals.com/res/1380077868/assets/vh/images/homepage/ads/banner_paradise_coast_300x250.png" alt="Paradise" width="300px" height="250px">
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-sm-24 hidden-xs">
-                        <div class="box">
-                            <h3 class="box-title">Browse Rentals By Any Type Of Trip</h3>
-                            <ul class="browse-rentals-list">
-                                                                    <li class="item">
-                                        <a href="/apartment-rentals/">Apartment rentals</a>
-                                    </li>
-                                                                                                        <li class="item">
-                                        <a href="/mountain-view-rentals/">Mountain View rentals</a>
-                                    </li>
-                                                                                                        <li class="item">
-                                        <a href="/waterfront-rentals/">Waterfront rentals</a>
-                                    </li>
-                                                                            <li class="divider"></li>
-                                                                                                        <li class="item">
-                                        <a href="/beach-rentals/">Beach rentals</a>
-                                    </li>
-                                                                                                        <li class="item">
-                                        <a href="/pet-friendly-rentals/">Pet-friendly rentals</a>
-                                    </li>
-                                                                                                        <li class="item">
-                                        <a href="/2-bedroom-rentals/">2-bedroom rentals</a>
-                                    </li>
-                                                                            <li class="divider"></li>
-                                                                                                        <li class="item">
-                                        <a href="/cabin-rentals/">Cabin rentals</a>
-                                    </li>
-                                                                                                        <li class="item">
-                                        <a href="/rentals-with-hot-tub/">Rentals with a hot tub</a>
-                                    </li>
-                                                                                                        <li class="item">
-                                        <a href="/3-bedroom-rentals/">3-bedroom rentals</a>
-                                    </li>
-                                                                            <li class="divider"></li>
-                                                                                                        <li class="item">
-                                        <a href="/condo-rentals/">Condo rentals</a>
-                                    </li>
-                                                                                                        <li class="item">
-                                        <a href="/rentals-with-pool/">Rentals with a pool</a>
-                                    </li>
-                                                                                                        <li class="item">
-                                        <a href="/4-plus-bedroom-rentals/">4+ bedroom rentals</a>
-                                    </li>
-                                                                            <li class="divider"></li>
-                                                                                                        <li class="item">
-                                        <a href="/villa-rentals/">Villa rentals</a>
-                                    </li>
-                                                                                                </ul>
-                        </div>
-                    </div>
-                    <div class="col-sm-24 hidden-xs">
-                        <div class="box">
-                            <h3 class="box-title">Reviews You Can Trust</h3>
-                            <ul class="reviews-container">
-                                                                        <div class="review">
-                                            <div class="review-author-info">
-                                                <img class="avatar" src="https://static.tacdn.com/img2/generic/site/no_user_photo-v1.gif"  />
-                                                <p class="reviewer-name"> A TripAdvisor Member </p>
-                                            </div>
-                                            <div class="connector-wrapper">
-                                                <div class="connector"></div>
-                                            </div>
-                                            <div class="review-text-info">
-                                                <a href="/Poipu-beach/proID-1001826769/" class="review-title strong"> Good Value, Walking Distance to Poipu and Shipwrecks Beaches! </a>
-                                                <div class="ta-rating rating-location mediumSmRatings rating-5-5">
-                                                    <span class="ratingsIcon"></span>
-                                                </div>
-                                                <p class="subtitle">  </p>
-                                                <p class="review-content"> AWESOME house with a sweet location. Full kitchen in case you are trying to hit costco (near the airport) and cook meals to save money. We spent every morning walking from our Bungalow to shipwrecks beach for sunrise and they were all worth it! 
+</section>
 
-Good for a family or one couple and a couple of friends. Not great for multiple couples due to the awesome but unique bed configuration (upstairs has a HANGING bed! Super cool but not great for two).                                                <a href="/Poipu-beach/proID-1001826769/#Reviews">...more</a> </p>
-                                            </div>
-                                        </div>
-                                                                        <div class="review">
-                                            <div class="review-author-info">
-                                                <img class="avatar" src="https://static.tacdn.com/img2/generic/site/no_user_photo-v1.gif"  />
-                                                <p class="reviewer-name"> A TripAdvisor Member </p>
-                                            </div>
-                                            <div class="connector-wrapper">
-                                                <div class="connector"></div>
-                                            </div>
-                                            <div class="review-text-info">
-                                                <a href="/Dunkeswell/proID-1002398779/" class="review-title strong"> Trip to see the family </a>
-                                                <div class="ta-rating rating-location mediumSmRatings rating-5-5">
-                                                    <span class="ratingsIcon"></span>
-                                                </div>
-                                                <p class="subtitle">  </p>
-                                                <p class="review-content"> This cottage was everything that I had hoped for and more.  The location was perfect for me.  Not too far off the beaten track just right.  Peace and quite lovely.  The cottage it self was wonderfully presented  and spotless.  It was so well equipped with everything to make life easy.  The owner was delightful and so helpful.  All in all I loved this place and would certainly recommend.  Hope to return soon.  Really wish I could have stayed longer                                                <a href="/Dunkeswell/proID-1002398779/#Reviews">...more</a> </p>
-                                            </div>
-                                        </div>
-                                                            </ul>
-                        </div>
+
+
+
+<script>
+    window.hl = window.hl || {};
+    window.hl.config = window.hl.config || {};
+    window.hl.config.urlFilters = window.hl.config.urlFilters || '';
+</script>        </div>
+        <section class="list-your-home">
+    <div class="section-contents">
+        <i class="icon lyh-house"></i>
+        <header>
+            <h2 class="list-your-home__heading list-your-home__heading--main">List your property with the world's largest travel community.</h2>
+            <h3 class="list-your-home__heading list-your-home__heading--sub">Earn money by renting out your vacation rental, home, or room on TripAdvisor.</h3>
+        </header>
+
+        <p class="">
+            <a href="https://rentals.tripadvisor.com/register?m=20348" class="btn-secondary" rel="nofollow" title="List your property">
+                List your property            </a>
+        </p>
+    </div>
+</section>
+        <div class="row mobileHidden">
+            <div id="top-destinations">
+    <h2>Top vacation rental destinations</h2>
+
+    <ul class="destinations">
+                    <li class="destination">
+                <a href="/book/gatlinburg/222610847/">
+                    <img src="//s4.fkimg.com/res/1380077868/assets/fk/images/home/Gatlinburg.jpg" alt="Gatlinburg" width="100%"/>
+                    <div class="caption">
+                        Gatlinburg                        <span class="count">1173 rentals</span>
                     </div>
-                </div>
-            </div>
+                </a>
+            </li>
+                    <li class="destination">
+                <a href="/book/destin/222604340/">
+                    <img src="//s4.fkimg.com/res/1380077868/assets/fk/images/home/Destin.jpg" alt="Destin" width="100%"/>
+                    <div class="caption">
+                        Destin                        <span class="count">2381 rentals</span>
+                    </div>
+                </a>
+            </li>
+                    <li class="destination">
+                <a href="/book/outer-banks/222612002/">
+                    <img src="//s4.fkimg.com/res/1380077868/assets/fk/images/home/OuterBanks.jpg" alt="Outer Banks" width="100%"/>
+                    <div class="caption">
+                        Outer Banks                        <span class="count">2535 rentals</span>
+                    </div>
+                </a>
+            </li>
+                    <li class="destination">
+                <a href="/book/myrtle-beach/222609788/">
+                    <img src="//s4.fkimg.com/res/1380077868/assets/fk/images/home/MyrtleBeach.jpg" alt="Myrtle Beach" width="100%"/>
+                    <div class="caption">
+                        Myrtle Beach                        <span class="count">1752 rentals</span>
+                    </div>
+                </a>
+            </li>
+                    <li class="destination">
+                <a href="/book/panama-city-beach/222604574/">
+                    <img src="//s4.fkimg.com/res/1380077868/assets/fk/images/home/PanamaCityBeach.jpg" alt="Panama City Beach" width="100%"/>
+                    <div class="caption">
+                        Panama City Beach                        <span class="count">2716 rentals</span>
+                    </div>
+                </a>
+            </li>
+                    <li class="destination">
+                <a href="/book/big-bear-region/222515426/">
+                    <img src="//s4.fkimg.com/res/1380077868/assets/fk/images/home/BigBearRegion.jpg" alt="Big Bear Region" width="100%"/>
+                    <div class="caption">
+                        Big Bear Region                        <span class="count">1951 rentals</span>
+                    </div>
+                </a>
+            </li>
+                    <li class="destination">
+                <a href="/book/cape-cod/222594410/">
+                    <img src="//s4.fkimg.com/res/1380077868/assets/fk/images/home/CapeCod.jpg" alt="Cape Cod" width="100%"/>
+                    <div class="caption">
+                        Cape Cod                        <span class="count">3070 rentals</span>
+                    </div>
+                </a>
+            </li>
+                    <li class="destination">
+                <a href="/book/san-diego/222592988/">
+                    <img src="//s4.fkimg.com/res/1380077868/assets/fk/images/home/SanDiego.jpg" alt="San Diego" width="100%"/>
+                    <div class="caption">
+                        San Diego                        <span class="count">1407 rentals</span>
+                    </div>
+                </a>
+            </li>
+                    <li class="destination">
+                <a href="/book/paris/222635145/">
+                    <img src="//s4.fkimg.com/res/1380077868/assets/fk/images/home/Paris.jpg" alt="Paris" width="100%"/>
+                    <div class="caption">
+                        Paris                        <span class="count">3355 rentals</span>
+                    </div>
+                </a>
+            </li>
+                    <li class="destination">
+                <a href="/book/puerto-rico/222228425/">
+                    <img src="//s4.fkimg.com/res/1380077868/assets/fk/images/home/PuertoRico.jpg" alt="Puerto Rico" width="100%"/>
+                    <div class="caption">
+                        Puerto Rico                        <span class="count">1862 rentals</span>
+                    </div>
+                </a>
+            </li>
+                    <li class="destination">
+                <a href="/book/tuscany/222631281/">
+                    <img src="//s4.fkimg.com/res/1380077868/assets/fk/images/home/Tuscany.jpg" alt="Tuscany" width="100%"/>
+                    <div class="caption">
+                        Tuscany                        <span class="count">19121 rentals</span>
+                    </div>
+                </a>
+            </li>
+                    <li class="destination">
+                <a href="/book/barcelona/222284469/">
+                    <img src="//s4.fkimg.com/res/1380077868/assets/fk/images/home/Barcelona.jpg" alt="Barcelona" width="100%"/>
+                    <div class="caption">
+                        Barcelona                        <span class="count">1139 rentals</span>
+                    </div>
+                </a>
+            </li>
+            </ul>
+</div>
         </div>
-        <div class="row">
-            <div class="col-sm-6 visible-xs">
-                <div class="box top-vacation-rentals">
-                    <h3 class="box-title">
-                        Top Vacation Rentals                    </h3>
-                    <ul class="mobile-top-20-list">
-                                                    <li>
-                                <a href="/Florida/Panhandle/Destin-vacation-rentals/g978/">Destin</a>
-                            </li>
-                                                    <li>
-                                <a href="/Florida/Panhandle/Panama-City-Beach-condo-rentals/g983/">Panama City Beach</a>
-                            </li>
-                                                    <li>
-                                <a href="/Maryland/Eastern-Shore/Ocean-City-vacation-rentals/g1464/">Ocean City</a>
-                            </li>
-                                                    <li>
-                                <a href="/Florida/Disney/Orlando-vacation-rentals/g969/">Orlando</a>
-                            </li>
-                                                    <li>
-                                <a href="/Virginia/Hampton-Roads/Virginia-Beach-vacation-rentals/g1812/">Virginia Beach</a>
-                            </li>
-                                                    <li>
-                                <a href="/Florida/Atlantic-Coast-South/Miami-Beach-vacation-rentals/g1090/">Miami Beach</a>
-                            </li>
-                                                    <li>
-                                <a href="/Florida/Florida-Keys/Key-West-vacation-rentals/g1101/">Key West</a>
-                            </li>
-                                                    <li>
-                                <a href="/Massachusetts/Cape-Cod-vacation-rentals/g688/">Cape Cod</a>
-                            </li>
-                                                    <li>
-                                <a href="/Texas/Gulf-Coast/Galveston-vacation-rentals/g1764/">Galveston</a>
-                            </li>
-                                                    <li>
-                                <a href="/North-Carolina/Outer-Banks-vacation-rentals/g849/">Outer Banks</a>
-                            </li>
-                                            </ul>
-                </div>
+        <div class="row mobileHidden">
+            <div id="blog">
+    <i class="icon-speech-bubble-knockout blog-icon"></i>
+    <p>
+        <span class="large">Expert advice, great travel ideas</span>
+        <br>
+        <a href="/blog/">Check out the FlipKey blog</a>
+         for travel inspiration, destinations we love, insights for owners, and so much more!    </p>
+</div>        </div>
+        <div class="row mobileHidden">
+            <div class="static-panel">
+    <h3>Top vacation rentals from around the world</h3>
+    <div id="top-world-destinations">
+                    <ul class="link-list">
+                <li class="list-header">Adventure</li>
+                                    <li><a href="/book/mountain-village/222598430/">Mountain Village</a></li>
+                                    <li><a href="/book/finger-lakes/222597143/">Finger Lakes</a></li>
+                                    <li><a href="/book/vancouver/222593807/">Vancouver</a></li>
+                                    <li><a href="/book/white-mountains/222595358/">White Mountains</a></li>
+                                    <li><a href="/book/flagstaff/222593534/">Flagstaff</a></li>
+                                    <li><a href="/book/manuel-antonio/222641832/">Manuel Antonio National Park</a></li>
+                                    <li><a href="/book/moab/222592925/">Moab</a></li>
+                                    <li><a href="/book/truckee/222604031/">Truckee</a></li>
+                                    <li><a href="/book/steamboat-springs/222519350/">Steamboat Springs</a></li>
+                                    <li><a href="/book/mammoth-lakes/222593087/">Mammoth Lakes</a></li>
+                            </ul>
+                    <ul class="link-list">
+                <li class="list-header">Beach</li>
+                                    <li><a href="/book/loughman/222521198/">Loughman</a></li>
+                                    <li><a href="/book/seacrest-beach/222613382/">Seacrest</a></li>
+                                    <li><a href="/book/daytona-beach/222520667/">Daytona Beach</a></li>
+                                    <li><a href="/book/rehoboth-beach/222520379/">Rehoboth Beach</a></li>
+                                    <li><a href="/book/oahu/222507278/">Oahu</a></li>
+                                    <li><a href="/book/bradenton-beach/222604286/">Bradenton Beach</a></li>
+                                    <li><a href="/book/cocoa-beach/222520604/">Cocoa Beach</a></li>
+                                    <li><a href="/book/folly-beach/222609743/">Folly Beach</a></li>
+                                    <li><a href="/book/cape-may/222607085/">Cape May</a></li>
+                                    <li><a href="/book/holmes-beach/222604421/">Holmes Beach</a></li>
+                            </ul>
+                    <ul class="link-list">
+                <li class="list-header">City</li>
+                                    <li><a href="/book/london/222738009/">London</a></li>
+                                    <li><a href="/book/honolulu/222610901/">Honolulu</a></li>
+                                    <li><a href="/book/montreal/222790524/">Montreal</a></li>
+                                    <li><a href="/book/paris/222635145/">Paris</a></li>
+                                    <li><a href="/book/san-francisco/222592895/">San Francisco</a></li>
+                                    <li><a href="/book/toronto/222593945/">Toronto</a></li>
+                                    <li><a href="/book/washington-dc/222506609/">Washington Dc</a></li>
+                                    <li><a href="/book/savannah/222610838/">Savannah</a></li>
+                                    <li><a href="/book/boston/222592976/">Boston</a></li>
+                                    <li><a href="/book/brooklyn/222593183/">Brooklyn</a></li>
+                            </ul>
+                    <ul class="link-list">
+                <li class="list-header">Most Reviewed</li>
+                                    <li><a href="/book/anaheim/222603053/">Anaheim</a></li>
+                                    <li><a href="/book/austin/222509939/">Austin</a></li>
+                                    <li><a href="/book/florida-panhandle/222597065/">Florida Panhandle</a></li>
+                                    <li><a href="/book/jersey-shore/222595349/">Jersey Shore</a></li>
+                                    <li><a href="/book/nashville/222577727/">Nashville</a></li>
+                                    <li><a href="/book/north-carolina-coast/222595373/">North Carolina Coast</a></li>
+                                    <li><a href="/book/santa-barbara/222517748/">Santa Barbara</a></li>
+                                    <li><a href="/book/sydney/222637587/">Sydney</a></li>
+                                    <li><a href="/book/garrett-county/222598961/">Western Maryland Deep Creek Lake</a></li>
+                                    <li><a href="/book/yosemite-national-park/222593603/">Yosemite National Park</a></li>
+                            </ul>
+                    <ul class="link-list">
+                <li class="list-header">Top Rated</li>
+                                    <li><a href="/book/barcelona/222284469/">Barcelona</a></li>
+                                    <li><a href="/book/hamptons/222612128/">Hamptons</a></li>
+                                    <li><a href="/book/naples/222604538/">Naples</a></li>
+                                    <li><a href="/book/boone/222608402/">Boone</a></li>
+                                    <li><a href="/book/puerto-rico/222228425/">Puerto Rico</a></li>
+                                    <li><a href="/book/scottsdale/222603437/">Scottsdale</a></li>
+                                    <li><a href="/book/aruba/222227415/">Aruba</a></li>
+                                    <li><a href="/book/north-myrtle-beach/222609794/">North Myrtle Beach</a></li>
+                                    <li><a href="/book/sedona/222513290/">Sedona</a></li>
+                                    <li><a href="/book/fort-myers-beach/222604376/">Fort Myers Beach</a></li>
+                            </ul>
+                    <ul class="link-list">
+                <li class="list-header">Popular Destinations</li>
+                                    <li><a href="/book/montego-bay/222621485/">Montego Bay</a></li>
+                                    <li><a href="/book/rome/222635475/">Rome</a></li>
+                                    <li><a href="/book/cancun/222611003/">Cancun</a></li>
+                                    <li><a href="/book/seattle/222593300/">Seattle</a></li>
+                                    <li><a href="/book/sunriver/222609146/">Sunriver</a></li>
+                                    <li><a href="/book/park-city/222610067/">Park City</a></li>
+                                    <li><a href="/book/marco-island/222604493/">Marco Island</a></li>
+                                    <li><a href="/book/vail/222519407/">Vail</a></li>
+                                    <li><a href="/book/maui/222507272/">Maui</a></li>
+                                    <li><a href="/book/whistler/222593813/">Whistler</a></li>
+                            </ul>
+        
+        <h3>Explore neighborhoods In:</h3>
+        <span class="segment-pages">
+            <ul class="link-list">
+                                    <li> <a href="/book/gatlinburg/222610847/">Gatlinburg</a></li>
+                                    <li> <a href="/book/destin/222604340/">Destin</a></li>
+                                    <li> <a href="/book/myrtle-beach/222609788/">Myrtle Beach</a></li>
+                                    <li> <a href="/book/panama-city-beach/222604574/">Panama City Beach</a></li>
+                                    <li> <a href="/book/great-smoky-mountains-national-park/222596960/">Smoky Mountains</a></li>
+                                    <li> <a href="/book/ocean-city/222540947/">Ocean City</a></li>
+                                    <li> <a href="/book/gulf-shores/222511067/">Gulf Shores</a></li>
+                                    <li> <a href="/book/pocono-mountains-region/222597698/">Poconos</a></li>
+                                    <li> <a href="/book/lake-tahoe-california/222594008/">Lake Tahoe</a></li>
+                                    <li> <a href="/book/virginia-beach/222586100/">Virginia Beach</a></li>
+                                    <li> <a href="/book/pigeon-forge/222609815/">Pigeon Forge</a></li>
+                                    <li> <a href="/book/orlando/222604559/">Orlando</a></li>
+                                    <li> <a href="/book/miami-beach/222521276/">Miami Beach</a></li>
+                                    <li> <a href="/book/orange-beach/222511580/">Orange Beach</a></li>
+                                    <li> <a href="/book/galveston/222617072/">Galveston</a></li>
+                                    <li> <a href="/book/key-west/222604439/">Key West</a></li>
+                                    <li> <a href="/book/south-padre-island/222610001/">South Padre Island</a></li>
+                                    <li> <a href="/book/pensacola-beach/222613184/">Pensacola Beach</a></li>
+                                    <li> <a href="/book/san-diego/222592988/">San Diego</a></li>
+                                    <li> <a href="/book/siesta-key/222521720/">Siesta Key</a></li>
+                                    <li> <a href="/book/tennessee/222506519/">Tennessee</a></li>
+                                    <li> <a href="/book/tybee-island/222604730/">Tybee Island</a></li>
+                                    <li> <a href="/book/wisconsin/222506543/">Wisconsin</a></li>
+                                    <li> <a href="/book/port-aransas/222609941/">Port Aransas</a></li>
+                                    <li> <a href="/book/clearwater/222520595/">Clearwater Beach</a></li>
+                                    <li> <a href="/book/las-vegas/222553106/">Las Vegas</a></li>
+                                    <li> <a href="/book/newport-beach/222603815/">Newport Beach</a></li>
+                                    <li> <a href="/book/new-york-city/222593015/">New York City</a></li>
+                                    <li> <a href="/book/florida-keys/222521066/">Florida Keys</a></li>
+                                    <li> <a href="/book/logan/222564680/">Hocking Hills</a></li>
+                                    <li> <a href="/book/minnesota/222506462/">Minnesota</a></li>
+                                    <li> <a href="/book/blue-ridge/222522068/">Blue Ridge</a></li>
+                                    <li> <a href="/book/anna-maria-island/222595262/">Anna Maria Island</a></li>
+                                    <li> <a href="/book/los-angeles/222597668/">Los Angeles</a></li>
+                                    <li> <a href="/book/seminyak/222643137/">Seminyak</a></li>
+                                    <li> <a href="/book/hilton-head/222609755/">Hilton Head</a></li>
+                                    <li> <a href="/book/helen/222522737/">Helen</a></li>
+                                    <li> <a href="/book/bali/222633153/">Bali</a></li>
+                                    <li> <a href="/book/fort-lauderdale/222520790/">Fort Lauderdale</a></li>
+                                    <li> <a href="/book/surfside-beach/222609812/">Surfside Beach</a></li>
+                                    <li> <a href="/book/amsterdam/222635667/">Amsterdam</a></li>
+                                    <li> <a href="/book/new-orleans/222593270/">New Orleans</a></li>
+                                    <li> <a href="/book/ruidoso/222556481/">Ruidoso</a></li>
+                                    <li> <a href="/book/miami/222521273/">Miami</a></li>
+                                    <li> <a href="/book/outer-banks/222612002/">Outer Banks</a></li>
+                                    <li> <a href="/book/asheville/222610811/">Asheville</a></li>
+                                    <li> <a href="/book/branson/222547820/">Branson</a></li>
+                                    <li> <a href="/book/catskill-region/222598469/">Catskills</a></li>
+                                    <li> <a href="/book/kissimmee/222604454/">Kissimmee</a></li>
+                                    <li> <a href="/book/cape-cod/222594410/">Cape Cod</a></li>
+                            </ul>
+        </span>
+    </div>
+
+    <div class="static-right-rail">
+        <div class="featured_link">
+            <span class="header">Featured destination</span>
+            <a href="http://www.visitmaryland.org" target="_blank">
+                <img src="//s4.fkimg.com/res/1380077868/assets/fk/images/home/featured-destinations/maryland.jpg" height="250px" width="300px"/>
+            </a>
+                            <a href="maryland-vacation-rentals/g28941/">
+                    See all rentals in  <b>Maryland</b>
+                </a>
+                    </div>
+
+        <div class="popular-right-now">
+            <span class="header">Popular Right Now</span>
+
+            <div class="popular-link">
+                <a href="/trip-ideas/">
+                    <span class="trip-ideas image"></span>
+                    <span class="popular-link-text">Trip ideas</span>
+                </a>
+            </div>
+            <div class="popular-link">
+                <a href="/galleries/">
+                    <span class="rental-galleries image"></span>
+                    <span class="popular-link-text">Rental Galleries</span>
+                </a>
             </div>
         </div>
     </div>
+
+
+</div>        </div>
+            </div>
 </div>
 <script>
-    hl.config.calendarDatesStartingFromToday = false;
+    hl.config.calendarDatesStartingFromToday = true;
 </script>            </article>
         </div> <!-- END #page -->
     </main>
 
-    <footer class="page-footer" id="footer">
-        <div class="container">
-            <div class="footer">
+    <footer id="footer">
 
-                    <div id="emailOptIn"></div>
+            <div id="emailOptIn"></div>
 
-                                <li class="discover-list discover-list-root visible-xs">
-    <div class="discover-header">
-        <span>Discover</span>
-        <i class="icon icon-caret-down"></i>
-    </div>
-    <ul>
-        <!-- rentals dropdown -->
-                    <li class="discover-list">
-                <div class="discover-header">
-                    <span>Rental type</span>
-                    <i class="icon icon-caret-down"></i>
+        
+        <div class="content mobile">
+            <div id="footer_mobile" class="section">
+                <div id="footer_mobile_left" class="nav">
+                    <ul>
+                        <li><a href="/pages/about_us/">About FlipKey</a></li>
+                        <li><a href="/blog/">Blog</a></li>
+                        <li><a href="/trip-ideas/">Trip ideas</a></li>
+                    </ul>
                 </div>
-                <ul>
-                                            <li class="discover-list">
-                            <a class= "discover-link" href="/beach-rentals/">
-                                Beach rentals                            </a>
-                        </li>
-                                            <li class="discover-list">
-                            <a class= "discover-link" href="/mountain-view-rentals/">
-                                Mountain view rentals                            </a>
-                        </li>
-                                            <li class="discover-list">
-                            <a class= "discover-link" href="/pet-friendly-rentals/">
-                                Pet-friendly rentals                            </a>
-                        </li>
-                                            <li class="discover-list">
-                            <a class= "discover-link" href="/rentals-with-hot-tub/">
-                                Rentals with a hot tub                            </a>
-                        </li>
-                                            <li class="discover-list">
-                            <a class= "discover-link" href="/rentals-with-pool/">
-                                Rentals with a pool                            </a>
-                        </li>
-                                            <li class="discover-list">
-                            <a class= "discover-link" href="/waterfront-rentals/">
-                                Waterfront rentals                            </a>
-                        </li>
-                                            <li class="discover-list">
-                            <a class= "discover-link" href="/2-bedroom-rentals/">
-                                2-bedroom rentals                            </a>
-                        </li>
-                                            <li class="discover-list">
-                            <a class= "discover-link" href="/3-bedroom-rentals/">
-                                3-bedroom rentals                            </a>
-                        </li>
-                                            <li class="discover-list">
-                            <a class= "discover-link" href="/4-plus-bedroom-rentals/">
-                                4+ bedroom rentals                            </a>
-                        </li>
-                                    </ul>
-            </li>
-                <!-- property type dropdown -->
-                    <li class="discover-list">
-                <div class="discover-header">
-                    <span>Property type</span>
-                    <i class="icon icon-caret-down"></i>
+                <div id="footer_mobile_right" class="nav">
+                    <ul>
+                        <li><a rel="nofollow" href="https://rentals.tripadvisor.com/en_US/termsandconditions/traveler">Terms &amp; conditions</a></li>
+                        <li><a rel="nofollow" href="https://rentals.tripadvisor.com/register?m=20348">List your property</a></li>
+                    </ul>
                 </div>
-                <ul>
-                                            <li class="discover-list">
-                            <a class= "discover-link" href="/apartment-rentals/" >
-                                Apartment rentals                            </a>
-                        </li>
-                                            <li class="discover-list">
-                            <a class= "discover-link" href="/cabin-rentals/" >
-                                Cabin rentals                            </a>
-                        </li>
-                                            <li class="discover-list">
-                            <a class= "discover-link" href="/condo-rentals/" >
-                                Condo rentals                            </a>
-                        </li>
-                                            <li class="discover-list">
-                            <a class= "discover-link" href="/villa-rentals/" >
-                                Villa rentals                            </a>
-                        </li>
-                                    </ul>
-            </li>
-                <!-- worldwide destinations dropdown -->
-                <!-- other suggestions dropdown -->
-            </ul>
-</li>
-                <ul class="group">
-                    <li><a href="/vacation-rentals">Find a Rental</a></li>
-                    <li><a href="/about_us.html">About Us</a></li>
-                    <li><a href="https://rentals.tripadvisor.com/en_US/termsandconditions/traveler" rel="nofollow">Terms</a></li>
-                </ul>
-                <div class="copyright">Copyright&copy; 2017 Vacation Home Rentals. <span class="br">All rights reserved</span></div>
             </div>
+        </div>
+
+        <p class="copyright mobile">Copyright © 2017, FlipKey Inc. All rights reserved.</p>
+
+
+        <div class="content desktop">
+		    <div id="footer_desktop" class="section">
+            <div id="footer_about" class="nav">
+                <h3>About Us</h3>
+                <ul>
+                    <li><a href="/pages/about_us/">About FlipKey</a></li>
+                    <li><a href="/blog/">Blog</a></li>
+                    <li><a href="/trip-ideas/">Trip ideas</a></li>
+                    <li><a href="/galleries/">Galleries</a></li>
+                    <li><a rel="nofollow" href="https://rentals.tripadvisor.com/en_US/termsandconditions/traveler">Terms &amp; conditions</a></li>
+                    <li><a rel="nofollow" href="https://rentals.tripadvisor.com/register?m=20348">List your property</a></li>
+                </ul>
+            </div>
+
+            <div id="footer_media" class="nav">
+                <h3>Love for FlipKey</h3>
+                <p>As featured in USA&nbsp;TODAY and recommended by&nbsp;Travel&nbsp;+&nbsp;Leisure in its annual Villa&nbsp;Guide:</p>
+                <ul class="love">
+                    <li><img alt="Travel and Leisure" src="//s4.fkimg.com/res/1380077868/assets/fk/images/logos/partners/travel_leisure.png"></li>
+                    <li><img alt="USA Today" src="//s4.fkimg.com/res/1380077868/assets/fk/images/logos/partners/usa_today.png"></li>
+                </ul>
+
+                <h3>FlipKey Elsewhere</h3>
+                <ul class="social">
+                    <li><a href="http://www.facebook.com/flipkey" target="_blank" rel="nofollow" class="icon-social-facebook"></a></li>
+                    <li><a href="http://www.twitter.com/flipkey" target="_blank" rel="nofollow" class="icon-social-twitter"></a></li>
+                    <li><a href="https://plus.google.com/+flipkey" target="_blank" rel="nofollow" class="icon-social-google"></a></li>
+                    <li><a href="http://www.pinterest.com/flipkey/" target="_blank" rel="nofollow" class="icon-social-pinterest"></a></li>
+                    <li><a href="http://instagram.com/flipkey_vacation/" target="_blank" rel="nofollow" class="icon-social-instagram"></a></li>
+                    <li><a href="https://www.linkedin.com/company/flipkey" target="_blank" rel="nofollow" class="icon-social-linkedin"></a></li>
+                </ul>
+            </div>
+
+            <div id="footer_help" class="nav">
+                <h3>New to FlipKey?</h3>
+                <p>FlipKey is a vacation rental marketplace with more than 300,000 rentals around the world. Find the perfect place to stay for your trip, and get great value along with the space, privacy and amenities of home. <br /> <br />Find the vacation rental perfect for you.</p>
+				<p class="copyright">Copyright © 2017, FlipKey Inc. All rights reserved.</p>
+			</div>
+		</div>
         </div>
     </footer>
 
 
-</div><!-- end: mainPane -->
-
-    <div class="booking-footer" id="mmb-footer">
-        <div class="booking-footer-inner">
-                <div class="booking-footer-content-inner">
-                    <div id="mmb-footer-label">See the details for this home, contact the owner, pay for your trip and more!</div>
-                    <a href="#" class="btn-neutral booking-footer-button" id="mmb-footer-cta">Go to manage your vacation booking</a>
-                </div>
-
-            <div class="booking-footer-action">
-                <span id="mmb-footer-close">
-                    <a href="#">
-                        <span class="hidden-xs">
-                            Close                        </span>
-                        <i class="public-icon public-icon--close-icon--white"></i>
-                    </a>
-                </span>
-            </div>
-        </div>
-    </div>
-
-    <div class="mmb-open-btn hidden" id="mmbOpenBtn">
-        <i class="icon icon-owl-in-green-circle"></i>
-        <span class="mmb-msg-count">1</span>
-    </div>
-
-    <div id="mmbTrashIcon" class="mmb-trash-icon"></div>
+</div>
 
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"
         integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
         crossorigin="anonymous"></script>
 
 <!-- jQuery, fall back to local if offline -->
-<script>window.jQuery || document.write('<script src="//assets.vacationhomerentals.com/res/1380077868/assets/shared/scripts/vendor/jquery-3.1.1.min.js"><\/script>')</script>
+<script>window.jQuery || document.write('<script src="//s4.fkimg.com/res/1380077868/assets/shared/scripts/vendor/jquery-3.1.1.min.js"><\/script>')</script>
 <script id="loginFormTmpl" type="text/x-handlebars-template">
     <div class="login-container">
                     <div class="logo-container hidden">
-                <div class="logo" style="background-image:url('//assets.vacationhomerentals.com/res/1380077868/assets/public/images/header/logos/2017/VH-en_US.svg');"></div>
+                <div class="logo" style="background-image:url('//s4.fkimg.com/res/1380077868/assets/public/images/header/logos/2017/FK-en_US.svg');"></div>
             </div>
                 <i class="public-icon public-icon--close-icon"></i>
         <div class="xhrSpinner login-spinner"></div>
@@ -950,16 +1013,17 @@ Good for a family or one couple and a couple of friends. Not great for multiple 
                 <script type="text/javascript">
             hl = hl || {}; hl.config = hl.config || {};
             hl.config.ga = {
-                pageviewAccount: "UA-101289-1",
-                interactiveAccount: "UA-101289-1"
+                pageviewAccount: "UA-2268929-1",
+                interactiveAccount: "UA-2268929-1"
             };
         </script>
         <!-- JS Assets -->
-        <script type="text/javascript" src="//assets.vacationhomerentals.com/res/1380077868/assets/production/common/scripts/google_analytics.min.02bd6fb04d4f75f7a252dac3.js"></script>
+        <script type="text/javascript" src="//s4.fkimg.com/res/1380077868/assets/production/common/scripts/google_analytics.min.02bd6fb04d4f75f7a252dac3.js"></script>
     
-<script type="text/javascript">hl.config.select_dates_to_see_availability = "Select dates to see availability";
+<script type="text/javascript">
+    hl.config.select_dates_to_see_availability = "Select dates to see availability";
     hl.config.x_night_stay = " night stay";
-    hl.config.already_booked = "Some of the dates you've chosen are booked already";
+    hl.config.already_booked = "Some of the dates you've chosen have already been booked";
     hl.config.checkin_not_avail = "This date is not available for check-in";
     hl.config.checkout_not_avail = "This date is not available for check-out";
     hl.config.dates_not_avail = "Not available for your dates?";
@@ -967,7 +1031,7 @@ Good for a family or one couple and a couple of friends. Not great for multiple 
     hl.config.select_checkout = "Select your check-out";
     hl.config.hideJSErrors = false;
     hl.config.countryCode = "en_US";
-    hl.config.urlStructure = {"srp":{"trailingSlash":true,"paginationTrailingSlash":false,"lowerCaseOnly":false,"queryParamPagination":true},"pdp":{"trailingSlash":true}};
+    hl.config.urlStructure = {"srp":{"trailingSlash":true,"paginationTrailingSlash":false,"lowerCaseOnly":true,"queryParamPagination":true},"pdp":{"trailingSlash":true}};
     hl.config.features = {"vrMembership":{"enabled":true,"logAPIUsage":true,"showFBTooltip":true},"bookingReminder":true,"currencySwitcher":true,"recentSearchesSaut":false,"debugEnabled":true,"qualarooEnabled":false,"showOwnerResponseTime":false};
 </script>
 
@@ -995,7 +1059,7 @@ Good for a family or one couple and a couple of friends. Not great for multiple 
                             <p>Send yourself an email so you can come back to book this property.</p>
 
                             <form action="/rentals/booking/reminder"  id="frmBookingReminder" name="frmBookingReminder" novalidate="">
-<input type="hidden" name="csrf_token" value="d04a6c4ae68158b5a67407d4ab0f2320" />
+<input type="hidden" name="csrf_token" value="703efbc2c07220ba81a779e6b1f43c93" />
 
                                 <div class="form-group">
                                     <label for="bookingReminderEmail">Enter your email address</label>
@@ -1018,9 +1082,9 @@ Good for a family or one couple and a couple of friends. Not great for multiple 
                         <div class="col-sm-12">
                             <p>To get help making a booking, call our dedicated Reservations team at:</p>
                             <div class="cs-details">
-                                <p class="hidden-xs">+1-857-504-6968</p>
-                                <p class="visible-xs"><a href="tel:+1-857-504-6968">+1-857-504-6968</a></p>
-                                <p>24 hours, 7 days a week</p>
+                                <p class="hidden-xs">+1-844-242-3777</p>
+                                <p class="visible-xs"><a href="tel:+1-844-242-3777">+1-844-242-3777</a></p>
+                                <p></p>
                             </div>
                         </div>
 
@@ -1034,19 +1098,16 @@ Good for a family or one couple and a couple of friends. Not great for multiple 
 </div><!-- /.modal -->
 
 
+<!-- FK JS Assets -->
+<script type="text/javascript" src="//s4.fkimg.com/res/1380077868/assets/production/common/scripts/brand_fk.min.6e50ab1c5b6e9a9693644c68.js"></script>
 
-
-<!-- INTL JS Assets -->
-<script type="text/javascript" src="//assets.vacationhomerentals.com/res/1380077868/assets/production/common/scripts/brand_vhr.min.e4db275f54229f6be21a953f.js"></script>
 
 <!-- Page level assets -->
-
 <!-- Home JS Assets -->
-<script type="text/javascript" src="//assets.vacationhomerentals.com/res/1380077868/assets/production/home/scripts/home-vhr.min.ef6642deba154527e3a53759.js"></script>
-
+<script type="text/javascript" src="//s4.fkimg.com/res/1380077868/assets/production/home/scripts/home-fk.min.29b4a28ca9a0ec0cdbe84ac9.js"></script>
 
 <!-- Google Tag Manager -->
-<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-M2P2426" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-MR2TDG3" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <script>
     // Tag manager
     // Deducing device type to be used by Criteo tags via Google Tag Manager
@@ -1096,7 +1157,7 @@ Good for a family or one couple and a couple of friends. Not great for multiple 
     // End: Tag manager dataLayer
 
     (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-M2P2426');
+    })(window,document,'script','dataLayer','GTM-MR2TDG3');
 </script>
 <!-- End Google Tag Manager -->
 
@@ -1106,5 +1167,15 @@ Good for a family or one couple and a couple of friends. Not great for multiple 
         for(g=0;g<i.length;g++)f(c,i[g]);b._i.push([a,e,d])};b.__SV=1.2;a=f.createElement("script");a.type="text/javascript";a.async=!0;a.src="//cdn.mxpnl.com/libs/mixpanel-2.2.min.js";e=f.getElementsByTagName("script")[0];e.parentNode.insertBefore(a,e)}})(document,window.mixpanel||[]);
     mixpanel.init("ebc12f07f39bf7e6674e0bb7ee254d5a");</script>
 <!-- end Mixpanel -->
-<script type="text/javascript">window.NREUM||(NREUM={});NREUM.info={"beacon":"bam.nr-data.net","licenseKey":"5df886ae17","applicationID":"32345997","transactionName":"YldSYkQCW0NUB0AKWlsdcVVCClpeGixbDlAaRFhE","queueTime":0,"applicationTime":45,"atts":"ThBRFAwYSE0=","errorBeacon":"bam.nr-data.net","agent":""}</script></body>
+
+<!-- Qualaroo for internalhl.com -->
+<script type="text/javascript">
+    //Qualaroo survey script
+    var _kiq = _kiq || [];
+    (function() {
+        setTimeout(function() {
+            var d = document, f = d.getElementsByTagName('script')[0], s = d.createElement('script'); s.type = 'text/javascript'; s.async = true; s.src = hl.config.qualarooScriptUrl; f.parentNode.insertBefore(s, f);
+        }, 1);
+    })();
+    </script><script type="text/javascript">window.NREUM||(NREUM={});NREUM.info={"beacon":"bam.nr-data.net","licenseKey":"5df886ae17","applicationID":"32345997","transactionName":"YldSYkQCW0NUB0AKWlsdcVVCClpeGixbDlAaVFs=","queueTime":0,"applicationTime":57,"atts":"ThBRFAwYSE0=","errorBeacon":"bam.nr-data.net","agent":""}</script></body>
 </html>
