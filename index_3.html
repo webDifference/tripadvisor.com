@@ -1,0 +1,348 @@
+<!DOCTYPE html> <html lang="en"> <head itemscope itemtype="http://schema.org/WebSite"> <title>Tours, sightseeing tours, activities &amp; things to do | Viator.com</title> <meta itemprop="name" content="Viator"> <meta name="viewport" content="width=1020"/> <meta http-equiv="X-UA-Compatible" content="IE=Edge"> <link rel="dns-prefetch" href="//cache.vtrcdn.com"> <link rel="dns-prefetch" href="//cache-graphicslib.viator.com"> <link rel="apple-touch-icon" href="//cache.vtrcdn.com/images/appleicons/apple-touch-icon-iphone.png"/> <link rel="apple-touch-icon" sizes="114x114" href="//cache.vtrcdn.com/images/appleicons/apple-touch-icon-iphone4.png"/> <link rel="stylesheet" href="//cache.vtrcdn.com/assets/common.css?_=1711292344" media="screen"/> <!--[if IE 9]><link rel="stylesheet" href="//cache.vtrcdn.com/wayfinder/css/ie9.css?_=1711292344" media="screen"/><![endif]--> <link rel="alternate" media="only screen and (max-width: 640px)" href="https://m.viator.com/"/> <script src="//assets.adobedtm.com/43f9d461bdc07f4cf24ecf50d63dc7ba4bcbb2df/satelliteLib-34eee7dfbb7f09d4119880123108cedc6b6cb1a3.js?_=1711292344"></script> <script src="//cache.vtrcdn.com/assets/atlas-local.js?_=1711292344" data-version="1711292344" data-cdn="//cache.vtrcdn.com"></script> <script>
+    Viator.MboxGlobalParams = {
+        
+    };
+</script> <script>
+    var pageData = {
+  "page" : {
+    "currencyCode" : "BRL",
+    "language" : "en",
+    "timestamp" : 1512392162040,
+    "type" : "home",
+    "production" : true
+  },
+  "visitor" : {
+    "ccAdType" : "",
+    "ccAgentId" : "",
+    "ccDomain" : "",
+    "cartProducts" : [ ],
+    "cartTotal" : 0,
+    "type" : "guest",
+    "userId" : "",
+    "wishlistProducts" : [ ],
+    "wishlistTotal" : 0
+  }
+};
+    Viator.DTM.trackGlobals();
+</script> <script>
+    /* Adobe Target global mbox parameters */
+    window.targetPageParams = function() {
+        return {
+            pageType: pageData !== 'undefined' && pageData.page && pageData.page.type ? pageData.page.type : 'home',
+            vba: 'false'
+            
+        };
+    }
+</script> <script src="https://cache-graphicslib.viator.com/graphicslib/TnT/mbox.js?_=1711292344"></script> <meta name="description" content="Tours, things to do, sightseeing tours, day trips and more from Viator. Find and book city tours, helicopter tours, day trips, show tickets, sightseeing day tours, popular activities and things to do in hundreds of destinations worldwide, plus unbiased tour reviews and photos of tours and attractions from thousands of travelers"/> <meta property="fb:page_id" content="21566250864"/> <link rel="alternate" href="https://au.viator.com/" hreflang="en-AU"/> <link rel="alternate" href="https://ca.viator.com/" hreflang="en-CA"/> <link rel="alternate" href="https://uk.viator.com/" hreflang="en-GB"/> <link rel="alternate" href="https://www.viator.com/" hreflang="en"/> <link rel="alternate" href="https://www.viatorcom.de/de/7132/" hreflang="de"/> <link rel="alternate" href="https://www.viatorcom.fr/fr/7379/" hreflang="fr"/> <link rel="alternate" href="https://es.viator.com/es/7380/" hreflang="es"/> <link rel="alternate" href="https://it.viator.com/it/8345/" hreflang="it"/> <link rel="alternate" href="https://br.viator.com/pt/8328/" hreflang="pt"/> <link rel="alternate" href="https://dk.viator.com/da/7383/" hreflang="da"/> <link rel="alternate" href="https://www.viatorcom.nl/nl/7381/" hreflang="nl"/> <link rel="alternate" href="https://www.viatorcom.no/no/7382/" hreflang="no"/> <link rel="alternate" href="https://www.viatorcom.se/sv/7384/" hreflang="sv"/> <link rel="alternate" href="https://jp.viator.com/ja/8327/" hreflang="ja"/> <link rel="canonical" href="https://www.viator.com" itemprop="url"/> <meta property="og:type" content="website"> <meta property="fb:app_id" content="189309987769660"> <meta property="al:ios:app_name" content="Viator Tours & Activities"> <meta property="al:ios:app_store_id" content="434832826"> <meta property="al:ios:url" content="viator://www.viator.com"> <meta property="al:android:app_name" content="Viator Tours & Activities"> <meta property="al:android:package" content="com.viator.mobile.android"> <meta property="al:android:url" content="viator://www.viator.com"> </head> <body> <noscript> <div style="margin: 0px auto; width: 640px;" style="text-align: center;"> <p>I'm sorry, but viator.com requires <strong>JavaScript</strong> to be enabled in your browser</p> <p>Please enable this to find your next activity</p> </div> </noscript> <script type="text/javascript">
+    $(document).ready($.ajax({
+        type: 'GET',
+        url: '/rest/v1/clickstream/check.do',
+        headers: {
+            "X-Requested-With":"ViatorXHR"
+        }
+    }).done(function(data) {
+        
+    }));
+
+</script> <div class="utilities"> <div class="page small"> <div id="topLeftToolsDiv" class="unit"> <div class="line"> <div class="unit border-dblue-r border-dblue-l phm utilities-item"> <div id="currencyDropdownLink" class="line"> <script>
+    $(function () {
+        function changeCurrency(currency) {
+            if (window.onCurrencyUpdate) {
+                
+                window.onCurrencyUpdate(currency);
+                return;
+            }
+            if (Viator.isCheckoutEvent) {
+                $('input[name="currencyCode"]').val(currency);
+                $('#checkoutForm')
+                        .attr('action', '/booking/checkoutChangeCurrency.jspa')
+                        .submit();
+
+                return;
+            }
+
+            $.ajax({
+                url: "/changeCurrency.jspa?currencyCode=" + currency,
+                success: function (data) {
+                    if (data.status !== 'success') {
+                        location.href = '/error.jspa';
+                    }
+
+                    
+                    
+                    if (Viator.$errorBox.is(":visible")
+                            && Viator.$quoteForm != undefined) {
+                        Viator.$quoteForm.removeAttr("id");
+                        $("body").append(Viator.$quoteForm);
+                        Viator.$quoteForm[0].submit();
+                    } else if (location.href.indexOf('applyPromoCode.jspa') > -1) {
+                        location.href = '/shopping-cart';
+                    } else {
+                        if (location.hash) {
+                            location.replace(location.href.replace(location.hash, ''));
+                        } else {
+                            location.replace(location.href);
+                        }
+                    }
+                    
+                },
+                error: function () {
+                    location.reload();
+                }
+            });
+        }
+
+        Viator.$errorBox = $(".error-box");
+
+        if (location.href.indexOf("sicPriceQuote") !== -1
+                && Viator.$errorBox.is(":visible")) {
+            Viator.$quoteForm = $("#quoteform").clone();
+        }
+
+        
+        changeCurrency('USD');
+        
+
+        var $currencies = $('a[data-currency]');
+
+        $currencies.click(function (e) {
+            e.preventDefault();
+
+            if ($(this).data('currency') !==  $currencies.eq(0).data('currency')) {
+                changeCurrency($(this).data('currency'));
+            }
+        });
+    });
+</script> <div id="currencyDropdown" class="user-dropdown user-dropdown-active" style="display:none;"> <ul class="dropdown-box round-bottom"> <li> <a class="txtC" data-currency="USD" data-action-capture="click" data-action-tag="ChangeCurrency">USD ($)</a> </li> <li> <a class="txtC" data-currency="GBP" data-action-capture="click" data-action-tag="ChangeCurrency">GBP (&pound;)</a> </li> <li> <a class="txtC" data-currency="EUR" data-action-capture="click" data-action-tag="ChangeCurrency">EUR (&euro;)</a> </li> <li> <a class="txtC" data-currency="AUD" data-action-capture="click" data-action-tag="ChangeCurrency">AUD ($)</a> </li> <li> <a class="txtC" data-currency="CAD" data-action-capture="click" data-action-tag="ChangeCurrency">CAD ($)</a> </li> <li> <a class="txtC" data-currency="NZD" data-action-capture="click" data-action-tag="ChangeCurrency">NZD ($)</a> </li> <li> <a class="txtC" data-currency="SGD" data-action-capture="click" data-action-tag="ChangeCurrency">SGD ($)</a> </li> <li> <a class="txtC" data-currency="HKD" data-action-capture="click" data-action-tag="ChangeCurrency">HKD ($)</a> </li> </ul> </div> </div> </div> <div class="unit border-dblue-r phm utilities-item"> <div id="languageDropdownLink" class="line"> <div class="unit"> <a class="unit inverse-txt no-hover" style="white-space: nowrap">English<i class="via-caret-down xxsmall"></i></a> </div> <div id="languageDropdown" class="user-dropdown user-dropdown-active" style="display: none;"> <ul class="dropdown-box round-bottom"> <li data-href="https://au.viator.com" data-lang="en-AU" data-action-capture="click" data-action-tag="LanguageSwitcher" data-action-value="en-AU"><a style="white-space: nowrap">English (Australia)</a></li> <li data-href="https://ca.viator.com" data-lang="en-CA" data-action-capture="click" data-action-tag="LanguageSwitcher" data-action-value="en-CA"><a style="white-space: nowrap">English (Canada)</a></li> <li data-href="https://uk.viator.com" data-lang="en-GB" data-action-capture="click" data-action-tag="LanguageSwitcher" data-action-value="en-GB"><a style="white-space: nowrap">English (UK)</a></li> <li data-href="https://www.viatorcom.de" data-lang="de" data-action-capture="click" data-action-tag="LanguageSwitcher" data-action-value="de"><a style="white-space: nowrap">Deutsch</a></li> <li data-href="https://www.viatorcom.fr" data-lang="fr" data-action-capture="click" data-action-tag="LanguageSwitcher" data-action-value="fr"><a style="white-space: nowrap">Français</a></li> <li data-href="https://es.viator.com" data-lang="es" data-action-capture="click" data-action-tag="LanguageSwitcher" data-action-value="es"><a style="white-space: nowrap">Español</a></li> <li data-href="https://it.viator.com" data-lang="it" data-action-capture="click" data-action-tag="LanguageSwitcher" data-action-value="it"><a style="white-space: nowrap">Italiano</a></li> <li data-href="https://br.viator.com" data-lang="pt" data-action-capture="click" data-action-tag="LanguageSwitcher" data-action-value="pt"><a style="white-space: nowrap">Português(Brasil)</a></li> <li data-href="https://dk.viator.com" data-lang="da" data-action-capture="click" data-action-tag="LanguageSwitcher" data-action-value="da"><a style="white-space: nowrap">Dansk</a></li> <li data-href="https://www.viatorcom.nl" data-lang="nl" data-action-capture="click" data-action-tag="LanguageSwitcher" data-action-value="nl"><a style="white-space: nowrap">Nederlands</a></li> <li data-href="https://www.viatorcom.no" data-lang="no" data-action-capture="click" data-action-tag="LanguageSwitcher" data-action-value="no"><a style="white-space: nowrap">Norsk</a></li> <li data-href="https://www.viatorcom.se" data-lang="sv" data-action-capture="click" data-action-tag="LanguageSwitcher" data-action-value="sv"><a style="white-space: nowrap">Svenska</a></li> <li data-href="https://jp.viator.com" data-lang="ja" data-action-capture="click" data-action-tag="LanguageSwitcher" data-action-value="ja"><a style="white-space: nowrap">日本語</a></li> </ul> </div> </div> </div> </div> </div> <div id="accountToolsHeaderDiv" class="unitRight"> <div class="unitRight"> <div class="line man"> <div class="unitRight border-dblue-r phm utilities-item"> <a class="inverse-txt no-hover" rel="nofollow" href="/faq"><i class="via-question icon-utilities mrs"></i><span class="inline-block">Help</span></a> </div> <div class="unitRight border-dblue-r phm utilities-item"> <a class="inverse-txt no-hover" rel="nofollow" href="/content/account/goto.jspa?aid=mmbnav"> <span class="inline-block">Manage My Booking</span> </a> </div> <div class="unitRight border-dblue-r phm utilities-item"> <div class="line"> <div class="unit"><a class="inverse-txt no-hover" href="/shopping-cart"><i class="via-cart icon-lg icon-utilities mrs"></i><span class="inline-block">Cart <span id="shopCartCount" class="circle-number-s orange-shader mls">0</span></span></a> </div> </div> </div> <div id="userMenuContainer" class="unit"> <div id="userMenu" class="unit border-dblue-l border-dblue-r phm utilities-item"> <div id="userDropdownLink"> <div class="media-inline"> <a class="inverse-txt no-hover"> <i class="via-user-profile icon-lg icon-utilities mrs"></i>Log in / Register <i class="via-caret-down xxsmall"></i></a> </div> <div id="userDropdown" class="user-dropdown user-dropdown-active" style="display:none;"> <ul class="dropdown-box round-bottom"> <li><a href="/content/account/SSL/signIn-form.jspa"> <i class="via-user-profile icon-fw mrm"></i>Log In</a></li> <li> <a href="/content/account/SSL/signUp-form.jspa"> <i class="via-pencil-2 icon-fw mrm"></i>Register</a> </li> <li> <a onclick="Viator.Dialog.modal('/content/account/ajax-showOffers.jspa');return false;"> <i class="via-tag icon-fw mrm"></i>Deals and Offers<span id="offersCount" style="display:none;" class="circle-number-s mlm">0</span></a> </li> <li> <a onclick="Viator.Common.showWishlistManager();return false;"> <i class="via-heart icon-fw mrm"></i>Wishlist<span id="wishlistCount" class="unitRight circle-number-s mlm">0</span></a> </li> </ul> </div> </div> </div> </div> </div> </div> </div> <div class="clear"></div> </div> </div> <div id="globalHeader" class="global-header "> <div class="page"> <div class="line pvm"> <div class="unit" itemscope itemtype="http://schema.org/Organization"> <meta itemprop="name" content="Viator"/> <meta itemprop="url" content="https://www.viator.com"/> <meta itemprop="logo" content="https://www.viator.com/wayfinder/images/header_logo_tagline.min.svg"/> <a href="/"><img src="/wayfinder/images/header_logo_tagline.min.svg" alt="Viator.com: Book things to do, sightseeing tours, activities and attractions in more than 70 countries worldwide." width="425" height="70"/></a> </div> </div> </div> </div> <div class="viamod-bar"></div> <script>
+    Viator.reloadHeaderBar = false;
+    Viator.signedInAccount = false;
+    Viator.GooglePlus.config = {
+        apiKey: 'AIzaSyAst3wYoA_xoNYz9Eo9H16A1d5QKkl7PNo',
+        authScopes: 'https://www.googleapis.com/auth/payments.make_payments https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile'.split(" "),
+        clientId: '518865853796.apps.googleusercontent.com',
+        serverUrlBase: 'https://www.viator.com',
+        secureSessionStatePage: '/content/account/SSL/googleAuthSessionState.jsp',
+        secureConnectServerPage: '/content/account/SSL/googleAccountConnect.jsp'
+    };
+    Viator.GooglePlus.loggedOutSessionState = '';
+    
+    
+    Viator.paramErrorCode = '';
+    Viator.rewriteUrl = 'true';
+    Viator.destinationId = '0';
+    Viator.Common.initEapHeader();
+    Viator.GooglePlus.loadSDK();
+    Viator.FB.bootstrap();
+    
+    $(function() { Viator.Common.initHeader(); });
+    Viator.enablePromoUnits = false;
+</script> <div class="page mtl mbl" style="display:none"> <div class="dpromo-box light-shader round-all mbxs" id="promoUnit"> <div class="man"> <div class="dpromo-img phm pbs"><i class="icon icon-promo-tag mrn"></i></div> <div class="pvm leading-s" id="promoUnitMain"> <div class="dpromo-title"></div> <div class="h2 dpromo-text" id="promoUnitBody"></div> </div> <div class="dpromo-bd-r txtC"> <div class="btn mhm" id="promoUnitActionTrigger"> <button><span class="xxsmall mvs pvxs txtC" id="callToAction">Learn more</span></button> </div> <div class="mhm" id="promoUnitFooterContainer"><p class="man note xxxsmall txtC" id="promoUnitFooter"></p></div> </div> </div> </div> </div> <div class="spotlight"> <div class="home-search" style="width:580px;"> <div class="mod-home-search menu-box mha pas pie-htc"> <div class="border"> <div class="phm ptm"> <h1 class="mhn mtn inverse-txt pbm hd-border"><i class="via-v-teardrop mrm"></i>Let the activities begin!</h1> <div id="searchBoxWithPopupResults" class="top-keyword-search unit"> <form action="/freeTextSearch.jspa" method="get" enctype="" title="search" name="search" onsubmit="return Viator.Common.doFreeTextSearchSubmit('freeTextKeyword', '');"> <input type="text" name="freeTextKeyword" maxlength="50" id="freeTextKeyword" class="no-border unit" placeholder="Search for destinations, attractions and tours"> <input type="button" id="searchGo" onclick="if(Viator.Common.doFreeTextSearchSubmit('freeTextKeyword', '')) { this.form.submit() }" value="Let's Go" title='Search Viator Tours & Things to Do'> </form> </div> </div> </div> </div> </div> <div class="slider"> <div class="slide-img-wrapper"></div> <img class="slide-img unit mha" src="https://cache-graphicslib.viator.com/graphicslib/mm/NYC_162122_1.jpg" data-src="https://cache-graphicslib.viator.com/graphicslib/mm/NYC_162122_1.jpg"> <div class="slide-unit"> <div class="slide-unit-inner mha"> <a href="/New-York-City-tourism/Ways-to-Celebrate-Christmas-and-New-Years-Eve-in-New-York-City/d687-t3383?pub=HPQ4BB2017_7" title="Put a New York spin on your holiday season" class="mha" style="display:block; width:1600px; height:100%;"></a> <div class="slide-caption inverse-txt strong small"> <a href="/New-York-City-tourism/Ways-to-Celebrate-Christmas-and-New-Years-Eve-in-New-York-City/d687-t3383?pub=HPQ4BB2017_7""> Visit the Big Apple > </a> </div> </div> </div> <img class="slide-img unit mha" src="" data-src="https://cache-graphicslib.viator.com/graphicslib/mm/Aus-a_162715_1.jpg"> <div class="slide-unit"> <div class="slide-unit-inner mha"> <a href="/Sydney-tourism/Ways-to-Celebrate-New-Years-Eve-in-Sydney/d357-t5276?pub=HPQ4BB2017_8" title="Beat your friends to 2018. No time machine required." class="mha" style="display:block; width:1600px; height:100%;"></a> <div class="slide-caption inverse-txt strong small"> <a href="/Sydney-tourism/Ways-to-Celebrate-New-Years-Eve-in-Sydney/d357-t5276?pub=HPQ4BB2017_8""> Celebrate New Year's in Sydney > </a> </div> </div> </div> <img class="slide-img unit mha" src="" data-src="https://cache-graphicslib.viator.com/graphicslib/mm/Iceland_160719_1.jpg"> <div class="slide-unit"> <div class="slide-unit-inner mha"> <a href="/Iceland-tourism/Seeing-the-Northern-Lights-in-Iceland/d55-t26396?pub=HPQ4BB2017_2" title="When the sky shows its true colors, you'll want to be there" class="mha" style="display:block; width:1600px; height:100%;"></a> <div class="slide-caption inverse-txt strong small"> <a href="/Iceland-tourism/Seeing-the-Northern-Lights-in-Iceland/d55-t26396?pub=HPQ4BB2017_2""> See the Northern Lights in Iceland > </a> </div> </div> </div> <img class="slide-img unit mha" src="" data-src="https://cache-graphicslib.viator.com/graphicslib/mm/Hawaii-Update_160721_1.jpg"> <div class="slide-unit"> <div class="slide-unit-inner mha"> <a href="/Hawaii-tours/Water-Sports/d278-g17?pub=HPQ4BB2017_4" title="“Beautiful water, beautiful fish, beautiful setting.” -Janet, 5 stars" class="mha" style="display:block; width:1600px; height:100%;"></a> <div class="slide-caption inverse-txt strong small"> <a href="/Hawaii-tours/Water-Sports/d278-g17?pub=HPQ4BB2017_4""> Sail, Snorkel + More in Hawaii > </a> </div> </div> </div> <div class="slider-shadow"></div> <a class="prev" style="display:none;">Prev</a> <a class="next" style="display:none;">Next</a> </div> <img id="slideImageTemplate" class="slide-img unit mha" data-src="" src="" style="display:none;"> <div id="slideUnitTemplate" class="slide-unit" style="display:none;"> <div class="slide-unit-inner mha"> <a style="display:none; width:1600px; height:100%;" class="mha" title="" href=""></a> <div class="slide-caption inverse-txt strong small" style="display:none;"> <a href=""></a> </div> </div> </div> <script>
+    $script(Viator.Common.versionedUrl(Viator.config.CDN + '/js/atlas.billboard.js'),
+            function () {
+                
+                $(function () {
+                    $('.slider').billboard();
+                });
+            });
+</script> </div> <div id="home" class="xlarge "> <div class="body"> <div class="main-content"> <div class="main-col"> <div class="omniture"> <script src="//cache.vtrcdn.com/analytics/s_code.js?_=1711292344"></script> <script type="text/javascript">
+
+s.pageName = "Home";
+s.server = "";
+s.channel = "";
+s.pageType = "Home";
+s.prop1 = "";
+s.prop2 = "";
+s.prop3 = "Home";
+s.prop4 = "";
+s.prop5 = "";
+s.prop6 = "";
+s.prop7 = "";
+s.prop8 = "";
+
+s.campaign = "";
+s.state = "";
+s.zip = "";
+s.events = "";
+s.products = "";
+s.purchaseID = "";
+s.currencyCode = "";
+s.eVar1 = "";
+s.eVar2 = "";
+s.eVar3 = "";
+s.eVar4 = "";
+s.eVar5 = "";
+s.eVar6 = "";
+s.eVar7 = "";
+s.eVar8 = ""; 
+
+s.eVar10 = "";
+s.eVar11 = ""; 
+
+
+
+s.eVar15 = "";
+s.eVar16 = "";
+s.eVar17 = ""; 
+s.eVar18 = "";
+s.eVar19 = "";
+s.eVar20 = ""; 
+s.eVar21 = ""; 
+s.eVar22 = "";
+s.eVar23 = "";
+s.eVar24 = "";
+s.eVar25 = "";
+s.eVar26 = ""; 
+
+
+
+s.eVar30 = ""; 
+s.eVar31 = ""; 
+
+s.eVar33 = "";
+s.eVar34 = ""; 
+s.eVar35 = "";
+s.eVar36 = ""; 
+s.eVar37 = "";
+s.eVar38 = "";
+s.eVar39 = "";
+s.eVar40 = "";
+s.eVar41 = "";
+
+s.eVar43 = "";
+s.eVar44 = "";
+s.eVar45 = "";
+s.eVar46 = "Guest";
+s.eVar47 = ""; 
+s.eVar48 = "";
+s.eVar49 = "";
+s.eVar50 = "";
+s.eVar51 = "";
+s.eVar52 = "";
+
+
+
+s.eVar56 = "";
+s.eVar57 = "";
+s.eVar58 = "";
+s.eVar59 = "";
+
+s.eVar61 = "";
+
+
+
+s.eVar66 = "";
+
+s.eVar67 = "330211";
+s.eVar68 = "";
+s.eVar69 = "";
+
+
+s.eVar75 = ""; 
+
+var s_code = s.t();
+if (s_code)document.write(s_code)</script> <script language="JavaScript" type="text/javascript">
+if (navigator.appVersion.indexOf('MSIE') >= 0)document.write(unescape('%3C') + '\!-' + '-')
+</script> <noscript> <img src="//viator.122.2o7.net/b/ss/viatorprd/1/H.24.4--NS/0" height="0" width="0" border="0" alt=""/> </noscript> <!--/DO NOT REMOVE/--> </div> <div class="mt-5 mb-7"> <div class="page"> <div class="body"> <div class="line txtC medium"> <div class="unit size1of4"> <a href="/about-us" class="no-hover text-muted media-inline"><img src="/wayfinder/images/icon-ticket.svg" height="28x" class="mrm prxxs"/><span>60,000+ Things to Do</span></a> </div> <div class="unit size1of4"> <a href="/about-us" class="no-hover text-muted media-inline"><img src="/wayfinder/images/icon-tickbox.svg" height="24px" class="mrm prxxs mvxxs"/><span>Millions of Reviews</span></a> </div> <div class="unit size1of4"> <a href="/about-us" class="no-hover text-muted media-inline"><img src="/wayfinder/images/icon-lowprice.svg" height="26px" class="mrm prxxs mvxxxs"/><span>Low Prices Guaranteed</span></a> </div> <div class="unit size1of4"> <a href="/about-us" class="no-hover text-muted media-inline"><img src="/wayfinder/images/icon-supportbubble.svg" height="28px" class="mrm prxxs"/><span>24/7 Global Support</span></a> </div> </div> </div> </div> </div> <div class="page mb-7"> <div class="body"> <div class="line mm-row"> <div class="unit size1of3 ttd-row-inner" id="mm161843" mmID="161843" layoutCode="CENTER_PHOTO_NARROW_SIMPLE" position="1"> <div class="home-mm-1of3"> <a href="/Tromso-tours/Ski-and-Snow/d4362-g9-c38?pub=HPQ4MM2017_4" title=""> <img src="https://cache-graphicslib.viator.com/graphicslib//mm/Viator_Photographer_390710_161843_1.jpg" alt="https://cache-graphicslib.viator.com/graphicslib//mm/Viator_Photographer_390710_161843_1.jpg" class="round-top"> </a> <div class="round-bottom light-shader size-home-mm mm-row-height" style="height: 218px;"> <div class="pa-4"> <h3 class="mtn mhn mb-3 home-mm-title"> <a href="/Tromso-tours/Ski-and-Snow/d4362-g9-c38?pub=HPQ4MM2017_4"> Choose Your Own Adventure in Norway</a> </h3> <p class="man medium note">Excitement awaits north of the Arctic Circle—whether you snowshoe in the forest, snowmobile through tundra, or relax on a reindeer-led sleigh ride near Tromso.</p> </div> </div> </div> </div> <div class="unit size1of3 ttd-row-inner" id="mm160723" mmID="160723" layoutCode="CENTER_PHOTO_NARROW_SIMPLE" position="2"> <div class="home-mm-2of3"> <a href="/Dubai-tourism/Dubai-Desert-Experiences/d828-t11926?pub=HPQ4MM2017_2" title=""> <img src="https://cache-graphicslib.viator.com/graphicslib//mm/Viator_Unknown_120455_160723_1.jpg" alt="https://cache-graphicslib.viator.com/graphicslib//mm/Viator_Unknown_120455_160723_1.jpg" class="round-top"> </a> <div class="round-bottom light-shader size-home-mm mm-row-height" style="height: 218px;"> <div class="pa-4"> <h3 class="mtn mhn mb-3 home-mm-title"> <a href="/Dubai-tourism/Dubai-Desert-Experiences/d828-t11926?pub=HPQ4MM2017_2"> Arabian Nights: Discover the Desert Beyond Dubai</a> </h3> <p class="man medium note">After soaking up the city’s modern glitz, head into the desert for an evening of camel rides, a barbecue dinner, or even a night sleeping under the stars.</p> </div> </div> </div> </div> <div class="unit size1of3 ttd-row-inner lastUnit" id="mm161606" mmID="161606" layoutCode="CENTER_PHOTO_NARROW_SIMPLE" position="3"> <div class="home-mm-1of3 unitRight"> <a href="/Punta-Cana-tours/Outdoor-Activities/d794-g9?pub=HPQ4MM2017_3" title=""> <img src="https://cache-graphicslib.viator.com/graphicslib//mm/Viator_User_Generated_351178_161606_1.jpg" alt="https://cache-graphicslib.viator.com/graphicslib//mm/Viator_User_Generated_351178_161606_1.jpg" class="round-top"> </a> <div class="round-bottom light-shader size-home-mm mm-row-height" style="height: 218px;"> <div class="pa-4"> <h3 class="mtn mhn mb-3 home-mm-title"> <a href="/Punta-Cana-tours/Outdoor-Activities/d794-g9?pub=HPQ4MM2017_3"> Get Out and Explore in <br>Punta Cana</a> </h3> <p class="man medium note">Make your island getaway stand out from the rest when you go ziplining in the treetops, offroading in a dune buggy, or swimming in a sparkling blue cenote.</p> </div> </div> </div> </div> </div> </div> </div> <div class="page mb-7"> <div class="body"> <div class="line mm-row"> <div class="unit size1of3 ttd-row-inner" id="mm160726" mmID="160726" layoutCode="LH_HOT_DESTINATIONS" position="4"> <div class="home-mm-1of3"> <div class="size-home-mm"> <div class="light-border-b mb-3"> <h3 class="mtn mhn mb-3"> Holidays in Europe </h3> </div> <div class="line"> <ul class="man"> <li class="mb-3"><a href="/London/d737-ttd?pub=HPQ4LM_1_1">London</a></li> <li class="mb-3"><a href="/Paris/d479-ttd?pub=HPQ4LM_1_2">Paris</a></li> <li class="mb-3"><a href="/Rome/d511-ttd?pub=HPQ4LM_1_3">Rome</a></li> <li class="mb-3"><a href="/Vienna/d454-ttd?pub=HPQ4LM_1_4">Vienna</a></li> <li class="mb-3"><a href="/Frankfurt/d489-ttd?pub=HPQ4LM_1_5">Frankfurt</a></li> <li class="mb-3"><a href="/Cologne/d923-ttd?pub=HPQ4LM_1_6">Cologne</a></li> <li class="mb-3"><a href="/Salzburg/d451-ttd?pub=HPQ4LM_1_7">Salzburg</a></li> <li class="mb-3"><a href="/Budapest/d499-ttd?pub=HPQ4LM_1_8">Budapest</a></li> </ul> </div> </div> </div> </div> <div class="unit size1of3 ttd-row-inner" id="mm160727" mmID="160727" layoutCode="LH_HOT_DESTINATIONS" position="5"> <div class="home-mm-2of3"> <div class="size-home-mm"> <div class="light-border-b mb-3"> <h3 class="mtn mhn mb-3"> Escape the Cold </h3> </div> <div class="line"> <ul class="man"> <li class="mb-3"><a href="/Sydney/d357-ttd?pub=HPQ4LM_2_1">Sydney</a></li> <li class="mb-3"><a href="/Oahu/d672-ttd?pub=HPQ4LM_2_2">Oahu</a></li> <li class="mb-3"><a href="/Cancun/d631-ttd?pub=HPQ4LM_2_3">Cancun</a></li> <li class="mb-3"><a href="/Maui/d671-ttd?pub=HPQ4LM_2_4">Maui</a></li> <li class="mb-3"><a href="/Cairns-and-the-Tropical-North/d754-ttd?pub=HPQ4LM_2_5">Cairns & the Tropical North</a></li> <li class="mb-3"><a href="/Auckland/d391-ttd?pub=HPQ4LM_2_6">Auckland</a></li> <li class="mb-3"><a href="/Big-Island-of-Hawaii/d669-ttd?pub=HPQ4LM_2_7">Big Island of Hawaii</a></li> <li class="mb-3"><a href="/Queenstown/d407-ttd?pub=HPQ4LM_2_8">Queenstown</a></li> </ul> </div> </div> </div> </div> <div class="unit size1of3 ttd-row-inner lastUnit" id="mm160728" mmID="160728" layoutCode="LH_HOT_DESTINATIONS" position="6"> <div class="home-mm-1of3 unitRight"> <div class="size-home-mm"> <div class="light-border-b mb-3"> <h3 class="mtn mhn mb-3"> Deals & Discounts </h3> </div> <div class="line"> <ul class="man"> <li class="mb-3"><a href="/New-York-City/d687/New-York-City-deals?pub=HPQ4LM_3_1">New York City</a></li> <li class="mb-3"><a href="/France/d51/France-deals?pub=HPQ4LM_3_2">France</a></li> <li class="mb-3"><a href="/Italy/d57/Italy-deals?pub=HPQ4LM_3_3">Italy</a></li> <li class="mb-3"><a href="/Spain/d67/Spain-deals?pub=HPQ4LM_3_4">Spain</a></li> <li class="mb-3"><a href="/Las-Vegas/d684/Las-Vegas-deals?pub=HPQ4LM_3_5">Las Vegas</a></li> <li class="mb-3"><a href="/Orlando/d663/Orlando-deals?pub=HPQ4LM_3_6">Orlando</a></li> <li class="mb-3"><a href="/Ecuador/d727/Ecuador-deals?pub=HPQ4LM_3_7">Ecuador</a></li> <li class="mb-3"><a href="/Vietnam/d21/Vietnam-deals?pub=HPQ4LM_3_8">Vietnam</a></li> </ul> </div> </div> </div> </div> </div> </div> </div> <script type="text/javascript" src="https://tag.yieldoptimizer.com/ps/ps?t=s&p=1300&pg=hm"></script> <viator data-page-name="home"></viator> </div> </div> </div> </div> <div id="emailSignupFooter" class="page-bg pvm mtl" style="display:none;"> <div class="page"> <div class="body line"> <div class="size6of7" style="margin:auto;"> <div class="media man"> <div class="img mrm"> <h3 class="section-title mrs inline-unit h4"><i class="via-mail-o-teardrop h3 mrs"></i>Deals &amp; Discounts</h3> <br> <span class="xsmall note">Subscribe to our email newsletter</span> </div> <div class="bd ptxs"> <div class="line"> <form action="#" name="subscribe2" method="get"> <input type="hidden" name="EMAIL_REQUIRED" value="T"/> <div class="unit size2of3"> <div class="input-full-wrap"><input type="text" id="email" name="EMAIL" maxlength="255" class="input-full" placeholder="Your email address"></div> </div> <div class=" unit size1of5"> <div class="btn btn-alt btn-alt-simple mlm"> <button onclick="f_validateForm(this.form.name);return false;"><span class="txtC">Sign up</span></button> </div> <div class="mts xxsmall txtC mlm"> <a tooltip-text="You can unsubscribe at any time at viator.com/unsubscribe or by sending an email to unsubscribe@viator.com" tooltip-arrow-position="top">How to unsubscribe?</a> </div> </div> </form> </div> </div> </div> </div> </div> </div> </div> <script type="text/javascript">
+        (function(document) {
+            if (typeof(f_validateForm) == "undefined") {
+                $script(Viator.Common.versionedUrl(Viator.config.CDN + '/silverpop/formValidate.js'));
+            }
+
+            var emailSignup = document.getElementById("emailSignupLhn");
+
+            if ('home' == "HOME" || emailSignup != null) {
+                document.getElementById("emailSignupFooter").style.display = "block";
+            }
+         })(document);
+    </script> <div class="footer"> <div class="viamod-bar"></div> <div class="page"> <div class="line inverse-txt xsmall"> <div class="unit size5of9"> <div class="line"> <div class="unit size-col1 mtl"> <div class="mrl"> <h5 class="info-label xsmall strong mhn mbs ptm inverse-border-section-b unit">Customer Care</h5> <ul class="mhn mtn clear"> <li><a href="/faq" rel="nofollow">Help Center</a></li> <li><a href="/privacy-policy" rel="nofollow">Privacy Policy</a></li> <li><a href="/about/why-book-with-viator/guaranteed-low-prices" rel="nofollow">Low Price Guarantee</a></li> <li><a href="/group-services" rel="nofollow">Group Services</a></li> </ul> </div> </div> <div class="unit size-col2 mtl"> <h5 class="info-label xsmall strong mhn mbs ptm inverse-border-section-b unit">Company</h5> <ul class="mhn mtn clear"> <li><a href="/about-us" rel="nofollow">About Us</a></li> <li><a href="/about/about-viator" rel="nofollow">Corporate Info</a></li> <li><a href="/about/media-center" rel="nofollow">Media Center</a></li> <li><a href="/careers">Careers</a></li> <li><a href="/newsletters">Free Newsletter</a></li> </ul> <h5 class="info-label xsmall strong mhn mbs ptm inverse-border-section-b unit">Partnerships</h5> <ul class="mhn mtn clear"> <li><a href="/about/work-with-viator" rel="nofollow">Work with Viator</a></li> <li><a href="http://newsupplier.viator.com" rel="nofollow">Supplier Sign-up</a></li> <li><a href="/about/work-with-viator/distribution-partners" rel="nofollow">Distribution Programs</a></li> <li><a href="https://travelagents.viator.com" rel="nofollow">Travel Agents</a></li> </ul> </div> <div class="unit size-col3 mtl"> <h5 class="info-label xsmall strong mhn mbs ptm inverse-border-section-b unit">Sites</h5> <ul id="siteLinks" class="mhn mtn mbl clear"> <li><a href="http://tourguides.viator.com/">Private Tour Guides</a></li> <li><a href="http://travelblog.viator.com/">Viator Travel Blog</a></li> <li><a id="en-AU_Link" href="https://au.viator.com">English (Australia)</a></li> <li><a id="en-CA_Link" href="https://ca.viator.com">English (Canada)</a></li> <li><a id="en-GB_Link" href="https://uk.viator.com">English (UK)</a></li> <li><a id="de_Link" href="https://www.viatorcom.de">Deutsch</a></li> <li><a id="fr_Link" href="https://www.viatorcom.fr">Français</a></li> <li><a id="es_Link" href="https://es.viator.com">Español</a></li> <li><a id="it_Link" href="https://it.viator.com">Italiano</a></li> <li><a id="pt_Link" href="https://br.viator.com">Português(Brasil)</a></li> <li><a id="da_Link" href="https://dk.viator.com">Dansk</a></li> <li><a id="nl_Link" href="https://www.viatorcom.nl">Nederlands</a></li> <li><a id="no_Link" href="https://www.viatorcom.no">Norsk</a></li> <li><a id="sv_Link" href="https://www.viatorcom.se">Svenska</a></li> <li><a id="ja_Link" href="https://jp.viator.com">日本語</a></li> </ul> </div> </div> </div> <div class="unit size-col4 mtl"> <h5 class="info-label xsmall strong mhn mbs ptm inverse-border-section-b unit">Social</h5> <div class="line pts mbm clear icon-lg"> <a href="https://www.facebook.com/ViatorTours" target="_blank" class="img-link unit no-hover fade-hover mrm"><i class="via-facebook-teardrop icon-2x leading-s"></i></a> <a href="https://twitter.com/viatortravel" target="_blank" class="img-link unit no-hover fade-hover mrm"><i class="via-twitter-teardrop icon-2x leading-s"></i></a> <a href="http://pinterest.com/viatortravel" target="_blank" class="img-link unit no-hover fade-hover"><i class="via-pinterest-teardrop icon-2x leading-s"></i></a> </div> <div class="line icon-lg"> <a href="http://www.youtube.com/user/ViatorTravel" target="_blank" class="img-link unit no-hover fade-hover mrm"><i class="via-youtube-teardrop icon-2x leading-s"></i></a> <a href="http://plus.google.com/u/0/110915389173456652093" target="_blank" class="img-link unit no-hover fade-hover mrm"><i class="via-google-plus-teardrop icon-2x leading-s"></i></a> <a href="http://travelblog.viator.com/feed/" target="_blank" class="img-link unit no-hover fade-hover"><i class="via-rss-teardrop icon-2x leading-s"></i></a> </div> </div> <div class="unitRight round-bottom ptl footer-search"> <div class="phm"> <h5 class="info-label xsmall strong mtn mbs ptl">Find your next activity!</h5> <div class="global-search mhm"> <form action="/freeTextSearch.jspa" method="get" enctype="" title="search" name="search" onsubmit="return Viator.Common.doFreeTextSearchSubmit('footerSearch', '');"> <input type="text" id="footerSearch" name="freeTextKeyword" autocomplete="off" size="16" maxlength="50" class="no-border unit" placeholder="Search..."> <input type="button" onclick="if(Viator.Common.doFreeTextSearchSubmit('footerSearch', '')) { this.form.submit() }" value="" title="Search Viator Tours & Things to Do"> </form> </div> <h5 class="info-label xsmall strong mtn mbs ptl inverse-border-section-b unit">Top destinations</h5> <div class="line clear"> <div class="unit size1of2"> <ul class="mtn mrxs mbl"> <li><a href="/Amsterdam/d525-ttd">Amsterdam Tours</a></li> <li><a href="/Dublin/d503-ttd">Dublin Tours</a></li> <li><a href="/Florence/d519-ttd">Florence Tours</a></li> <li><a href="/Las-Vegas/d684-ttd">Las Vegas Tours</a></li> <li><a href="/London/d737-ttd">London Tours</a></li> <li><a href="/Madrid/d566-ttd">Madrid Tours</a></li> <li><a href="/Melbourne/d384-ttd">Melbourne Tours</a></li> </ul> </div> <div class="unit size1of2"> <ul class="mtn mlxs mbl mrn"> <li><a href="/New-York-City/d687-ttd">New York City Tours</a></li> <li><a href="/Paris/d479-ttd">Paris Tours</a></li> <li><a href="/Rome/d511-ttd">Rome Tours</a></li> <li><a href="/San-Francisco/d651-ttd">San Francisco Tours</a></li> <li><a href="/Sydney/d357-ttd">Sydney Tours</a></li> <li><a href="/Tokyo/d334-ttd">Tokyo Tours</a></li> <li><a href="/Venice/d522-ttd">Venice Tours</a></li> </ul> </div> </div> </div> </div> </div> <script>
+        	Viator.Common.initLinks();
+        	Viator.Common.initLanguageSelection();
+            $(function () {
+                if (typeof pageDataTracker !== "undefined") {
+                    pageDataTracker.trackPageLoad();
+                }
+            });
+		</script> <script>
+    dataLayer = [];
+    //gtmData is populated with data to be used while pushing custom events
+    Viator.gtmData = {};
+    Viator.gtmData.visitorType = Viator.Common.getNewRepeat();
+    dataLayer.push({
+        "visitorType": Viator.gtmData.visitorType
+    });
+    Viator.gtmData.destinationName = "";
+    Viator.gtmData.groupID = "";
+    Viator.gtmData.groupName =  "";
+    Viator.gtmData.categoryID = "";
+    Viator.gtmData.categoryName = "";
+    Viator.gtmData.destinationID = "";
+    Viator.gtmData.productID = "";
+    Viator.gtmData.pageType = "Home";
+
+    
+
+    
+
+    
+
+    
+
+    
+    dataLayer.push({
+        "destinationID": "",
+        "pageType": "Home",
+        "productIDstring": Viator.GTM.productsInView
+    });
+    
+    
+    
+    
+    
+    
+
+    
+    
+    
+    dataLayer.push({
+        "semMcid": "42384",
+        "semParams": "%7B%7D"
+    });
+    
+    
+    
+    dataLayer.push({
+        "geoIPCountry": "BR"
+    });
+    
+</script> <noscript> <iframe src="//www.googletagmanager.com/ns.html?id=GTM-WQLNPJ" height="0" width="0" style="display:none;visibility:hidden"></iframe> </noscript> <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-WQLNPJ');</script> </div> </div> <script>
+    $(function () {
+        if (typeof(cstream) === 'undefined') {
+            if (typeof clickStream !== 'undefined') {
+                var cstream = clickStream.init('/clickStreamAction.jspa');
+                cstream.scan();
+            }
+        }
+    });
+</script> <div class="copyright inverse-txt"> <div class="line page"> <div class="unit size5of9"> <p class="xxsmall mhn"> Some content licensed under a <a title="Creative Commons Attribution" target="_blank" href="http://creativecommons.org/licenses/">Creative Commons Attribution</a> 3.0 License. <br/> &copy; 1997&ndash;Mon Dec 04 04:56:02 PST 2017 <a href="/about-us">Viator, Inc.</a> 330211 All rights reserved. Viator is a registered trademark of Viator, Inc.<br/> <i class="icon icon-footer-v mrs"></i>is a Service Mark of Viator, Inc. Travel with an Insider is a Service Mark of Viator, Inc.<br/> Use of this website constitutes acceptance of <a href="/terms-and-conditions" title="Viator's Terms &amp; Conditions">Viator's Terms &amp; Conditions</a>. </p> </div> <div class="unit lastUnit"> <a href="http://www.bbb.org/greater-san-francisco/business-reviews/internet-services/viator-in-san-francisco-ca-21370#bbblogo" target="_blank" title="BBB Business Review"> <img src="/wayfinder/images/logo_bbb.png" alt="BBB logo" class="mvm retina" width="91px"></a> </div> </div> </div> <script>
+    $(function () {
+        
+        if (Viator.Common.getCookie('learnMore') !== 'closed') {
+            $('#learnMore').show();
+        }
+    });
+
+    Viator.closeCookieNotice = function () {
+        $('#learnMore').hide();
+        Viator.Common.setCookie('learnMore', 'closed', 365);
+    };
+
+</script> <div id="learnMore" class="page"> <p class="note mhn"> Viator uses cookies to improve your experience on our website. <a href="/privacy-policy#cookies">Learn more</a> about how we use cookies and how to change your cookie settings <span class="simple-pipe">|</span> <a onclick="Viator.closeCookieNotice();">Close message</a> </p> </div> <script type="text/javascript">
+    var profile = {"page":{"pageType":"home"},"session":{"countryCodeFromIp":"BR"},"client":{}};
+    Viator.Common.loadPromoUnit(profile, function () {
+        $(document).trigger('PasRepaint');
+    });
+</script> <div id="topSearch" class="ui-autocomplete ui-menu ui-widget ui-widget-content ui-corner-all menu-dropdown-wrap mod-simple-white" style="position:absolute; display:none; width:470px !important;"> <div class="mini-menu light-border-t line"> <div class="opaque-bg"></div> <div class="unit size2of3"> <div class="line"> <h3 class="strong h6">Top Destinations</h3> <div class="unit size1of2"> <ul class="man" data-action-capture="click" data-action-tag="TopDestinationItemSelected"> <li class="ui-autocomplete-item ui-menu-item"> <a data-country="Netherlands" data-city="Amsterdam" href="/Amsterdam/d525-ttd" class="img-link">Amsterdam</a> </li> <li class="ui-autocomplete-item ui-menu-item"> <a data-country="Greece" data-city="Athens" href="/Athens/d496-ttd" class="img-link">Athens</a> </li> <li class="ui-autocomplete-item ui-menu-item"> <a data-country="Spain" data-city="Barcelona" href="/Barcelona/d562-ttd" class="img-link">Barcelona</a> </li> <li class="ui-autocomplete-item ui-menu-item"> <a data-country="United Arab Emirates" data-city="Dubai" href="/Dubai/d828-ttd" class="img-link">Dubai</a> </li> <li class="ui-autocomplete-item ui-menu-item"> <a data-country="Ireland" data-city="Dublin" href="/Dublin/d503-ttd" class="img-link">Dublin</a> </li> <li class="ui-autocomplete-item ui-menu-item"> <a data-country="Italy" data-city="Florence" href="/Florence/d519-ttd" class="img-link">Florence</a> </li> <li class="ui-autocomplete-item ui-menu-item"> <a data-country="USA" data-city="Las Vegas" href="/Las-Vegas/d684-ttd" class="img-link">Las Vegas</a> </li> <li class="ui-autocomplete-item ui-menu-item"> <a data-country="England" data-city="London" href="/London/d737-ttd" class="img-link">London</a> </li> <li class="ui-autocomplete-item ui-menu-item"> <a data-country="Spain" data-city="Madrid" href="/Madrid/d566-ttd" class="img-link">Madrid</a> </li> <li class="ui-autocomplete-item ui-menu-item"> <a data-country="Italy" data-city="Milan" href="/Milan/d512-ttd" class="img-link">Milan</a> </li> </ul> </div> <div class="unit size1of2 lastUnit"> <ul class="man light-border-l" data-action-capture="click" data-action-tag="TopDestinationItemSelected"> <li class="ui-autocomplete-item ui-menu-item"> <a data-country="USA" data-city="New York City" href="/New-York-City/d687-ttd" class="img-link">New York City</a> </li> <li class="ui-autocomplete-item ui-menu-item"> <a data-country="USA" data-city="Oahu" href="/Oahu/d672-ttd" class="img-link">Oahu</a> </li> <li class="ui-autocomplete-item ui-menu-item"> <a data-country="France" data-city="Paris" href="/Paris/d479-ttd" class="img-link">Paris</a> </li> <li class="ui-autocomplete-item ui-menu-item"> <a data-country="Italy" data-city="Rome" href="/Rome/d511-ttd" class="img-link">Rome</a> </li> <li class="ui-autocomplete-item ui-menu-item"> <a data-country="USA" data-city="San Francisco" href="/San-Francisco/d651-ttd" class="img-link">San Francisco</a> </li> <li class="ui-autocomplete-item ui-menu-item"> <a data-country="Australia" data-city="Sydney" href="/Sydney/d357-ttd" class="img-link">Sydney</a> </li> <li class="ui-autocomplete-item ui-menu-item"> <a data-country="Japan" data-city="Tokyo" href="/Tokyo/d334-ttd" class="img-link">Tokyo</a> </li> <li class="ui-autocomplete-item ui-menu-item"> <a data-country="Canada" data-city="Vancouver" href="/Vancouver/d616-ttd" class="img-link">Vancouver</a> </li> <li class="ui-autocomplete-item ui-menu-item"> <a data-country="Italy" data-city="Venice" href="/Venice/d522-ttd" class="img-link">Venice</a> </li> <li class="ui-autocomplete-item ui-menu-item"> <a data-country="USA" data-city="Washington DC" href="/Washington-DC/d657-ttd" class="img-link">Washington DC</a> </li> </ul> </div> </div> </div> <div class="lastUnit light-shader"> <h3 class="strong h6">Top Attractions</h3> <ul class="mtn mhn" data-action-capture="click" data-action-tag="TopAttractionsItemSelected"> <li class="ui-autocomplete-item ui-menu-item"> <a data-country="USA" data-city="San Francisco" href="/San-Francisco-attractions/Alcatraz/d651-a112" class="img-link">Alcatraz</a> </li> <li class="ui-autocomplete-item ui-menu-item"> <a data-country="Italy" data-city="Rome" href="/Rome-attractions/Colosseum/d511-a701" class="img-link">Colosseum</a> </li> <li class="ui-autocomplete-item ui-menu-item"> <a data-country="France" data-city="Paris" href="/Paris-attractions/Eiffel-Tower/d479-a89" class="img-link">Eiffel Tower</a> </li> <li class="ui-autocomplete-item ui-menu-item"> <a data-country="USA" data-city="Grand Canyon National Park" href="/Grand-Canyon-National-Park-attractions/Grand-Canyon/d815-a15084" class="img-link">Grand Canyon</a> </li> <li class="ui-autocomplete-item ui-menu-item"> <a data-country="Spain" data-city="Barcelona" href="/Barcelona-attractions/La-Sagrada-Familia/d562-a845" class="img-link">La Sagrada Familia</a> </li> <li class="ui-autocomplete-item ui-menu-item"> <a data-country="France" data-city="Paris" href="/Paris-attractions/Louvre/d479-a73" class="img-link">Louvre</a> </li> <li class="ui-autocomplete-item ui-menu-item"> <a data-country="France" data-city="Paris" href="/Paris-attractions/Moulin-Rouge/d479-a576" class="img-link">Moulin Rouge</a> </li> <li class="ui-autocomplete-item ui-menu-item"> <a data-country="Japan" data-city="Tokyo" href="/Tokyo-attractions/Mt-Fuji/d334-a86" class="img-link">Mt Fuji</a> </li> <li class="ui-autocomplete-item ui-menu-item"> <a data-country="England" data-city="London" href="/London-attractions/Stonehenge/d737-a113" class="img-link">Stonehenge</a> </li> <li class="ui-autocomplete-item ui-menu-item"> <a data-country="Italy" data-city="Rome" href="/Rome-attractions/Vatican/d511-a115" class="img-link">Vatican</a> </li> </ul> </div> </div> </div> </body> </html>
